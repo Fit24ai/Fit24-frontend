@@ -16,7 +16,7 @@ export default function LevelContainer() {
       <div className="flex gap-4 w-full overflow-x-auto hide-scrollbar">
         {levels.map((item, index) => {
           return (
-            <div className="p-1 flex flex-col items-center w-full min-w-[120px]  bg-white bg-opacity-5 rounded-lg">
+            <div key={index} className="p-1 flex flex-col items-center w-full min-w-[120px]  bg-white bg-opacity-5 rounded-lg">
               <div className="text-xs w-full flex items-center justify-between">
                 <div className="p-1 bg-themeGreen bg-opacity-10 rounded-md">
                   12%
