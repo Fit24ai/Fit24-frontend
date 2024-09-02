@@ -240,15 +240,15 @@ export default function ChartBox() {
         </div>
         <div className="flex items-center gap-4">
           <div className="bg-black bg-opacity-35 w-28 p-4 flex flex-col items-center gap-1 flex-1 rounded-lg">
-            <div className="text-gray-400 text-sm">Direct Members</div>
+            <div className="text-gray-400 text-sm">Team Stake</div>
             <div className="text-2xl">
-              <span className=" text-themeGreen">12</span>,712
+              <span className=" text-themeGreen">2</span>,112
             </div>
           </div>
           <div className="bg-black bg-opacity-35 w-28 p-4 flex flex-col items-center gap-1 flex-1 rounded-lg">
-            <div className="text-gray-400 text-sm">Total Stake</div>
+            <div className="text-gray-400 text-sm">Total Reward</div>
             <div className="text-2xl">
-              <span className=" text-themeGreen">70</span>,821
+              <span className=" text-themeGreen">15</span>,746
             </div>
           </div>
         </div>
