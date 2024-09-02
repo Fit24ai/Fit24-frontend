@@ -36,9 +36,7 @@ const ConnectWallet = ({ drawer }: { drawer?: boolean }) => {
               {loading ? (
                 <CgSpinner className="text-xl animate-spin" />
               ) : (
-                <span className=" bg-clip-text">
-                  CONNECT WALLET
-                </span>
+                <span className=" bg-clip-text">CONNECT WALLET</span>
               )}
             </button>
           )
@@ -65,15 +63,16 @@ const ConnectWallet = ({ drawer }: { drawer?: boolean }) => {
               </button> */}
             </>
           )}
-      {!drawer && isConnected && (
+      {isConnected && (
+        <>
+          <button className="inline-flex truncate w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+            {smallAddress(address)}
+          </button>
+        </>
+      )}
+      {/* {!drawer && isConnected && (
         <div className="flex items-center gap-4 w-fit">
           <ChainSelect />
-          {/* <Link
-            href={"/buy-token#dashboard"}
-            className="items-center justify-center hidden h-8 px-4 font-normal text-white rounded-xl mmd:flex bg-themeOrange hover:shadow-lg"
-          >
-            Dashboard
-          </Link> */}
           <Menu as="div" className="relative inline-block text-left">
             <div>
               <Menu.Button className="inline-flex truncate w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
@@ -129,7 +128,7 @@ const ConnectWallet = ({ drawer }: { drawer?: boolean }) => {
             </Transition>
           </Menu>
         </div>
-      )}
+      )} */}
       {/* <StatusDialog
         open={dialog}
         setOpen={setDialog}
