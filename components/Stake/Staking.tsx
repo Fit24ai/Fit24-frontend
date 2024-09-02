@@ -143,7 +143,7 @@ export default function Staking() {
           <div className="flex sm:gap-4 gap-2 items-center">
             <div className="w-14 sm:w-20">
               <Image
-                src={"/fitlogo.svg"}
+                src={"/fitLogo.svg"}
                 alt="Ethereum"
                 width={3000}
                 height={3000}
