@@ -5,36 +5,36 @@ import {
   DrawerContent,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import { RiMenu4Line } from "react-icons/ri"
-import Image from "next/image"
-import { X } from "lucide-react"
+// import { RiMenu4Line } from "react-icons/ri"
+// import Image from "next/image"
+// import { X } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
-import { useSearchParams } from "next/navigation"
-import { RxCross2 } from "react-icons/rx"
-import { useRouter } from "next/navigation"
+// import { useSearchParams } from "next/navigation"
+// import { RxCross2 } from "react-icons/rx"
+// import { useRouter } from "next/navigation"
 import ConnectWallet from "./ConnectWallet"
 import { IoDocumentText, IoPieChartOutline } from "react-icons/io5"
 import { HiSwitchVertical } from "react-icons/hi"
 import { IoIosPeople, IoMdNotifications } from "react-icons/io"
-import { FaIdCard } from "react-icons/fa"
+// import { FaIdCard } from "react-icons/fa"
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { IoMenu } from "react-icons/io5"
 import { AiFillGift } from "react-icons/ai"
 
 export function NavbarDrawer() {
-  const searchParams = useSearchParams()
-  const tab = searchParams.get("tab") || "defaultTabValue"
+  // const searchParams = useSearchParams()
+  // const tab = searchParams.get("tab") || "defaultTabValue"
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
-  const finalPath = `${pathname}?tab=${tab}`
-  const router = useRouter()
+  // const finalPath = `${pathname}?tab=${tab}`
+  // const router = useRouter()
 
   useEffect(() => {
     console.log(pathname)
     setOpen(false)
-  }, [pathname, tab])
+  }, [pathname])
 
   const items = [
     {

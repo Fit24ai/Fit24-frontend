@@ -6,7 +6,7 @@ import { Menu, Transition } from "@headlessui/react"
 import { CgSpinner } from "react-icons/cg"
 import Link from "next/link"
 import { useAccount, useDisconnect } from "wagmi"
-import { useRouter, useSearchParams } from "next/navigation"
+// import { useRouter, useSearchParams } from "next/navigation"
 // import StatusDialog from "../StatusDialog";
 import { ChainSelect } from "./ChainSelect"
 import { classNames, smallAddress } from "@/libs/utils"
