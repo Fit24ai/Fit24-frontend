@@ -15,13 +15,19 @@ import { usePathname } from "next/navigation"
 // import { RxCross2 } from "react-icons/rx"
 // import { useRouter } from "next/navigation"
 import ConnectWallet from "./ConnectWallet"
-import { IoDocumentText, IoPieChartOutline } from "react-icons/io5"
+import { IoDocumentText, IoPerson, IoPieChartOutline } from "react-icons/io5"
 import { HiSwitchVertical } from "react-icons/hi"
 import { IoIosPeople, IoMdNotifications } from "react-icons/io"
 // import { FaIdCard } from "react-icons/fa"
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { IoMenu } from "react-icons/io5"
 import { AiFillGift } from "react-icons/ai"
+import { useAccount } from "wagmi"
+import { smallAddress } from "@/libs/utils"
+import { ChainSelect } from "./ChainSelect"
+import { LuCopy } from "react-icons/lu"
+import copy from "copy-to-clipboard"
+import { FaCheck } from "react-icons/fa"
 
 export function NavbarDrawer() {
   // const searchParams = useSearchParams()
@@ -30,6 +36,16 @@ export function NavbarDrawer() {
   const pathname = usePathname()
   // const finalPath = `${pathname}?tab=${tab}`
   // const router = useRouter()
+
+  const [isAlertVisible, setIsAlertVisible] = useState(false)
+
+  const handleButtonClick = () => {
+    setIsAlertVisible(true)
+    copy(`${window.location.origin}?stakeRef=${address}`)
+    setTimeout(() => {
+      setIsAlertVisible(false)
+    }, 3000)
+  }
 
   useEffect(() => {
     console.log(pathname)
@@ -73,6 +89,8 @@ export function NavbarDrawer() {
       icon: <IoDocumentText />,
     },
   ]
+
+  const { address } = useAccount()
   return (
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
@@ -98,7 +116,34 @@ export function NavbarDrawer() {
               </div>
             </DrawerClose>
           </div> */}
-          <ConnectWallet />
+          {/* <ConnectWallet /> */}
+          <div className="w-full bg-[#020c2b] flex flex-col gap-2 rounded-lg py-2 px-4">
+            <div className="w-full flex items-center justify-between">
+              <div className="w-full flex items-center gap-2">
+                <div className=" w-fit text-white rounded-full">
+                  <IoPerson className="w-6 h-6" />
+                </div>
+                {address && (
+                  <div className="text-sm">{smallAddress(address)}</div>
+                )}
+              </div>
+              {/* <div className="bg-[#056237] px-3 py-1 rounded-xl text-sm">
+            Blokfit
+          </div> */}
+              {/* <ChainSelect /> */}
+            </div>
+            <div className="w-full flex items-center gap-2 text-sm ">
+              <div>ID</div>
+              <div> {address && smallAddress(address!)}</div>
+              <button
+                onClick={handleButtonClick}
+                disabled={isAlertVisible}
+                className="text-gray-400"
+              >
+                {isAlertVisible ? <FaCheck size={20} /> : <LuCopy />}
+              </button>
+            </div>
+          </div>
 
           <div className="flex flex-col gap-2">
             <div className="text-xs text-gray-400">Main Pages</div>

@@ -18,8 +18,8 @@ export default function Tabs({ tab }: { tab: string | undefined }) {
       <Link
         href="/stake?tab=STAKING"
         scroll={false}
-        className={`px-6 py-2 border-2 text-sm shadow-md rounded-xl text-center text-white transition-all whitespace-nowrap w-32 border-themeGreen ${
-          tab === "STAKING"  || tab === undefined
+        className={`px-6 py-2 border-2 text-sm shadow-md rounded-xl text-center text-white transition-all whitespace-nowrap w-36 border-themeGreen ${
+          tab === "STAKING" || tab === undefined
             ? "bg-gradient-to-r border-gray-700"
             : "bg-white bg-opacity-10 "
         } from-themeGreen to-themeLightBlue  hover:shadow-lg`}
@@ -29,13 +29,13 @@ export default function Tabs({ tab }: { tab: string | undefined }) {
       <Link
         href="/stake?tab=HISTORY"
         scroll={false}
-        className={`px-6 py-2 border-2 text-sm shadow-md rounded-xl w-32 text-center text-white transition-all whitespace-nowrap border-themeGreen ${
-          tab === "HISTORY" 
+        className={`px-6 py-2 border-2 text-sm shadow-md rounded-xl w-36 text-center text-white transition-all whitespace-nowrap border-themeGreen ${
+          tab === "HISTORY"
             ? "bg-gradient-to-r border-gray-700"
             : "bg-white bg-opacity-10 "
         } from-themeGreen to-themeLightBlue  hover:shadow-lg`}
       >
-        Tx History
+        Claim History
       </Link>
       {/* <Link
         href="/stake?tab=STATS"

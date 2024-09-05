@@ -2,7 +2,14 @@
 
 import Image from "next/image"
 import { Fragment, ReactNode, useState } from "react"
-import { Menu, Transition } from "@headlessui/react"
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+  Menu,
+  Transition,
+} from "@headlessui/react"
 import { CgSpinner } from "react-icons/cg"
 import Link from "next/link"
 import { useAccount, useDisconnect } from "wagmi"
@@ -11,12 +18,16 @@ import { useAccount, useDisconnect } from "wagmi"
 import { ChainSelect } from "./ChainSelect"
 import { classNames, smallAddress } from "@/libs/utils"
 import { useWeb3Modal } from "@web3modal/wagmi/react"
+import { EmailDialog } from "../EmailDialog"
+import { useWallet } from "@/hooks/useWallet"
+import { IoIosArrowDown } from "react-icons/io"
 // import { useWallet } from "@/hooks/useWallet";
 // import EmailDialog from "../EmailDialog";
 
 const ConnectWallet = ({ drawer }: { drawer?: boolean }) => {
   const { address, isConnected }: any = useAccount()
-  // const { openWallet, disconnectWallet, isEmailPopup, setIsEmailPopup } = useWallet();
+  const { openWallet, disconnectWallet, isEmailPopup, setIsEmailPopup } =
+    useWallet()
   const [dialog, setDialog] = useState(false)
   const [type, setType] = useState<"SUCCESS" | "FAIL">("FAIL")
   const [message, setMessage] = useState<string | ReactNode>("")
@@ -25,7 +36,7 @@ const ConnectWallet = ({ drawer }: { drawer?: boolean }) => {
   const { open } = useWeb3Modal()
   return (
     <>
-      {/* <EmailDialog open={isEmailPopup} setIsEmailPopup={setIsEmailPopup} /> */}
+      <EmailDialog open={isEmailPopup} setIsEmailPopup={setIsEmailPopup} />
       {drawer
         ? !isConnected && (
             <button
@@ -64,11 +75,40 @@ const ConnectWallet = ({ drawer }: { drawer?: boolean }) => {
             </>
           )}
       {isConnected && (
-        <>
-          <button className="inline-flex truncate w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-            {smallAddress(address)}
-          </button>
-        </>
+        // <>
+        //   <button className="inline-flex truncate w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+        //     {smallAddress(address)}
+        //   </button>
+        // </>
+        <Listbox>
+          <ListboxButton className="inline-flex relative truncate w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+            <div className="flex items-center gap-1 w-full">
+              <div className="truncate block"> {smallAddress(address)}</div>
+            </div>
+          </ListboxButton>
+          <ListboxOptions
+            anchor="bottom"
+            className="w-24 absolute mt-1 max-h-60 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
+          >
+            <ListboxOption
+              onClick={() => disconnect()}
+              value={"Logout"}
+              className="inline-flex truncate w-full cursor-pointer justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            >
+              {({ selected }) => (
+                <>
+                  <span
+                    className={`block truncate ${
+                      selected ? "font-medium" : "font-normal"
+                    }`}
+                  >
+                    Logout
+                  </span>
+                </>
+              )}
+            </ListboxOption>
+          </ListboxOptions>
+        </Listbox>
       )}
       {/* {!drawer && isConnected && (
         <div className="flex items-center gap-4 w-fit">

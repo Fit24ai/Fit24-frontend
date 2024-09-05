@@ -1,107 +1,76 @@
 "use client"
-import React from "react"
+
+import React, { useEffect, useState } from "react"
 import { IoMdPerson } from "react-icons/io"
 import ChartBox from "./ChartBox"
+import { useWallet } from "@/hooks/useWallet"
+import { getUserRefIncome, getUserTokens } from "@/services/token"
+import Image from "next/image"
+import { getAllStakeTokens } from "@/services/stakingService"
 
 export default function DashboardContainer() {
-  const items = [
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-    {
-      numbers: 12712,
-    },
-  ]
+  const { isLoggedIn } = useWallet()
+  const [token, setToken] = useState(0)
+  const [refIncome, serRefIncome] = useState(0)
+  const getTokens = async () => {
+    return await getAllStakeTokens()
+  }
+  useEffect(() => {
+    getTokens()
+      .then((data) => {
+        setToken(data.tokens)
+      })
+      .catch((err) => {
+        setToken(0)
+      })
+    getUserRefIncome()
+      .then((data) => {
+        serRefIncome(data.referralIncome)
+      })
+      .catch((err) => {
+        serRefIncome(0)
+      })
+  }, [isLoggedIn])
   return (
     <div className="w-full flex flex-col 2md:gap-6 gap-4 2md:py-8 py-4 2md:px-10 px-3 text-white pb-10">
-      <div className="2md:hidden flex flex-col items-center 2md:gap-2 gap-1">
-        <div className="2md:text-xl font-medium">Total Staked</div>
-        <div className="text-2xl font-medium">124,463</div>
+      <div className="flex flex-col items-center gap-2 ">
+        <div className="text-xl font-medium">Total Staked</div>
+        <div className="text-2xl font-medium flex gap-2 items-center">
+          {Number(token).toFixed(2)}{" "}
+          <span className="w-20">
+            <Image
+              src={"/fitLogo.svg"}
+              width={3000}
+              height={30000}
+              alt="logo"
+              className="h-full w-full"
+            />
+          </span>
+        </div>
       </div>
-      <div className="flex flex-col gap-2 w-full  2md:order-none order-1">
+      {/* <div className="flex flex-col gap-2 w-full  2md:order-none order-1">
         <div>Network Statistics</div>
         <div className="flex gap-4  items-center overflow-x-auto hide-scrollbar">
           <div className="flex gap-4">
-            {items.map((item, index) => (
-              <div
-                key={index}
-                className="flex flex-col items-center rounded-lg border border-themeGreen bg-white bg-opacity-5 w-32 p-2 "
-              >
-                <IoMdPerson size={24} />
-                <div>{item.numbers.toLocaleString()}</div>
-                <div className="text-gray-400 text-xs">All Members</div>
-              </div>
-            ))}
+            <div className="flex flex-col items-center rounded-lg border border-themeGreen bg-white bg-opacity-5 w-32 p-2 ">
+              <IoMdPerson size={24} />
+              <div>12712</div>
+              <div className="text-gray-400 text-xs">All Members</div>
+            </div>
+            <div className="flex flex-col items-center rounded-lg border border-themeGreen bg-white bg-opacity-5 w-32 p-2 ">
+              <IoMdPerson size={24} />
+              <div>12712</div>
+              <div className="text-gray-400 text-xs">Total Stake</div>
+            </div>
+            <div className="flex flex-col items-center rounded-lg border border-themeGreen bg-white bg-opacity-5 w-32 p-2 ">
+              <IoMdPerson size={24} />
+              <div>12712</div>
+              <div className="text-gray-400 text-xs">Total Withdrawals</div>
+            </div>
           </div>
         </div>
-      </div>
-      <ChartBox />
+      </div> */}
+      <ChartBox token={token}  />
     </div>
   )
 }

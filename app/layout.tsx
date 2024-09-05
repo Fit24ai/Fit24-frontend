@@ -4,6 +4,8 @@ import "./globals.css"
 import Web3ModalProvider from "@/providers/Web3ModalProvider"
 import Navbar from "@/components/shared/Navbar/Navbar"
 import Sidebar from "@/components/shared/Sidebar/Sidebar"
+import { WalletProvider } from "@/hooks/useWallet"
+import Footer from "@/components/shared/Footer"
 
 // Importing the Readex Pro font
 const readexPro = Readex_Pro({ subsets: ["latin"] })
@@ -21,14 +23,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${readexPro.className}   max-w-[1730px] mx-auto`}>
-        <div className="image-bg">
-          <Web3ModalProvider>
-            <Navbar />
-            {/* <Navbar />
-          <Sidebar /> */}
-            {children}
-          </Web3ModalProvider>
-        </div>
+        <Web3ModalProvider>
+          <WalletProvider>
+            <div className="image-bg">
+              <Navbar />
+              {children}
+            </div>
+            <Footer />
+          </WalletProvider>
+        </Web3ModalProvider>
       </body>
     </html>
   )

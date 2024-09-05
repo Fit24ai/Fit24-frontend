@@ -9,7 +9,7 @@ import { NavbarDrawer } from "./NavbarDrawer"
 const Navbar = () => {
   const pathname = usePathname()
   return (
-    <nav className="sticky top-0 z-50 flex items-center justify-between  md:px-16 px-4 text-grey-700 h-20 2md:border-b border-gray-700 ">
+    <nav className=" top-0 z-50 flex items-center justify-between  md:px-16 px-4 text-grey-700 h-20 2md:border-b border-gray-700 ">
       <div className="flex  items-end gap-32">
         <div className="flex h-[30px]  xl:h-[40px]">
           <Link href="/" className="items-center text-xl font-bold ">

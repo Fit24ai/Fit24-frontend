@@ -5,27 +5,27 @@ export enum ChainEnum {
   ETHEREUM = "ETHEREUM",
   BINANCE = "BINANCE",
   POLYGON = "POLYGON",
-  BLOCKFIT = "BLOCKFIT"
+  BLOCKFIT = "BLOCKFIT",
 }
 
-export type AddressString = `0x${string}`;
+export type AddressString = `0x${string}`
 
 export const blockfit = defineChain({
   id: 2024,
-  name: 'BlockFit',
+  name: "BlockFit",
   nativeCurrency: {
     decimals: 18,
-    name: 'BlockFit',
-    symbol: 'BFIT',
+    name: "BlockFit",
+    symbol: "BFIT",
   },
   rpcUrls: {
     default: {
-      http: ['http://rpc.blockfitscan.io'],
+      http: ["http://rpc.blockfitscan.io"],
       // webSocket: ['wss://rpc.zora.energy'],
     },
   },
   blockExplorers: {
-    default: { name: 'Explorer', url: 'https://blockfitscan.io/' },
+    default: { name: "Explorer", url: "https://blockfitscan.io/" },
   },
 })
 
@@ -37,10 +37,17 @@ export const binancePaymentAddress: AddressString =
 export const vestingAddress: AddressString =
   "0x9Ae55AEFb2Aa047627EF42B67aD49730517DAb52"
 
-  export const fit24TokenAddress: AddressString = "0xd04A199ed9Ae3D1099Ed9c010464F52a7FB5de73"
-export const fit24ContractAddress:AddressString = "0xe3CC06a247187F8A33C50E09fE06D1537c47Ec40"
+export const fit24TokenAddress: AddressString =
+  "0xd04A199ed9Ae3D1099Ed9c010464F52a7FB5de73"
+export const fit24ContractAddress: AddressString =
+  "0xaefc21af9044a060e089e66f39c60d26888f6a29"
+// export const fit24ContractAddress: AddressString =
+//   "0xe3CC06a247187F8A33C50E09fE06D1537c47Ec40"
+// export const fit24ContractAddress: AddressString =
+//   "0xeadbc8c7a9faac417a48bdf7a0a4eee4b7ffeaaa"
 
-export const fit24ReferralContractAddress:AddressString = "0xC1014041a6AF36098f3a812f32336FF431D82473"
+export const fit24ReferralContractAddress: AddressString =
+  "0xC1014041a6AF36098f3a812f32336FF431D82473"
 
 // * PROD
 // export const ethereumPaymentAddress: AddressString =
@@ -151,45 +158,45 @@ export const tokens: {
 export function getPaymentContractAddress(chainId: number) {
   switch (chainId) {
     case ETHEREUM.id:
-      return ethereumPaymentAddress;
+      return ethereumPaymentAddress
     case BINANCE.id:
       return binancePaymentAddress
     case blockfit.id:
       return undefined
     default:
-      throw new Error("Invalid chainId");
+      throw new Error("Invalid chainId")
   }
 }
 
 export function getChainLogo(chainId: number) {
   switch (chainId) {
     case ETHEREUM.id:
-      return "/tokens/eth.svg";
+      return "/tokens/eth.svg"
     case BINANCE.id:
       return "/tokens/bnb.svg"
-    case blockfit.id: 
+    case blockfit.id:
       return "Fit24-icon.svg"
     default:
-      throw "/tokens/eth.svg";
+      throw "/tokens/eth.svg"
   }
 }
 
 export function getChain(chain: Chain | undefined) {
-  if (!chain) return ETHEREUM;
+  if (!chain) return ETHEREUM
 
-  return chain;
+  return chain
 }
 
 export function getChainEnum(chainId: number) {
   switch (chainId) {
     case ETHEREUM.id:
-      return ChainEnum.ETHEREUM;
+      return ChainEnum.ETHEREUM
     case BINANCE.id:
       return ChainEnum.BINANCE
     case blockfit.id:
       return ChainEnum.BLOCKFIT
     default:
-      return ChainEnum.ETHEREUM;
+      return ChainEnum.ETHEREUM
   }
 }
 export function getScanURL(chain: ChainEnum) {
@@ -197,22 +204,22 @@ export function getScanURL(chain: ChainEnum) {
     case ChainEnum.ETHEREUM:
       return (
         process.env.NEXT_PUBLIC_ETHEREUM_PRC_PROVIDER || "https://etherscan.io"
-      );
+      )
     case ChainEnum.BINANCE:
       return (
         process.env.NEXT_PUBLIC_BINANCE_PRC_PROVIDER || "https://bscscan.com"
-      );
+      )
     default:
-      return "https://etherscan.io";
+      return "https://etherscan.io"
   }
 }
 
 export function getDecimal(address: string) {
-  if (!address) return;
+  if (!address) return
   const token = tokens.find(
     (token) => token.address.toLowerCase() === address.toLowerCase()
-  );
-  return token ? token.decimal : 6;
+  )
+  return token ? token.decimal : 6
 }
 
 export const blockFit = {
@@ -225,4 +232,4 @@ export const blockFit = {
   blockExplorers: {
     default: { name: "BlockFitScan", url: "https://blockfitscan.io" },
   },
-};
+}
