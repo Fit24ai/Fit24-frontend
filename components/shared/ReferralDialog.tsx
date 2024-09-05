@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog"
 
 import { useWallet } from "@/hooks/useWallet"
-import { useSearchParams } from "next/navigation"
+// import { useSearchParams } from "next/navigation"
 import { Fragment, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useAccount } from "wagmi"
@@ -30,11 +30,11 @@ import { FaRegCircleCheck } from "react-icons/fa6"
 import { VscError } from "react-icons/vsc"
 import { CgSpinner } from "react-icons/cg"
 
-export function ReferralDialog() {
+export function ReferralDialog({ stakeRef }: { stakeRef: string | undefined }) {
   const { openWallet, isLoggedIn } = useWallet()
   const { address } = useAccount()
   const [openBox, setOpenBox] = useState(false)
-  const search = useSearchParams()
+  // const search = useSearchParams()
   const [refId, setRefId] = useState("")
   const router = useRouter()
   const [registered, setRegistered] = useState(false)
@@ -79,7 +79,9 @@ export function ReferralDialog() {
   useEffect(() => {
     if (registerLoading) return
     if (!isLoggedIn) return
-    const refId = search.get("stakeRef")
+    if (!stakeRef) return
+    const refId = stakeRef
+    // const refId = search.get("stakeRef")
     if (refId) {
       console.log(refId)
       if (refId === address) return router.push(`/dashboard`)
