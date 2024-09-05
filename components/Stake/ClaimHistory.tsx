@@ -54,7 +54,7 @@ export default function ClaimHistory() {
         <div className="md:max-h-[50vh] max-h-[80vh] overflow-y-scroll min-w-[920px] w-full">
           {!isLoading ? (
             claimHistory.map((item: IClaimHistory, index) => (
-              <div className="grid grid-cols-4 w-full  px-4 py-3 gap-x-4 text-base  bg-gray-400 bg-opacity-20 border-b border-themeGreen">
+              <div key={index} className="grid grid-cols-4 w-full  px-4 py-3 gap-x-4 text-base  bg-gray-400 bg-opacity-20 border-b border-themeGreen">
                 <>
                   <div className="ml-10">
                     {item.stakeId} -{" "}
