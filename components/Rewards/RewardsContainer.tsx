@@ -294,7 +294,7 @@ export default function RewardsContainer() {
           <div className="md:max-h-[50vh] max-h-[80vh] overflow-y-scroll min-w-[920px] w-full">
             {!isLoading ? (
               filteredReferralStream.map((item: any, index) => (
-                <div className="grid grid-cols-9 w-full  px-4 py-3 gap-x-4 text-base  bg-gray-400 bg-opacity-20 border-t border-themeGreen">
+                <div key={index} className="grid grid-cols-9 w-full  px-4 py-3 gap-x-4 text-base  bg-gray-400 bg-opacity-20 border-t border-themeGreen">
                   <>
                     <div>
                       {item.referralDetails.stakeId} -{" "}
