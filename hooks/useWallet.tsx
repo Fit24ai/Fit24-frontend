@@ -9,13 +9,13 @@ import React, {
 import { useAccount, useDisconnect } from "wagmi"
 import { useWeb3Modal } from "@web3modal/wagmi/react"
 import { loginUser } from "@/services/login"
-import { useSearchParams } from "next/navigation"
+// import { useSearchParams } from "next/navigation"
 import { WalletContextProps } from "./types"
 
 const WalletContext = createContext<WalletContextProps | undefined>(undefined)
 
 export const WalletProvider = ({ children }: { children: ReactNode }) => {
-  const search = useSearchParams()
+  // const search = useSearchParams()
   const [error, setError] = useState<string | null>(null)
   const [isEmailPopup, setIsEmailPopup] = useState<boolean>(false)
   const { disconnect } = useDisconnect()
