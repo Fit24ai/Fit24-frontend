@@ -38,7 +38,7 @@ import Image from "next/image"
 import { StatusDialog } from "../shared/StatusDialog"
 // import StatusDialog from "../shared/StatusDialog"
 
-export default function Staking({ refetchTX, setRefetchTX }: any) {
+export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
   const { setReload } = useReloadContext()
   const { chain, address, isConnected } = useAccount()
   const { error, switchChain, chains } = useSwitchChain()
@@ -167,6 +167,46 @@ export default function Staking({ refetchTX, setRefetchTX }: any) {
     setAmount(e.target.value ? Number(e.target.value) : undefined)
   }
 
+  const handleFirstInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value)
+
+    if (select === "A" && value < 2500) {
+      setFormError("Minimum stake amount is 2,500")
+    } else if (select === "B" && value < 5000) {
+      setFormError("Minimum stake amount is 5,000")
+    } else if (select === "C" && value < 10000) {
+      setFormError("Minimum stake amount is 10,000")
+    } else {
+      setFormError(undefined)
+    }
+
+    if (countDecimals(value) > 4) return
+    if (value > 1000000) return
+
+    setAmount(value ? value : undefined)
+  }
+
+  const handleSecondInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value)
+
+    if (value > 1000000) return
+
+    const calculatedFirstInputValue =
+      value / Number(process.env.NEXT_PUBLIC_TOKEN_PRICE)
+
+    // Now update the first input value
+    if (select === "A" && calculatedFirstInputValue < 2500) {
+      setFormError("Minimum stake amount is 2,500")
+    } else if (select === "B" && calculatedFirstInputValue < 5000) {
+      setFormError("Minimum stake amount is 5,000")
+    } else if (select === "C" && calculatedFirstInputValue < 10000) {
+      setFormError("Minimum stake amount is 10,000")
+    } else {
+      setFormError(undefined)
+    }
+    setAmount(calculatedFirstInputValue)
+  }
+
   const poolToContractPoolConverter = (pool: string) => {
     if (pool === "A") {
       return 10
@@ -254,6 +294,7 @@ export default function Staking({ refetchTX, setRefetchTX }: any) {
     setSelect("")
     setAmount(0)
     setRefetchTX(true)
+    getTokens()
     verifyStakingRecord(stakeHash)
     // setLoading(false)
     setTimeout(() => {
@@ -451,7 +492,7 @@ export default function Staking({ refetchTX, setRefetchTX }: any) {
             </button>
           </div>
           <div className="flex flex-col items-center mt-4 gap-4">
-            <div>Investment Amount</div>
+            <div>Stake Amount</div>
             <div className="flex sm:gap-4 gap-2 items-center">
               <div className="w-14 sm:w-20">
                 <Image
@@ -463,6 +504,35 @@ export default function Staking({ refetchTX, setRefetchTX }: any) {
                 />
               </div>
               <input
+                name="fit24"
+                className="3xs:w-[100px] w-[80px] sm:px-4 px-2 3xs:h-10 h-8 flex items-center justify-center bg-white bg-opacity-15 outline-themeGreen border-none focus:border-none rounded-sm text-sm sm:text-base"
+                disabled={!select}
+                value={amount}
+                type="number"
+                placeholder={
+                  select === "A" ? "2500" : select === "B" ? "5000" : "10000"
+                }
+                onKeyDown={blockInvalidChar}
+                onPaste={disablePaste}
+                max={1000000}
+                onChange={handleFirstInputChange}
+              />
+              <input
+                name="usdt"
+                className="3xs:w-[100px] w-[80px] sm:px-4 px-2 3xs:h-10 h-8 flex items-center justify-center bg-white bg-opacity-15 outline-themeGreen border-none focus:border-none rounded-sm text-sm sm:text-base"
+                disabled={!select}
+                value={
+                  amount
+                    ? amount * Number(process.env.NEXT_PUBLIC_TOKEN_PRICE)
+                    : 0
+                }
+                type="number"
+                placeholder="0"
+                max={1000000}
+                onChange={handleSecondInputChange}
+              />
+              {/* <input
+                name="fit24"
                 className="3xs:w-[100px] w-[80px] sm:px-4 px-2 3xs:h-10 h-8 flex items-center justify-center bg-white bg-opacity-15 outline-themeGreen border-none focus:border-none rounded-sm text-sm sm:text-base"
                 disabled={select ? false : true}
                 value={amount}
@@ -475,13 +545,19 @@ export default function Staking({ refetchTX, setRefetchTX }: any) {
                 max={1000000}
                 onChange={handleChange}
               />
-              {/* <div className="text-themeGreen">
-              <FaEquals />
-            </div>
-            <div className="3xs:w-[100px] w-[80px] sm:px-4 px-2 3xs:h-10 h-8 flex items-center justify-center bg-white bg-opacity-10  rounded-sm text-sm sm:text-base">
-              1254
-            </div> */}
-              <div className="3xs:w-[100px] w-[80px] sm:px-4 px-2 3xs:h-10 h-8 flex items-center justify-center bg-white bg-opacity-5  rounded-sm text-sm sm:text-base">
+              <input
+                name="usdt"
+                className="3xs:w-[100px] w-[80px] sm:px-4 px-2 3xs:h-10 h-8 flex items-center justify-center bg-white bg-opacity-15 outline-themeGreen border-none focus:border-none rounded-sm text-sm sm:text-base"
+                disabled={false}
+                value={
+                  amount
+                    ? amount * Number(process.env.NEXT_PUBLIC_TOKEN_PRICE)
+                    : 0
+                }
+                type="number"
+                max={1000000}
+              /> */}
+              {/* <div className="3xs:w-[100px] w-[80px] sm:px-4 px-2 3xs:h-10 h-8 flex items-center justify-center bg-white bg-opacity-5  rounded-sm text-sm sm:text-base">
                 {amount ? (
                   <span>
                     {amount * Number(process.env.NEXT_PUBLIC_TOKEN_PRICE)}
@@ -489,7 +565,7 @@ export default function Staking({ refetchTX, setRefetchTX }: any) {
                 ) : (
                   "0"
                 )}
-              </div>
+              </div> */}
               <div className="font-semibold w-16 sm:text-base text-sm">
                 USDT
               </div>

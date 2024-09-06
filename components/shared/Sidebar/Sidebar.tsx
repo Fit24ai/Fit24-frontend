@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { IoPieChartOutline } from "react-icons/io5"
 import { HiSwitchVertical } from "react-icons/hi"
 import { IoIosPeople } from "react-icons/io"
@@ -18,6 +18,7 @@ import { useWallet } from "@/hooks/useWallet"
 import copy from "copy-to-clipboard"
 import { TiTick } from "react-icons/ti"
 import { FaCheck } from "react-icons/fa6"
+import { getAllStakeTokens } from "@/services/stakingService"
 
 export default function Sidebar() {
   const items = [
@@ -67,11 +68,33 @@ export default function Sidebar() {
       setIsAlertVisible(false)
     }, 3000)
   }
+  const [token, setToken] = useState(0)
+  const { isLoggedIn } = useWallet()
 
   const pathname = usePathname()
   console.log(pathname)
   const { address } = useAccount()
   const { logout } = useWallet()
+  const getTokens = async () => {
+    try {
+      const data = await getAllStakeTokens()
+      // console.log("tokens")
+      // console.log(data)
+      setToken(data.tokens)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    console.log(address)
+    setTimeout(() => {
+      getTokens()
+    }, 2000)
+  }, [address])
+  useEffect(() => {
+    if (isLoggedIn) getTokens()
+  }, [isLoggedIn, address])
   return (
     <div className="hidden h-full max-w-64 w-full px-4 xl:flex flex-col gap-6 pt-10 border-r border-gray-700 text-white">
       <div className="w-full bg-[#020c2b] flex flex-col gap-2 rounded-lg py-2 px-4">
@@ -87,17 +110,19 @@ export default function Sidebar() {
           </div> */}
           {/* <ChainSelect /> */}
         </div>
-        <div className="w-full flex items-center gap-2 text-sm ">
-          <div>ID</div>
-          <div> {address && smallAddress(address!)}</div>
-          <button
-            onClick={handleButtonClick}
-            disabled={isAlertVisible}
-            className="text-gray-400"
-          >
-            {isAlertVisible ? <FaCheck size={20} /> : <LuCopy />}
-          </button>
-        </div>
+        {token > 0 && (
+          <div className="w-full flex items-center gap-2 text-sm ">
+            <div>ID</div>
+            <div> {address && smallAddress(address!)}</div>
+            <button
+              onClick={handleButtonClick}
+              disabled={isAlertVisible}
+              className="text-gray-400"
+            >
+              {isAlertVisible ? <FaCheck size={20} /> : <LuCopy />}
+            </button>
+          </div>
+        )}
       </div>
       <div className="flex flex-col gap-6 px-5 ">
         {items.map((item, index) => (

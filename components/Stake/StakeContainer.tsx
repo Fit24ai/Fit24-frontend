@@ -11,31 +11,34 @@ import { ReloadProvider } from "@/context/Reload"
 import ClaimHistory from "./ClaimHistory"
 import Image from "next/image"
 import { getAllStakeTokens } from "@/services/stakingService"
+import { useAccount } from "wagmi"
 
 export default function StakeContainer({ tab }: { tab: string | undefined }) {
+  const { address } = useAccount()
   const [refetchTX, setRefetchTX] = useState(false)
   const { isLoggedIn } = useWallet()
   const [token, setToken] = useState(0)
   const [refIncome, serRefIncome] = useState(0)
   const getTokens = async () => {
-    return await getAllStakeTokens()
+    try {
+      const data = await getAllStakeTokens()
+      console.log("tokens")
+      console.log(data)
+      setToken(data.tokens)
+    } catch (error) {
+      console.log(error)
+    }
   }
+
+  useEffect(() => {
+    console.log(address)
+    setTimeout(() => {
+      getTokens()
+    }, 2000)
+  }, [address])
   useEffect(() => {
     getTokens()
-      .then((data) => {
-        setToken(data.tokens)
-      })
-      .catch((err) => {
-        setToken(0)
-      })
-    getUserRefIncome()
-      .then((data) => {
-        serRefIncome(data.referralIncome)
-      })
-      .catch((err) => {
-        serRefIncome(0)
-      })
-  }, [isLoggedIn])
+  }, [isLoggedIn, refetchTX, address])
   return (
     <ReloadProvider>
       <div className="text-white w-full h-full  2md:py-8 py-4 2md:px-10 px-3">
@@ -55,13 +58,21 @@ export default function StakeContainer({ tab }: { tab: string | undefined }) {
               </span>
             </div>
           </div>
-          <Staking refetchTX={refetchTX} setRefetchTX={setRefetchTX} />
+          <Staking
+            refetchTX={refetchTX}
+            setRefetchTX={setRefetchTX}
+            getTokens={getTokens}
+          />
           <div>
             <Tabs tab={tab} />
           </div>
         </div>
-        {tab === undefined && <StakingBox />}
-        {tab === "STAKING" && <StakingBox />}
+        {tab === undefined && (
+          <StakingBox refetchTX={refetchTX} setRefetchTX={setRefetchTX} />
+        )}
+        {tab === "STAKING" && (
+          <StakingBox refetchTX={refetchTX} setRefetchTX={setRefetchTX} />
+        )}
         {/* {tab === "HISTORY" && <TxHistory refetchTX={refetchTX} setRefetchTX={setRefetchTX} />} */}
         {tab === "HISTORY" && <ClaimHistory />}
       </div>

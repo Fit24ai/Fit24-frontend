@@ -25,6 +25,8 @@ export default function LevelContainer() {
   const [totalMembers, setTotalMembers] = useState<any>({
     totalCount: 0,
     totalTeamStakedAmount: 0,
+    stakersWithMoreThanZeroTokens: [],
+    stakerCount: 0,
   })
   const [searchQuery, setSearchQuery] = useState("")
   const [levelData, setLevelData] = useState<any>({
@@ -64,9 +66,8 @@ export default function LevelContainer() {
   const getLevel = async () => {
     try {
       const res = await getUserLevel()
-      console.log(res)
-      setLevel(res)
-      setSelectedLevel(res)
+      setLevel(res.levelCount)
+      setSelectedLevel(res.levelCount)
     } catch (error) {
       console.log(error)
     }
@@ -122,7 +123,7 @@ export default function LevelContainer() {
     <div className="w-full flex flex-col h-screen gap-6 2md:py-8 py-4 2md:px-10 px-3">
       <div className="flex flex-col items-center gap-2">
         <div className="text-xl font-medium">Total Members</div>
-        <div className="text-2xl font-medium">{totalMembers.totalCount}</div>
+        <div className="text-2xl font-medium">{totalMembers.stakerCount}</div>
       </div>
       <div className="flex gap-4 w-full overflow-x-auto hide-scrollbar">
         {levels.map((item, index) => {

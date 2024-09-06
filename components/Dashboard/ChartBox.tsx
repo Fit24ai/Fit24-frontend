@@ -33,7 +33,14 @@ import {
 import { getNumber } from "@/libs/utils"
 import { createTransaction } from "@/services/transaction"
 import { CgSpinner } from "react-icons/cg"
-import { getAllStakesByUser, getTotalMembers } from "@/services/stakingService"
+import {
+  getAllStakesByUser,
+  getTotalMembers,
+  getTotalNetworkMembers,
+  getTotalNetworkStaked,
+  getTotalNetworkWithdrawal,
+  getUserLevel,
+} from "@/services/stakingService"
 import { IoMdPerson } from "react-icons/io"
 import { referralAbi } from "@/libs/referralAbi"
 // import { useReloadContext } from "@/context/Reload"
@@ -187,6 +194,8 @@ export default function ChartBox({ token }: { token: number }) {
   }
 
   const { isLoggedIn } = useWallet()
+  const { chain, address, isConnected } = useAccount()
+
   // const [token, setToken] = useState(0)
   const [refIncome, serRefIncome] = useState(0)
   // const getTokens = async () => {
@@ -211,7 +220,33 @@ export default function ChartBox({ token }: { token: number }) {
 
   // const { reload, setReload } = useReloadContext();
 
-  const { chain, address, isConnected } = useAccount()
+  const [totalNetworkMembers, setTotalNetworkMembers] = useState(0)
+  const [totalNetworkStaked, setTotalNetworkStaked] = useState(0)
+  const [totalNetworkWithdrawal, setTotalNetworkWithdrawal] = useState(0)
+
+  const getTotalNetworkMembersCount = async () => {
+    const res = await getTotalNetworkMembers()
+    console.log(res)
+    setTotalNetworkMembers(res.totalStakedMembers)
+  }
+  const getTotalNetworkMembersStaked = async () => {
+    const res = await getTotalNetworkStaked()
+    console.log(res)
+    setTotalNetworkStaked(res)
+  }
+  const getTotalNetworkMembersWithdrawal = async () => {
+    const res = await getTotalNetworkWithdrawal()
+    console.log(res)
+    setTotalNetworkWithdrawal(res)
+  }
+
+  useEffect(() => {
+    if (!isLoggedIn) return
+    getTotalNetworkMembersStaked()
+    getTotalNetworkMembersCount()
+    getTotalNetworkMembersWithdrawal()
+  }, [address, isLoggedIn])
+
   const { error, switchChain, chains } = useSwitchChain()
   const [isClaimLoading, setClaimLoading] = useState(false)
   const { writeContractAsync } = useWriteContract()
@@ -329,6 +364,8 @@ export default function ChartBox({ token }: { token: number }) {
   const [totalMembers, setTotalMembers] = useState<any>({
     totalCount: 0,
     totalTeamStakedAmount: 0,
+    stakersWithMoreThanZeroTokens: [],
+    stakerCount: 0,
   })
   const [directMembers, setDirectMembers] = useState<any>([])
   const getTotalMembersCount = async () => {
@@ -346,80 +383,74 @@ export default function ChartBox({ token }: { token: number }) {
     getTotalMembersCount()
   }, [address, isLoggedIn])
 
-  const { data: refreesData, isLoading: refeesLoading } = useReadContracts({
-    allowFailure: true,
-    contracts: [
-      {
-        abi: referralAbi,
-        address: fit24ReferralContractAddress,
-        functionName: "getAllRefrees",
-        chainId: vestingChainId,
-        args: [address],
-      },
-    ],
-  })
+  const getLevel = async () => {
+    try {
+      const res = await getUserLevel()
+      console.log("direct members", res)
+      setDirectMembers(res.memberData)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
     if (!isLoggedIn) return
-    if (!refreesData || !refreesData[0] || !refreesData[0].result) return
-    setDirectMembers(refreesData[0].result)
-    // console.log(refreesData[0].result)
+    getLevel()
   }, [address, isLoggedIn])
 
   // console.log(refreesData[0].result)
 
-  const [networkMembers, setNetworkMembers] = useState<any>([])
+  // const [networkMembers, setNetworkMembers] = useState<any>([])
 
-  const { data: allMemberData, isLoading: allMemberLoading } = useReadContracts(
-    {
-      allowFailure: true,
-      contracts: [
-        {
-          abi: stakingAbi,
-          address: fit24ContractAddress,
-          functionName: "getAllUsers",
-          chainId: vestingChainId,
-          args: [address],
-        },
-      ],
-    }
-  )
+  // const { data: allMemberData, isLoading: allMemberLoading } = useReadContracts(
+  //   {
+  //     allowFailure: true,
+  //     contracts: [
+  //       {
+  //         abi: stakingAbi,
+  //         address: fit24ContractAddress,
+  //         functionName: "getAllUsers",
+  //         chainId: vestingChainId,
+  //         args: [address],
+  //       },
+  //     ],
+  //   }
+  // )
 
-  useEffect(() => {
-    if (!isLoggedIn) return
-    console.log(allMemberData)
-    if (!allMemberData || !allMemberData[0] || !allMemberData[0].result) return
-    console.log("network", allMemberData[0].result)
-    setNetworkMembers(allMemberData[0].result)
-  }, [address, isLoggedIn])
+  // useEffect(() => {
+  //   if (!isLoggedIn) return
+  //   console.log(allMemberData)
+  //   if (!allMemberData || !allMemberData[0] || !allMemberData[0].result) return
+  //   console.log("network", allMemberData[0].result)
+  //   setNetworkMembers(allMemberData[0].result)
+  // }, [address, isLoggedIn])
 
-  
-  const { data: totalStakedTokensData, isLoading: totalStakedTokensLoading } =
-    useReadContracts({
-      allowFailure: true,
-      contracts: [
-        {
-          abi: stakingAbi,
-          address: fit24ContractAddress,
-          functionName: "totalStakedTokens",
-          chainId: vestingChainId,
-          args: [address],
-        },
-      ],
-    })
+  // const { data: totalStakedTokensData, isLoading: totalStakedTokensLoading } =
+  //   useReadContracts({
+  //     allowFailure: true,
+  //     contracts: [
+  //       {
+  //         abi: stakingAbi,
+  //         address: fit24ContractAddress,
+  //         functionName: "totalStakedTokens",
+  //         chainId: vestingChainId,
+  //         args: [address],
+  //       },
+  //     ],
+  //   })
 
-  useEffect(() => {
-    if (!isLoggedIn) return
-    console.log(totalStakedTokensData)
-    if (
-      !totalStakedTokensData ||
-      !totalStakedTokensData[0] ||
-      !totalStakedTokensData[0].result
-    )
-      return
-    console.log("network staked", totalStakedTokensData[0].result)
-    setNetworkMembers(totalStakedTokensData[0].result)
-  }, [address, isLoggedIn])
+  // useEffect(() => {
+  //   if (!isLoggedIn) return
+  //   console.log(totalStakedTokensData)
+  //   if (
+  //     !totalStakedTokensData ||
+  //     !totalStakedTokensData[0] ||
+  //     !totalStakedTokensData[0].result
+  //   )
+  //     return
+  //   console.log("network staked", totalStakedTokensData[0].result)
+  //   setNetworkMembers(totalStakedTokensData[0].result)
+  // }, [address, isLoggedIn])
 
   return (
     <div className="w-full flex 2md:flex-row flex-col items-center 2md:items-start gap-6 2md:gap-0 justify-between">
@@ -435,17 +466,17 @@ export default function ChartBox({ token }: { token: number }) {
           <div className="flex gap-4 w-full  items-center overflow-x-auto hide-scrollbar">
             <div className="flex flex-col items-center flex-1 min-w-36 rounded-lg border border-themeGreen bg-white bg-opacity-5  p-2 ">
               <IoMdPerson size={24} />
-              <div>12712</div>
+              <div>{totalNetworkMembers}</div>
               <div className="text-gray-400 text-xs">All Members</div>
             </div>
             <div className="flex flex-col items-center flex-1 rounded-lg border border-themeGreen bg-white bg-opacity-5  p-2 min-w-36">
               <IoMdPerson size={24} />
-              <div>12712</div>
+              <div>{totalNetworkStaked}</div>
               <div className="text-gray-400 text-xs">Total Stake</div>
             </div>
             <div className="flex flex-col items-center flex-1 rounded-lg border border-themeGreen bg-white bg-opacity-5  p-2 min-w-36">
               <IoMdPerson size={24} />
-              <div>12712</div>
+              <div>{totalNetworkWithdrawal}</div>
               <div className="text-gray-400 text-xs">Total Withdrawals</div>
             </div>
           </div>
@@ -548,7 +579,7 @@ export default function ChartBox({ token }: { token: number }) {
           </div>
           <div className="bg-black bg-opacity-35 w-28 p-4 flex flex-col items-center gap-1 flex-1 rounded-lg">
             <div className="text-gray-400 text-sm">Total Team</div>
-            <div className="text-2xl">{totalMembers.totalCount}</div>
+            <div className="text-2xl">{totalMembers.stakerCount}</div>
           </div>
         </div>
         <div className="flex items-center gap-4">

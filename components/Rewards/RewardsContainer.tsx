@@ -98,7 +98,7 @@ export default function RewardsContainer() {
     try {
       setLoading(true)
       const res = await getReferralStream()
-      console.log(res)
+      console.log("rewards", res)
       setReferralStream(res)
       res.map((item: any, idx: number) => {
         if (item.referralDetails.isReferred) {
@@ -280,7 +280,7 @@ export default function RewardsContainer() {
           </div>
         </div>
         <div className="flex flex-col  overflow-x-auto  rounded-xl">
-          <div className="grid grid-cols-9 w-full p-4  gap-x-4  text-sm  min-w-[920px] bg-green-300 bg-opacity-20">
+          <div className="grid grid-cols-11 w-full p-4  gap-x-4  text-sm  min-w-[920px] bg-green-300 bg-opacity-20">
             <div>Tx ID & TYPE</div>
             <div className="text-center">Referee</div>
             <div className="text-center ">Referee Stake</div>
@@ -289,12 +289,17 @@ export default function RewardsContainer() {
             <div className="text-center">APY</div>
             <div className="text-center">Time Stamp</div>
             <div className="text-center">Remaining Tenure(Days)</div>
+            <div className="text-center">Today's Reward</div>
+            <div className="text-center">Total Claimed</div>
             <div className="text-center">Tx Hash</div>
           </div>
           <div className="md:max-h-[50vh] max-h-[80vh] overflow-y-scroll min-w-[920px] w-full">
             {!isLoading ? (
               filteredReferralStream.map((item: any, index) => (
-                <div key={index} className="grid grid-cols-9 w-full  px-4 py-3 gap-x-4 text-base  bg-gray-400 bg-opacity-20 border-t border-themeGreen">
+                <div
+                  key={index}
+                  className="grid grid-cols-11 w-full  px-4 py-3 gap-x-4 text-base  bg-gray-400 bg-opacity-20 border-t border-themeGreen"
+                >
                   <>
                     <div>
                       {item.referralDetails.stakeId} -{" "}
@@ -305,7 +310,7 @@ export default function RewardsContainer() {
                           : item.poolType <= 12
                           ? "AUTO STAKE"
                           : "COMPOUNDED"
-                        : "REFFERAL REWARD"}
+                        : "LEVEL REWARD"}
                     </div>
                     <div
                       className="flex items-center justify-center cursor-pointer"
@@ -328,6 +333,8 @@ export default function RewardsContainer() {
                     <div className="flex items-center justify-center ml-2">
                       {formattedDate(item.referralDetails.startTime)}
                     </div>
+                    <div>0.00</div>
+                    <div>0.00</div>
                     <div className="flex items-center justify-center ">
                       {" "}
                       {formattedStakeDuration(

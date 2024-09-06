@@ -28,6 +28,8 @@ import { ChainSelect } from "./ChainSelect"
 import { LuCopy } from "react-icons/lu"
 import copy from "copy-to-clipboard"
 import { FaCheck } from "react-icons/fa"
+import { useWallet } from "@/hooks/useWallet"
+import { getAllStakeTokens } from "@/services/stakingService"
 
 export function NavbarDrawer() {
   // const searchParams = useSearchParams()
@@ -91,6 +93,29 @@ export function NavbarDrawer() {
   ]
 
   const { address } = useAccount()
+  const { isLoggedIn } = useWallet()
+  const [token, setToken] = useState(0)
+
+  const getTokens = async () => {
+    try {
+      const data = await getAllStakeTokens()
+      // console.log("tokens")
+      // console.log(data)
+      setToken(data.tokens)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    console.log(address)
+    setTimeout(() => {
+      getTokens()
+    }, 2000)
+  }, [address])
+  useEffect(() => {
+    if (isLoggedIn) getTokens()
+  }, [isLoggedIn, address])
   return (
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
@@ -132,17 +157,19 @@ export function NavbarDrawer() {
           </div> */}
               {/* <ChainSelect /> */}
             </div>
-            <div className="w-full flex items-center gap-2 text-sm ">
-              <div>ID</div>
-              <div> {address && smallAddress(address!)}</div>
-              <button
-                onClick={handleButtonClick}
-                disabled={isAlertVisible}
-                className="text-gray-400"
-              >
-                {isAlertVisible ? <FaCheck size={20} /> : <LuCopy />}
-              </button>
-            </div>
+            {token > 0 && (
+              <div className="w-full flex items-center gap-2 text-sm ">
+                <div>ID</div>
+                <div> {address && smallAddress(address!)}</div>
+                <button
+                  onClick={handleButtonClick}
+                  disabled={isAlertVisible}
+                  className="text-gray-400"
+                >
+                  {isAlertVisible ? <FaCheck size={20} /> : <LuCopy />}
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="flex flex-col gap-2">

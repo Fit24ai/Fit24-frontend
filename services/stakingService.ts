@@ -126,6 +126,21 @@ export const getTotalMembers = async () => {
   })
   return res.data
 }
+
+export const getTotalNetworkMembers = async () => {
+  const res = await http.get(`/staking/get-total-network-members`)
+  return res.data
+}
+
+export const getTotalNetworkStaked = async () => {
+  const res = await http.get(`/staking/get-total-network-staked`)
+  return res.data
+}
+export const getTotalNetworkWithdrawal = async () => {
+  const res = await http.get(`/staking/get-total-network-withdrawal`)
+  return res.data
+}
+
 export const getUserLevel = async () => {
   const res = await http.get(`/staking/get-user-level`, {
     headers: {
