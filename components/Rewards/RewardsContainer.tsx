@@ -289,7 +289,7 @@ export default function RewardsContainer() {
             <div className="text-center">APY</div>
             <div className="text-center">Time Stamp</div>
             <div className="text-center">Remaining Tenure(Days)</div>
-            <div className="text-center">Today's Reward</div>
+            <div className="text-center">Today&apos;s Reward</div>
             <div className="text-center">Total Claimed</div>
             <div className="text-center">Tx Hash</div>
           </div>
