@@ -369,7 +369,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
                     </span>
                     . Quantity
                   </div>
-                  <div className="text-gray-400 text-nowrap">100 $</div>
+                  <div className="text-gray-400 text-nowrap">$100</div>
                 </div>
               </div>
             </button>
@@ -415,7 +415,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
                     </span>
                     . Quantity
                   </div>
-                  <div className="text-gray-400 text-nowrap">200 $</div>
+                  <div className="text-gray-400 text-nowrap">$200</div>
                 </div>
               </div>
             </button>
@@ -461,7 +461,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
                     </span>
                     . Quantity
                   </div>
-                  <div className="text-gray-400 text-nowrap">400 $</div>
+                  <div className="text-gray-400 text-nowrap">$400</div>
                 </div>
               </div>
             </button>
