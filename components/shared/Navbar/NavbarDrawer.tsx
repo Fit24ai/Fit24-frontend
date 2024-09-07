@@ -123,7 +123,7 @@ export function NavbarDrawer() {
           <IoMenu className="h-full w-full stroke-1" />
         </button>
       </DrawerTrigger>
-      <DrawerContent className="z-[150] ml-auto h-full w-[300px] bg-[#041e3b] border-none">
+      <DrawerContent className="z-[150] ml-auto h-full w-[300px] bg-gradient-to-bl  to-[#053921] from-[#030f39] border-none">
         <div className="flex h-full flex-col overflow-y-auto px-4 py-4 pt-10 scrollbar-hide text-white gap-6">
           {/* <div className="flex items-center justify-between px-6">
             <Link href={"/"}>
@@ -158,17 +158,23 @@ export function NavbarDrawer() {
               {/* <ChainSelect /> */}
             </div>
             {token > 0 && (
-              <div className="w-full flex items-center gap-2 text-sm ">
-                <div>ID</div>
-                <div> {address && smallAddress(address!)}</div>
-                <button
-                  onClick={handleButtonClick}
-                  disabled={isAlertVisible}
-                  className="text-gray-400"
-                >
-                  {isAlertVisible ? <FaCheck size={20} /> : <LuCopy />}
-                </button>
-              </div>
+              <div className="w-full flex items-center gap-4 text-sm ">
+              <div>My Referral ID</div>
+              {/* <div> {address && smallAddress(address!)}</div> */}
+              <button
+                onClick={handleButtonClick}
+                disabled={isAlertVisible}
+                className="text-gray-400 flex items-center justify-center"
+              >
+                {isAlertVisible ? (
+                  <FaCheck size={20} />
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <LuCopy /> <span className="text-themeGreen">Copy</span>
+                  </div>
+                )}
+              </button>
+            </div>
             )}
           </div>
 

@@ -19,6 +19,7 @@ import {
   useAccount,
   useReadContracts,
   useSwitchChain,
+  useWaitForTransactionReceipt,
   useWriteContract,
 } from "wagmi"
 import { stakingAbi } from "@/libs/stakingAbi"
@@ -34,6 +35,7 @@ import { getNumber } from "@/libs/utils"
 import { createTransaction } from "@/services/transaction"
 import { CgSpinner } from "react-icons/cg"
 import {
+  createClaimReward,
   getAllStakesByUser,
   getTotalMembers,
   getTotalNetworkMembers,
@@ -43,6 +45,9 @@ import {
 } from "@/services/stakingService"
 import { IoMdPerson } from "react-icons/io"
 import { referralAbi } from "@/libs/referralAbi"
+import { useReloadContext } from "@/context/Reload"
+import { BsSafeFill } from "react-icons/bs"
+import { FaHandHoldingUsd } from "react-icons/fa"
 // import { useReloadContext } from "@/context/Reload"
 
 ChartJS.register(
@@ -262,6 +267,7 @@ export default function ChartBox({ token }: { token: number }) {
   const [claimStakeCondition, setClaimStakeCondition] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   const [pendingAmount, setPendingAmount] = useState<number | undefined>()
+  // const { reload, setReload } = useReloadContext();
   const { data: lastClaimedTimestamp, isLoading: lastClaimedTimestampLoading } =
     useReadContracts({
       allowFailure: true,
@@ -279,12 +285,18 @@ export default function ChartBox({ token }: { token: number }) {
       setClaimLoading(true)
       if (!address || !lastClaimedTimestamp) return
       const res: any = await getAllStakesByUser(address)
+      console.log(res)
+      console.log("stakes times", res.stakes[res.stakes.length - 1].startTime)
+      console.log("timestamp", Number(lastClaimedTimestamp[0].result!))
       if (
         res.stakes[res.stakes.length - 1].startTime >
         Number(lastClaimedTimestamp[0].result!)
       ) {
+        console.log(true)
+
         setClaimStakeCondition(true)
       } else {
+        console.log(false)
         setClaimStakeCondition(false)
       }
       setClaimLoading(false)
@@ -360,6 +372,66 @@ export default function ChartBox({ token }: { token: number }) {
       console.error(error)
     }
   }
+
+  const {
+    data: readPendingAmount,
+    isLoading: pendingLoading,
+    refetch: refetchPendingAmount,
+  } = useReadContracts({
+    allowFailure: true,
+    contracts: [
+      {
+        abi: stakingAbi,
+        address: fit24ContractAddress,
+        functionName: "getPendingAmountForDay",
+        chainId: vestingChainId,
+        args: [address],
+      },
+    ],
+  })
+
+  useEffect(() => {
+    getAllUserStakes()
+  }, [address, lastClaimedTimestamp, lastClaimedTimestampLoading])
+
+  useEffect(() => {
+    if (!readPendingAmount) return
+    setPendingAmount(getNumber(readPendingAmount[0].result! as bigint, 18))
+  }, [readPendingAmount])
+
+  const { data: rewardReceipt, error: rewardError } =
+    useWaitForTransactionReceipt({
+      hash: rewardHash,
+      chainId: getChain(chain).id,
+    })
+
+  useEffect(() => {
+    if (!rewardHash) return
+    if (rewardError) {
+      setClaimLoading(false)
+      setDialogInfo({
+        type: "FAIL",
+        message: "Something went wrong",
+        title: "Error in claiming reward",
+      })
+      setDialog(true)
+      return
+    }
+    createClaimReward(rewardHash)
+    setClaimLoading(false)
+    setDialogInfo({
+      type: "SUCCESS",
+      message: `Reward Claimed Successfully`,
+      title: "Success",
+    })
+    setDialog(true)
+    refetchPendingAmount()
+    // setTimeout(() => {
+    //   setReload((prev) => !prev);
+    // }, 800);
+  }, [rewardReceipt, rewardError])
+
+  console.log(pendingAmount, "fjfjfj")
 
   const [totalMembers, setTotalMembers] = useState<any>({
     totalCount: 0,
@@ -464,20 +536,20 @@ export default function ChartBox({ token }: { token: number }) {
         <div className="flex flex-col gap-2 w-full  2md:order-none order-1">
           <div>Network Statistics</div>
           <div className="flex gap-4 w-full  items-center overflow-x-auto hide-scrollbar">
-            <div className="flex flex-col items-center flex-1 min-w-36 rounded-lg border border-themeGreen bg-white bg-opacity-5  p-2 ">
+            <div className="flex flex-col items-center flex-1 min-w-36 rounded-lg gap-2  network-image-1  p-3 ">
               <IoMdPerson size={24} />
-              <div>{totalNetworkMembers}</div>
-              <div className="text-gray-400 text-xs">All Members</div>
+              <div className="text-xl">{totalNetworkMembers}</div>
+              <div className="text-gray-300 text-xs">All Members</div>
             </div>
-            <div className="flex flex-col items-center flex-1 rounded-lg border border-themeGreen bg-white bg-opacity-5  p-2 min-w-36">
-              <IoMdPerson size={24} />
-              <div>{totalNetworkStaked}</div>
-              <div className="text-gray-400 text-xs">Total Stake</div>
+            <div className="flex flex-col items-center flex-1 rounded-lg  network-image-2 gap-2  p-3 min-w-36">
+              <BsSafeFill size={24} />
+              <div className="text-xl">{totalNetworkStaked}</div>
+              <div className="text-gray-300 text-xs">Total Stake</div>
             </div>
-            <div className="flex flex-col items-center flex-1 rounded-lg border border-themeGreen bg-white bg-opacity-5  p-2 min-w-36">
-              <IoMdPerson size={24} />
-              <div>{totalNetworkWithdrawal}</div>
-              <div className="text-gray-400 text-xs">Total Withdrawals</div>
+            <div className="flex flex-col items-center flex-1 rounded-lg  network-image-3 gap-2  p-3 min-w-36">
+              <FaHandHoldingUsd size={24} />
+              <div className="text-xl">{totalNetworkWithdrawal}</div>
+              <div className="text-gray-300 text-xs">Total Withdrawals</div>
             </div>
           </div>
         </div>
@@ -520,48 +592,85 @@ export default function ChartBox({ token }: { token: number }) {
             </div>
           </div>
         </div> */}
-        <div className="bg-white bg-opacity-10 max-w-80 w-full p-4 flex flex-col items-center gap-2  rounded-lg">
-          <div className="text-gray-400 text-sm">Todays Rewards</div>
-          <div className="text-2xl flex items-center gap-2">
-            {/* 12,08 */}
-            {readTotalStakeAmount &&
-              getNumber(readTotalStakeAmount[0].result! as bigint, 18).toFixed(
-                4
-              )}
-            <span className="w-20">
-              <Image
-                src={"/fitLogo.svg"}
-                width={3000}
-                height={30000}
-                alt="logo"
-                className="h-full w-full"
-              />
-            </span>
+        <div className="flex md:flex-row flex-col gap-4">
+          <div className="bg-white network-image-3 bg-opacity-10 md:max-w-80 w-full p-4 px-10 flex flex-col items-center gap-2  rounded-lg">
+            <FaHandHoldingUsd size={24} />
+            <div className="text-gray-400 text-sm">Todays Rewards</div>
+            <div className="text-2xl flex items-center gap-2">
+              {/* 12,08 */}
+              {readTotalStakeAmount &&
+                getNumber(
+                  readTotalStakeAmount[0].result! as bigint,
+                  18
+                ).toFixed(4)}
+              <span className="w-20">
+                <Image
+                  src={"/fitLogo.svg"}
+                  width={3000}
+                  height={30000}
+                  alt="logo"
+                  className="h-full w-full"
+                />
+              </span>
+            </div>
+          </div>
+          <div className="flex flex-col gap-4  w-full">
+            <div className="network-image-4 flex flex-1 justify-between p-3 w-full rounded-lg gap-12 items-center">
+              <span className="w-16">
+                <Image
+                  src={"/fitLogo.svg"}
+                  width={3000}
+                  height={30000}
+                  alt="logo"
+                  className="h-full w-full"
+                />
+              </span>
+              <div className="text-gray-400 text-sm text-nowrap">0.024 USDT</div>
+            </div>
+            <div className="network-image-4 flex flex-1 justify-between p-3 w-full rounded-lg gap-12 items-center">
+              <span className="w-16">
+                <Image
+                  src={"/fitLogo.svg"}
+                  width={3000}
+                  height={30000}
+                  alt="logo"
+                  className="h-full w-full"
+                />
+              </span>
+              <div className="text-gray-400 text-sm text-nowrap">0.024 USDT</div>
+            </div>
           </div>
         </div>
-        <button
-          onClick={claimReward}
-          onMouseOver={() => {
-            if (claimStakeCondition) {
-              setShowPopup(true)
-            } else if (!!!pendingAmount) {
-              setShowPopup(true)
-            } else {
-              return
-            }
-          }}
-          onMouseLeave={() => setShowPopup(false)}
-          disabled={!pendingAmount || claimStakeCondition}
-          className="max-w-80 w-full bg-themeGreen text-white h-10 rounded-lg"
-        >
-          {isClaimLoading ? (
-            <div className="flex justify-center items-center">
-              <CgSpinner className="text-2xl animate-spin !text-black flex items-center justify-end" />
+        <div className="relative max-w-80 w-full">
+          <button
+            onClick={claimReward}
+            onMouseOver={() => {
+              if (claimStakeCondition) {
+                setShowPopup(true)
+              } else if (!!!pendingAmount) {
+                setShowPopup(true)
+              } else {
+                return
+              }
+            }}
+            onMouseLeave={() => setShowPopup(false)}
+            disabled={!pendingAmount || claimStakeCondition}
+            className="max-w-80 w-full disabled:opacity-50 disabled:cursor-not-allowed mb-10 bg-themeGreen text-white h-10 rounded-lg"
+          >
+            {isClaimLoading ? (
+              <div className="flex justify-center items-center">
+                <CgSpinner className="text-2xl animate-spin !text-black flex items-center justify-end" />
+              </div>
+            ) : (
+              "Claim Reward"
+            )}
+          </button>
+          {showPopup && (
+            <div className="absolute bg-white border text-black rounded-full border-gray-200 shadow-md top-14 w-fit left-[50%] p-2 z-10 text-semibold text-base ">
+              {claimStakeCondition ? "Claim after 24 hours" : "Already Claimed"}
             </div>
-          ) : (
-            "Claim Reward"
           )}
-        </button>
+        </div>
       </div>
       <div className="2md:max-w-[40%] w-full max-w-96 flex flex-col gap-4">
         <div className=" h-[350px] w-full hidden 2md:flex p-4 flex-col gap-6 bg-black bg-opacity-35 rounded-xl">

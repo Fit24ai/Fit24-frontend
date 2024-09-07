@@ -111,15 +111,21 @@ export default function Sidebar() {
           {/* <ChainSelect /> */}
         </div>
         {token > 0 && (
-          <div className="w-full flex items-center gap-2 text-sm ">
-            <div>ID</div>
-            <div> {address && smallAddress(address!)}</div>
+          <div className="w-full flex items-center gap-4 text-sm ">
+            <div>My Referral ID</div>
+            {/* <div> {address && smallAddress(address!)}</div> */}
             <button
               onClick={handleButtonClick}
               disabled={isAlertVisible}
-              className="text-gray-400"
+              className="text-gray-400 flex items-center justify-center"
             >
-              {isAlertVisible ? <FaCheck size={20} /> : <LuCopy />}
+              {isAlertVisible ? (
+                <FaCheck size={20} />
+              ) : (
+                <div className="flex items-center gap-2">
+                  <LuCopy /> <span className="text-themeGreen">Copy</span>
+                </div>
+              )}
             </button>
           </div>
         )}

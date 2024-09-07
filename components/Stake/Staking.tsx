@@ -113,9 +113,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     if (!amount) return false
     if (!readResponse) return false
     if (readResponse[0].error) return false
-    console.log(readResponse[0].result! as bigint, 18)
     if (getNumber(readResponse[0].result! as bigint, 18) < amount) return false
-    console.log("amount", amount)
     return true
   }
 
@@ -149,22 +147,6 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       })
       setDialog(true)
     }
-  }
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (select === "A" && Number(e.target.value) < 2500) {
-      setFormError("minimum stake amount is 2,500")
-    } else if (select === "B" && Number(e.target.value) < 5000) {
-      setFormError("minimum stake amount is 5,000")
-    } else if (select === "C" && Number(e.target.value) < 10000) {
-      setFormError("minimum stake amount is 10,000")
-    } else {
-      setFormError(undefined)
-    }
-    if (countDecimals(Number(e.target.value)) > 4) return
-    if (Number(e.target.value) > 1000000) return
-
-    setAmount(e.target.value ? Number(e.target.value) : undefined)
   }
 
   const handleFirstInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -222,13 +204,10 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       return switchChain({
         chainId: vestingChainId,
       })
-    console.log("approve")
-    console.log(isValid(), isAllowance())
     if (!isValid()) return
     if (!isAllowance()) {
       return approveAllowance()
     }
-    console.log("approve12")
     try {
       setLoading(true)
       const { apr } = await getAPR(select)
@@ -255,6 +234,15 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       await createTransaction(tx, getChainEnum(getChain(chain).id))
       await createStake(tx, poolToContractPoolConverter(select))
       setStakeHash(tx)
+      setDialogInfo({
+        type: "SUCCESS",
+        message: `Token staked successfully`,
+        title: "Success",
+      })
+      setDialog(true)
+      setLoading(false)
+      setSelect("")
+      setAmount(0)
     } catch (error) {
       console.log(error)
       setLoading(false)
@@ -282,19 +270,6 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       setDialog(true)
       return
     }
-    if (!stakeReceipt) return
-
-    setDialogInfo({
-      type: "SUCCESS",
-      message: `Token staked successfully`,
-      title: "Success",
-    })
-    setDialog(true)
-    setLoading(false)
-    setSelect("")
-    setAmount(0)
-    setRefetchTX(true)
-    getTokens()
     verifyStakingRecord(stakeHash)
     // setLoading(false)
     setTimeout(() => {
@@ -362,11 +337,11 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
             >
               <div className="md:text-base text-sm">Pool A</div>
               <div
-                className={`md:text-lg text-base text-gray-400 ${
+                className={`md:text-lg text-sm text-gray-400 ${
                   select === "A" ? "text-green-400" : "text-gray-400"
                 }`}
               >
-                Moderate Yields
+                Silver Yields
               </div>
               <div className="flex flex-col md:gap-4 gap-2 mt-5 md:text-sm text-xxs md:w-44">
                 <div className="flex justify-between items-center">
@@ -394,7 +369,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
                     </span>
                     . Quantity
                   </div>
-                  <div className="text-gray-400">2,500</div>
+                  <div className="text-gray-400 text-nowrap">100 $</div>
                 </div>
               </div>
             </button>
@@ -408,11 +383,11 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
             >
               <div className="md:text-base text-sm">Pool B</div>
               <div
-                className={`md:text-lg text-base text-gray-400 ${
+                className={`md:text-lg text-sm text-gray-400 ${
                   select === "B" ? "text-green-400" : "text-gray-400"
                 }`}
               >
-                Huge Yields
+                Gold Yields
               </div>
               <div className="flex flex-col md:gap-4 gap-2 mt-5 md:text-sm text-xxs md:w-44">
                 <div className="flex justify-between items-center">
@@ -440,7 +415,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
                     </span>
                     . Quantity
                   </div>
-                  <div className="text-gray-400">5,000</div>
+                  <div className="text-gray-400 text-nowrap">200 $</div>
                 </div>
               </div>
             </button>
@@ -454,11 +429,11 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
             >
               <div className="md:text-base text-sm">Pool C</div>
               <div
-                className={`md:text-lg text-base text-gray-400 ${
+                className={`md:text-lg text-sm text-nowrap text-gray-400 ${
                   select === "C" ? "text-green-400" : "text-gray-400"
                 }`}
               >
-                Exceptional Yields
+                Diamond Yields
               </div>
               <div className="flex flex-col md:gap-4 gap-2 mt-5 md:text-sm text-xxs md:w-44">
                 <div className="flex justify-between items-center">
@@ -486,7 +461,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
                     </span>
                     . Quantity
                   </div>
-                  <div className="text-gray-400">10,000</div>
+                  <div className="text-gray-400 text-nowrap">400 $</div>
                 </div>
               </div>
             </button>
@@ -570,6 +545,20 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
                 USDT
               </div>
             </div>
+            {select &&
+              (select === "A" ? (
+                <div className="text-gray-300">
+                  * Minimum quantity to stake: 2500 FIT24
+                </div>
+              ) : select === "B" ? (
+                <div className="text-gray-300">
+                  * Minimum quantity to stake: 5000 FIT24
+                </div>
+              ) : (
+                <div className="text-gray-300">
+                  * Minimum quantity to stake: 10000 FIT24
+                </div>
+              ))}
             <button
               onClick={handleContinue}
               disabled={formError ? true : false}

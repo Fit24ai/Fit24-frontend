@@ -280,7 +280,7 @@ export default function RewardsContainer() {
           </div>
         </div>
         <div className="flex flex-col  overflow-x-auto  rounded-xl">
-          <div className="grid grid-cols-11 w-full p-4  gap-x-4  text-sm  min-w-[920px] bg-green-300 bg-opacity-20">
+          <div className="grid grid-cols-11 w-full p-4  gap-x-4  text-sm  min-w-[1000px] bg-green-300 bg-opacity-20">
             <div>Tx ID & TYPE</div>
             <div className="text-center">Referee</div>
             <div className="text-center ">Referee Stake</div>
@@ -293,7 +293,7 @@ export default function RewardsContainer() {
             <div className="text-center">Total Claimed</div>
             <div className="text-center">Tx Hash</div>
           </div>
-          <div className="md:max-h-[50vh] max-h-[80vh] overflow-y-scroll min-w-[920px] w-full">
+          <div className="md:max-h-[50vh] max-h-[80vh] overflow-y-scroll min-w-[1000px] w-full">
             {!isLoading ? (
               filteredReferralStream.map((item: any, index) => (
                 <div
@@ -319,7 +319,7 @@ export default function RewardsContainer() {
                       {smallAddress(item.referreDetails.referre)}
                     </div>
                     <a className="flex items-center justify-center">
-                      {item.referreDetails.amount}
+                      {item.referreDetails.amount.toFixed(2)}
                     </a>
                     <div className="flex items-center justify-center ">
                       {item.referralDetails.amount}
@@ -333,8 +333,7 @@ export default function RewardsContainer() {
                     <div className="flex items-center justify-center ml-2">
                       {formattedDate(item.referralDetails.startTime)}
                     </div>
-                    <div>0.00</div>
-                    <div>0.00</div>
+
                     <div className="flex items-center justify-center ">
                       {" "}
                       {formattedStakeDuration(
@@ -342,6 +341,8 @@ export default function RewardsContainer() {
                         item.referralDetails.stakeDuration
                       )}
                     </div>
+                    <div className="flex items-center justify-center ">0.00</div>
+                    <div className="flex items-center justify-center ">0.00</div>
                     <div className="flex items-center justify-center text-blue-700">
                       <a
                         target="_blank"

@@ -36,6 +36,23 @@
   display: none;
 }
 
+.network-image-1 {
+  background: url("/network/bg-image-1.png") no-repeat center center;
+  background-size: cover;
+}
+.network-image-2 {
+  background: url("/network/bg-image-2.png") no-repeat center center;
+  background-size: cover;
+}
+.network-image-3 {
+  background: url("/network/bg-image-3.png") no-repeat center center;
+  background-size: cover;
+}
+.network-image-4 {
+  background: url("/network/bg-image-4.png") no-repeat center center;
+  background-size: cover;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

@@ -31,13 +31,45 @@ export default function Footer() {
           Submit
         </button>
       </div>
-      <div className="flex flex-col gap-6 w-[350px]">
+      <div className="flex flex-col gap-6 md:w-[350px] ">
         <div className="text-3xl text-themeGreen">
           News and information about the Pre-Sale
         </div>
         <div className="text-gray-400 text-xl">
           Get all the details about the FIT24 Pre-Sale in our official Telegram
           channel and newsletter
+        </div>
+        <div className="w-full flex flex-col items-center gap-4">
+          <div className="text-lg">Follow Us</div>
+          <div className="flex gap-4 items-center">
+            <div className="w-16">
+              <Image
+                src="/social/instagram.png"
+                alt="Logo"
+                width={300}
+                height={300}
+                className="h-full w-full"
+              />
+            </div>
+            <div className="w-16">
+              <Image
+                src="/social/twitter.png"
+                alt="Logo"
+                width={300}
+                height={300}
+                className="h-full w-full"
+              />
+            </div>
+            <div className="w-16">
+              <Image
+                src="/social/telegram.png"
+                alt="Logo"
+                width={300}
+                height={300}
+                className="h-full w-full"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
