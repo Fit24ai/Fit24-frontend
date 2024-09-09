@@ -84,7 +84,7 @@ export default function LevelContainer() {
   const getTotalMembersCount = async () => {
     try {
       const res = await getTotalMembers()
-      console.log("total members",res)
+      console.log("total members", res)
       setTotalMembers(res)
     } catch (error) {
       console.log(error)
@@ -202,18 +202,18 @@ export default function LevelContainer() {
             </div>
           ) : (
             <>
-              <div>Level {selectedLevel}</div>
+              <div className="text-lg">Level {selectedLevel}</div>
               <div className="w-full flex gap-6">
                 <div className="flex-1 bg-black bg-opacity-30 p-4 flex flex-col items-center gap-2 rounded-lg">
-                  <div className="text-gray-400 text-sm">Total Members</div>
-                  <div>{levelData.totalCount}</div>
+                  <div className="text-gray-400">Total Members</div>
+                  <div className="text-lg">{levelData.stakedCount}</div>
                 </div>
                 <div className="flex-1 bg-black bg-opacity-30 p-4 flex flex-col items-center gap-2 rounded-lg">
-                  <div className="text-gray-400 text-sm">Active Members</div>
-                  <div>{levelData.stakedCount}</div>
+                  <div className="text-gray-400">Team Staked</div>
+                  <div className="text-lg">{levelData.totalStakedAmount}</div>
                 </div>
               </div>
-              <div className="w-full flex gap-6">
+              {/* <div className="w-full flex gap-6">
                 <div className="flex-1 bg-black bg-opacity-30 p-4 flex flex-col items-center gap-2 rounded-lg">
                   <div className="text-gray-400 text-sm">Inactive Members</div>
                   <div>{levelData.zeroStakedCount}</div>
@@ -222,7 +222,7 @@ export default function LevelContainer() {
                   <div className="text-gray-400 text-sm">Team Staked</div>
                   <div>{levelData.totalStakedAmount}</div>
                 </div>
-              </div>
+              </div> */}
             </>
           )}
         </div>
