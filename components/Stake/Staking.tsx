@@ -469,29 +469,9 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
           <div className="flex flex-col items-center mt-4 gap-4">
             <div>Stake Amount</div>
             <div className="flex sm:gap-4 gap-2 items-center">
-              <div className="w-14 sm:w-20">
-                <Image
-                  src={"/fitLogo.svg"}
-                  alt="Ethereum"
-                  width={3000}
-                  height={3000}
-                  className="w-full h-full"
-                />
+              <div className="font-semibold w-12 sm:text-base text-sm">
+                USDT
               </div>
-              <input
-                name="fit24"
-                className="3xs:w-[100px] w-[80px] sm:px-4 px-2 3xs:h-10 h-8 flex items-center justify-center bg-white bg-opacity-15 outline-themeGreen border-none focus:border-none rounded-sm text-sm sm:text-base"
-                disabled={!select}
-                value={amount}
-                type="number"
-                placeholder={
-                  select === "A" ? "2500" : select === "B" ? "5000" : "10000"
-                }
-                onKeyDown={blockInvalidChar}
-                onPaste={disablePaste}
-                max={1000000}
-                onChange={handleFirstInputChange}
-              />
               <input
                 name="usdt"
                 className="3xs:w-[100px] w-[80px] sm:px-4 px-2 3xs:h-10 h-8 flex items-center justify-center bg-white bg-opacity-15 outline-themeGreen border-none focus:border-none rounded-sm text-sm sm:text-base"
@@ -506,10 +486,10 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
                 max={1000000}
                 onChange={handleSecondInputChange}
               />
-              {/* <input
+              <input
                 name="fit24"
                 className="3xs:w-[100px] w-[80px] sm:px-4 px-2 3xs:h-10 h-8 flex items-center justify-center bg-white bg-opacity-15 outline-themeGreen border-none focus:border-none rounded-sm text-sm sm:text-base"
-                disabled={select ? false : true}
+                disabled={!select}
                 value={amount}
                 type="number"
                 placeholder={
@@ -518,45 +498,30 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
                 onKeyDown={blockInvalidChar}
                 onPaste={disablePaste}
                 max={1000000}
-                onChange={handleChange}
+                onChange={handleFirstInputChange}
               />
-              <input
-                name="usdt"
-                className="3xs:w-[100px] w-[80px] sm:px-4 px-2 3xs:h-10 h-8 flex items-center justify-center bg-white bg-opacity-15 outline-themeGreen border-none focus:border-none rounded-sm text-sm sm:text-base"
-                disabled={false}
-                value={
-                  amount
-                    ? amount * Number(process.env.NEXT_PUBLIC_TOKEN_PRICE)
-                    : 0
-                }
-                type="number"
-                max={1000000}
-              /> */}
-              {/* <div className="3xs:w-[100px] w-[80px] sm:px-4 px-2 3xs:h-10 h-8 flex items-center justify-center bg-white bg-opacity-5  rounded-sm text-sm sm:text-base">
-                {amount ? (
-                  <span>
-                    {amount * Number(process.env.NEXT_PUBLIC_TOKEN_PRICE)}
-                  </span>
-                ) : (
-                  "0"
-                )}
-              </div> */}
-              <div className="font-semibold w-16 sm:text-base text-sm">
-                USDT
+              <div className="w-14 sm:w-20">
+                <Image
+                  src={"/fitLogo.svg"}
+                  alt="Ethereum"
+                  width={3000}
+                  height={3000}
+                  className="w-full h-full"
+                />
               </div>
             </div>
             {select &&
               (select === "A" ? (
                 <div className="text-gray-300">
-                  * Minimum quantity to stake: 2500 FIT24
+                  * Minimum quantity to stake: $100
                 </div>
               ) : select === "B" ? (
                 <div className="text-gray-300">
-                  * Minimum quantity to stake: 5000 FIT24
+                  * Minimum quantity to stake: $200
                 </div>
               ) : (
                 <div className="text-gray-300">
-                  * Minimum quantity to stake: 10000 FIT24
+                  * Minimum quantity to stake: $400
                 </div>
               ))}
             <button
