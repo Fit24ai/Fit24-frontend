@@ -163,7 +163,15 @@ export default function StakingBox({ refetchTX, setRefetchTX }: any) {
 
   const formattedDate = (unixTimestamp: number) => {
     const date = new Date(unixTimestamp * 1000)
-    return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+    const day = date.getDate()
+    const month = date.getMonth() + 1
+    const year = date.getFullYear()
+
+    const hours = date.getHours().toString().padStart(2, "0")
+    const minutes = date.getMinutes().toString().padStart(2, "0")
+    const seconds = date.getSeconds().toString().padStart(2, "0")
+
+    return `${day}-${month}-${year}-(${hours}:${minutes}:${seconds})`
   }
 
   const formattedDateTime = (unixTimestamp: number) => {
@@ -252,7 +260,7 @@ export default function StakingBox({ refetchTX, setRefetchTX }: any) {
     <div className="flex flex-col gap-4 py-[20px]">
       <div>Your Stake & Rewards</div>
       <div className="flex flex-col  overflow-x-auto  rounded-xl">
-        <div className="grid grid-cols-11 w-full p-4  gap-x-4  text-sm  min-w-[1100px] bg-green-300 bg-opacity-20 border-b border-themeGreen">
+        <div className="grid grid-cols-11 w-full p-4  gap-x-6  text-sm  min-w-[1200px] bg-green-300 bg-opacity-20 border-b border-themeGreen">
           <div className="text-center">S No.</div>
           <div className="text-center">Tx ID & Type</div>
           <div className="text-center">Tx Hash</div>
@@ -265,7 +273,7 @@ export default function StakingBox({ refetchTX, setRefetchTX }: any) {
           <div className="text-center">Todays Reward</div>
           <div className="text-center">Total Claimed Rewards</div>
         </div>
-        <div className="md:max-h-[50vh] max-h-[80vh] overflow-y-scroll min-w-[1100px] w-full">
+        <div className="md:max-h-[50vh] max-h-[80vh] overflow-y-scroll min-w-[1200px] w-full">
           {!isLoading ? (
             stakes.map((item: IStakeDetails, index) => {
               return (
@@ -273,7 +281,7 @@ export default function StakingBox({ refetchTX, setRefetchTX }: any) {
                   {!item.isReferred && (
                     <div
                       key={index}
-                      className="grid grid-cols-11 w-full  px-4 py-3 gap-x-4 text-base  bg-gray-400 bg-opacity-20 border-b border-themeGreen"
+                      className="grid grid-cols-11 w-full  px-4 py-3 gap-x-6 text-base  bg-gray-400 bg-opacity-20 border-b border-themeGreen"
                     >
                       <>
                         <div className="text-sm text-center">{index + 1}</div>
@@ -300,8 +308,9 @@ export default function StakingBox({ refetchTX, setRefetchTX }: any) {
                             {formattedDateTime(item.startTime).formattedDate}
                           </span>
                           <span>
-                            {formattedDateTime(item.startTime).formattedTime}
+                            ({formattedDateTime(item.startTime).formattedTime})
                           </span>
+                          {/* {formattedDate(item.startTime)} */}
                         </div>
 
                         <div className="flex items-center justify-center ">

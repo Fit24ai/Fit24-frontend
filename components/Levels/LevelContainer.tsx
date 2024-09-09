@@ -84,7 +84,7 @@ export default function LevelContainer() {
   const getTotalMembersCount = async () => {
     try {
       const res = await getTotalMembers()
-      console.log(res)
+      console.log("total members",res)
       setTotalMembers(res)
     } catch (error) {
       console.log(error)

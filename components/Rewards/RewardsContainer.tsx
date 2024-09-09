@@ -82,6 +82,18 @@ export default function RewardsContainer() {
     }, 3000)
   }
 
+  const formattedDateTime = (unixTimestamp: number) => {
+    const date = new Date(unixTimestamp * 1000)
+    const formattedDate = `${date.getDate()}-${
+      date.getMonth() + 1
+    }-${date.getFullYear()}`
+    const formattedTime = `${date.getHours()}:${date
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}:${date.getSeconds().toString().padStart(2, "0")}`
+    return { formattedDate, formattedTime }
+  }
+
   const copyAddress = (address: string) => {
     setCopyAddress(true)
     copy(address)
@@ -177,6 +189,8 @@ export default function RewardsContainer() {
   const toggleDatePicker = () => {
     setShowDatePicker(!showDatePicker)
   }
+
+  const formattedClaimed = (date: any) => {}
   return (
     <div className="text-white w-full h-full  2md:py-8 py-4 2md:px-10 px-3">
       <div className="flex flex-col gap-6 items-center">
@@ -284,7 +298,7 @@ export default function RewardsContainer() {
             <div>Tx ID & TYPE</div>
             <div className="text-center">Referee</div>
             <div className="text-center ">Referee Stake</div>
-            <div className="text-center">Reward Tokens</div>
+            <div className="text-center">Level Referral</div>
             <div className="text-center">Level</div>
             <div className="text-center">APY</div>
             <div className="text-center">Time Stamp</div>
@@ -301,7 +315,7 @@ export default function RewardsContainer() {
                   className="grid grid-cols-11 w-full  px-4 py-3 gap-x-4 text-base  bg-gray-400 bg-opacity-20 border-t border-themeGreen"
                 >
                   <>
-                    <div>
+                    <div className="text-sm">
                       {item.referralDetails.stakeId} -{" "}
                       {!item.referralDetails.isReferred
                         ? item.referralDetails.poolType &&
@@ -331,7 +345,24 @@ export default function RewardsContainer() {
                       {item.referralDetails.apr}
                     </div>
                     <div className="flex items-center justify-center ml-2">
-                      {formattedDate(item.referralDetails.startTime)}
+                      {/* {formattedDate(item.referralDetails.startTime)} */}
+                      <div className="flex flex-col items-center text-sm gap-1 justify-center">
+                        <span>
+                          {
+                            formattedDateTime(item.referralDetails.startTime)
+                              .formattedDate
+                          }
+                        </span>
+                        <span>
+                          (
+                          {
+                            formattedDateTime(item.referralDetails.startTime)
+                              .formattedTime
+                          }
+                          )
+                        </span>
+                        {/* {formattedDate(item.startTime)} */}
+                      </div>
                     </div>
 
                     <div className="flex items-center justify-center ">
@@ -341,8 +372,22 @@ export default function RewardsContainer() {
                         item.referralDetails.stakeDuration
                       )}
                     </div>
-                    <div className="flex items-center justify-center ">0.00</div>
-                    <div className="flex items-center justify-center ">0.00</div>
+                    <div className="flex items-center justify-center ">
+                      {Number((item.referralDetails.apr * 100) / 366).toFixed(
+                        3
+                      )}
+                    </div>
+                    <div className="flex items-center justify-center">
+                      {(
+                        Number((item.referralDetails.apr * 100) / 366) *
+                        (366 -
+                          formattedStakeDuration(
+                            item.referralDetails.startTime,
+                            item.referralDetails.stakeDuration
+                          ))
+                      ).toFixed(3)}
+                    </div>
+
                     <div className="flex items-center justify-center text-blue-700">
                       <a
                         target="_blank"

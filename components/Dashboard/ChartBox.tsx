@@ -288,10 +288,7 @@ export default function ChartBox({ token }: { token: number }) {
       console.log(res)
       console.log("stakes times", res.stakes[res.stakes.length - 1].startTime)
       console.log("timestamp", Number(lastClaimedTimestamp[0].result!))
-      if (
-        res.stakes[res.stakes.length - 1].startTime >
-        Number(lastClaimedTimestamp[0].result!)
-      ) {
+      if (res.stakes[0].startTime > Number(lastClaimedTimestamp[0].result!)) {
         console.log(true)
 
         setClaimStakeCondition(true)
@@ -397,6 +394,10 @@ export default function ChartBox({ token }: { token: number }) {
   useEffect(() => {
     if (!readPendingAmount) return
     setPendingAmount(getNumber(readPendingAmount[0].result! as bigint, 18))
+    console.log(
+      "pending amount",
+      getNumber(readPendingAmount[0].result! as bigint, 18)
+    )
   }, [readPendingAmount])
 
   const { data: rewardReceipt, error: rewardError } =
@@ -592,29 +593,28 @@ export default function ChartBox({ token }: { token: number }) {
             </div>
           </div>
         </div> */}
-        <div className="flex md:flex-row flex-col gap-4">
-          <div className="bg-white network-image-3 bg-opacity-10 md:max-w-80 w-full p-4 px-10 flex flex-col items-center gap-2  rounded-lg">
-            <FaHandHoldingUsd size={24} />
-            <div className="text-gray-400 text-sm">Todays Rewards</div>
-            <div className="text-2xl flex items-center gap-2">
-              {/* 12,08 */}
-              {readTotalStakeAmount &&
-                getNumber(
-                  readTotalStakeAmount[0].result! as bigint,
-                  18
-                ).toFixed(4)}
-              <span className="w-20">
-                <Image
-                  src={"/fitLogo.svg"}
-                  width={3000}
-                  height={30000}
-                  alt="logo"
-                  className="h-full w-full"
-                />
-              </span>
-            </div>
+        {/* <div className="flex md:flex-row flex-col gap-4"> */}
+        <div className="bg-white network-image-3 bg-opacity-10 max-w-80 w-full p-4 px-10 flex flex-col items-center gap-2  rounded-lg">
+          <FaHandHoldingUsd size={24} />
+          <div className="text-gray-400 text-sm">Todays Rewards</div>
+          <div className="text-2xl flex items-center gap-2">
+            {/* 12,08 */}
+            {readTotalStakeAmount &&
+              getNumber(readTotalStakeAmount[0].result! as bigint, 18).toFixed(
+                4
+              )}
+            <span className="w-20">
+              <Image
+                src={"/fitLogo.svg"}
+                width={3000}
+                height={30000}
+                alt="logo"
+                className="h-full w-full"
+              />
+            </span>
           </div>
-          <div className="flex flex-col gap-4  w-full">
+          {/* </div> */}
+          {/* <div className="flex flex-col gap-4  w-full">
             <div className="network-image-4 flex flex-1 justify-between p-3 w-full rounded-lg gap-12 items-center">
               <span className="w-16">
                 <Image
@@ -625,7 +625,9 @@ export default function ChartBox({ token }: { token: number }) {
                   className="h-full w-full"
                 />
               </span>
-              <div className="text-gray-400 text-sm text-nowrap">0.024 USDT</div>
+              <div className="text-gray-400 text-sm text-nowrap">
+                0.024 USDT
+              </div>
             </div>
             <div className="network-image-4 flex flex-1 justify-between p-3 w-full rounded-lg gap-12 items-center">
               <span className="w-16">
@@ -637,9 +639,11 @@ export default function ChartBox({ token }: { token: number }) {
                   className="h-full w-full"
                 />
               </span>
-              <div className="text-gray-400 text-sm text-nowrap">0.024 USDT</div>
+              <div className="text-gray-400 text-sm text-nowrap">
+                0.024 USDT
+              </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="relative max-w-80 w-full">
           <button
@@ -666,7 +670,7 @@ export default function ChartBox({ token }: { token: number }) {
             )}
           </button>
           {showPopup && (
-            <div className="absolute bg-white border text-black rounded-full border-gray-200 shadow-md top-14 w-fit left-[50%] p-2 z-10 text-semibold text-base ">
+            <div className="absolute bg-white border text-black rounded-full border-gray-200 shadow-md top-14 w-fit left-[50%] p-2 z-10 text-semibold text-base text-nowrap">
               {claimStakeCondition ? "Claim after 24 hours" : "Already Claimed"}
             </div>
           )}

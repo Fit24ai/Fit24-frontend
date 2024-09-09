@@ -42,7 +42,7 @@ export default function Footer() {
         <div className="w-full flex flex-col items-center gap-4">
           <div className="text-lg">Follow Us</div>
           <div className="flex gap-4 items-center">
-            <div className="w-16">
+            <div className="w-14">
               <Image
                 src="/social/instagram.png"
                 alt="Logo"
@@ -51,7 +51,7 @@ export default function Footer() {
                 className="h-full w-full"
               />
             </div>
-            <div className="w-16">
+            <div className="w-14">
               <Image
                 src="/social/twitter.png"
                 alt="Logo"
@@ -60,7 +60,7 @@ export default function Footer() {
                 className="h-full w-full"
               />
             </div>
-            <div className="w-16">
+            <div className="w-14">
               <Image
                 src="/social/telegram.png"
                 alt="Logo"

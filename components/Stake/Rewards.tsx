@@ -64,7 +64,7 @@ export default function Rewards({
                       18
                     ).toFixed(4)
                   )} */}
-              {stakeRewards}
+              {stakeRewards.toFixed(2)}
             </div>
           </div>
           <div className="flex  flex-1 flex-col p-2 rounded-lg bg-white bg-opacity-10 items-center">
@@ -74,7 +74,7 @@ export default function Rewards({
                 getNumber(referralRewardData[0].result! as bigint, 18).toFixed(
                   4
                 )} */}
-              {referralRewards}
+              {referralRewards.toFixed(2)}
             </div>
           </div>
         </div>
@@ -83,9 +83,9 @@ export default function Rewards({
           <div className="text-xl">
             {/* {readTotalStakeAmount &&
               getNumber(readTotalStakeAmount[0].result! as bigint, 18).toFixed(
-                4
+                4 
               )}{" "} */}
-            {totalRewards} <span className="text-themeGreen">Fit24</span>
+            {totalRewards.toFixed(2)} <span className="text-themeGreen">Fit24</span>
           </div>
         </div>
         {/* <div className="w-full mx-auto">
