@@ -7,6 +7,7 @@ import { useAccount, useReadContracts } from "wagmi"
 import { stakingAbi } from "@/libs/stakingAbi"
 import { fit24ContractAddress, vestingChainId } from "@/libs/chains"
 import { getNumber } from "@/libs/utils"
+import Image from "next/image"
 
 export default function Rewards({
   referralRewards,
@@ -80,12 +81,21 @@ export default function Rewards({
         </div>
         <div className="flex w-full flex-col p-2 gap-1 rounded-lg bg-white bg-opacity-10 items-center">
           <div className="text-gray-400 text-sm">Total Rewards</div>
-          <div className="text-xl">
+          <div className="text-xl flex gap-2 items-center">
             {/* {readTotalStakeAmount &&
               getNumber(readTotalStakeAmount[0].result! as bigint, 18).toFixed(
                 4 
               )}{" "} */}
-            {totalRewards.toFixed(2)} <span className="text-themeGreen">Fit24</span>
+            {totalRewards.toFixed(2)}{" "}
+            <span className="w-20">
+              <Image
+                src={"/fitLogo.svg"}
+                width={3000}
+                height={3000}
+                alt="logo"
+                className="h-full w-full"
+              />
+            </span>
           </div>
         </div>
         {/* <div className="w-full mx-auto">
