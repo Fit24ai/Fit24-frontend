@@ -53,6 +53,10 @@
   background-size: cover;
 }
 
+.inner-shadow {
+  box-shadow: rgb(20, 89, 110) 0px 0px 10px 10px inset;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

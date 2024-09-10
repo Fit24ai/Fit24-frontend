@@ -329,143 +329,278 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
           <div className="flex items-center md:gap-8 sm:gap-4 gap-2">
             <button
               onClick={() => setSelect("A")}
-              className={`flex flex-col  ${
+              className={`${
                 select === "A"
-                  ? "bg-blue-600 bg-opacity-30"
-                  : "bg-white bg-opacity-10"
-              }  items-center rounded-md sm:p-6 3xs:p-3 p-2`}
+                  ? "bg-blue-700"
+                  : "bg-gradient-to-r from-themeGreen to-themeLightBlue"
+              }  text-white p-0.5 rounded-xl relative transform hover:scale-105 transition-transform duration-300 md:w-64 sm:w-40 w-[120px] `}
             >
-              <div className="md:text-base text-sm">Pool A</div>
               <div
-                className={`md:text-lg text-sm text-gray-400 ${
-                  select === "A" ? "text-green-400" : "text-gray-400"
-                }`}
+                className={`${
+                  select === "A" ? "bg-blue-700" : "bg-[#04042e] inner-shadow"
+                } md:p-6 p-2  rounded-xl`}
               >
-                Silver Yields
-              </div>
-              <div className="flex flex-col md:gap-4 gap-2 mt-5 md:text-sm text-xxs md:w-44">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className={`${select === "A" && "text-green-400"}`}>
-                      A
-                    </span>
-                    PY
+                <div className="flex justify-between items-center mb-2">
+                  <span
+                    className={`${
+                      select === "A" ? "text-white" : "text-gray-400"
+                    } md:text-base sm:text-sm text-xs`}
+                  >
+                    Pool A
+                  </span>
+                  <div
+                    className={`${
+                      select === "A" ? "border-white" : "border-green-400"
+                    } w-4 h-4 bg-transparent border-2  rounded-full overflow-hidden p-0.5`}
+                  >
+                    {select === "A" && (
+                      <div className="w-full h-full bg-white rounded-full"></div>
+                    )}
                   </div>
-                  <div className="text-gray-400">72-96%</div>
                 </div>
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className={`${select === "A" && "text-green-400"}`}>
-                      P
+                <h2 className="md:text-xl sm:text-base text-sm font-semibold flex">
+                  Silver Plan
+                </h2>
+                <p
+                  className={`${
+                    select === "A" ? "text-white" : "text-gray-400"
+                  } text-start w-full sm:text-base text-sm`}
+                >
+                  1 Year
+                </p>
+                <div className="flex flex-col items-center text-white">
+                  <p
+                    className={` ${
+                      select === "A" ? "text-white" : "text-gray-400"
+                    } sm:text-sm text-xxs sm:mt-4 mt-2 `}
+                  >
+                    Min. Quantity
+                  </p>
+                  <div className="md:text-5xl sm:text-2xl text-xl font-semibold flex items-center gap-1">
+                    <span
+                      className={`${
+                        select === "A" ? "text-white" : ""
+                      } text-transparent bg-clip-text bg-gradient-to-r from-themeGreen to-themeLightBlue`}
+                    >
+                      100
                     </span>
-                    eriod
+                    <span className="sm:text-sm text-xxs">USDT</span>
                   </div>
-                  <div className="text-gray-400">12 Months</div>
-                </div>
-                <div className="flex justify-between gap-3 md:gap-0 items-center">
-                  <div className="whitespace-nowrap">
-                    <span className={`${select === "A" && "text-green-400"}`}>
-                      Min
+                  <div className="sm:text-sm text-xxs flex items-center gap-1">
+                    worth of
+                    <span className="w-10">
+                      <Image
+                        src={"/fitLogo.svg"}
+                        width={3000}
+                        height={3000}
+                        alt="logo"
+                        className="h-full w-full"
+                      />
                     </span>
-                    . Quantity
                   </div>
-                  <div className="text-gray-400 text-nowrap">$100</div>
                 </div>
+                <p
+                  className={`sm:mt-6 mt-3 sm:text-sm text-xs text-gray-500 ${
+                    select === "A" ? "text-white" : ""
+                  }`}
+                >
+                  APY
+                </p>
+                <h4
+                  className={`${
+                    select === "A" ? "text-white" : ""
+                  } md:text-3xl sm:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-themeGreen to-themeLightBlue`}
+                >
+                  72-96%
+                </h4>
               </div>
             </button>
             <button
               onClick={() => setSelect("B")}
-              className={`flex flex-col  ${
+              className={`${
                 select === "B"
-                  ? "bg-blue-600 bg-opacity-30"
-                  : "bg-white bg-opacity-10"
-              }  items-center rounded-md sm:p-6 3xs:p-3 p-2`}
+                  ? "bg-yellow-500"
+                  : "bg-gradient-to-r from-themeGreen to-themeLightBlue"
+              }  text-white p-0.5 rounded-xl relative transform hover:scale-105 transition-transform duration-300  md:w-64 sm:w-40 w-[120px]`}
             >
-              <div className="md:text-base text-sm">Pool B</div>
               <div
-                className={`md:text-lg text-sm text-gray-400 ${
-                  select === "B" ? "text-green-400" : "text-gray-400"
-                }`}
+                className={`${
+                  select === "B" ? "bg-yellow-500" : "bg-[#04042e] inner-shadow"
+                } md:p-6 p-2  rounded-xl`}
               >
-                Gold Yields
-              </div>
-              <div className="flex flex-col md:gap-4 gap-2 mt-5 md:text-sm text-xxs md:w-44">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className={`${select === "B" && "text-green-400"}`}>
-                      A
-                    </span>
-                    PY
+                <div className="flex justify-between items-center mb-2">
+                  <span
+                    className={`${
+                      select === "B" ? "text-blue-900" : "text-gray-400"
+                    } md:text-base sm:text-sm text-xs`}
+                  >
+                    Pool B
+                  </span>
+                  <div
+                    className={`${
+                      select === "B" ? "border-white" : "border-green-400"
+                    } w-4 h-4 bg-transparent border-2  rounded-full overflow-hidden p-0.5`}
+                  >
+                    {select === "B" && (
+                      <div className="w-full h-full bg-white rounded-full"></div>
+                    )}
                   </div>
-                  <div className="text-gray-400">84-108%</div>
                 </div>
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className={`${select === "B" && "text-green-400"}`}>
-                      P
+                <h2
+                  className={`${
+                    select === "B" ? "text-blue-900" : ""
+                  } md:text-xl sm:text-base text-sm font-semibold flex`}
+                >
+                  Gold Plan
+                </h2>
+                <p
+                  className={`${
+                    select === "B" ? "text-blue-900" : "text-gray-400"
+                  } text-start w-full sm:text-base text-sm`}
+                >
+                  2 Year
+                </p>
+                <div className="flex flex-col items-center text-white">
+                  <p
+                    className={` ${
+                      select === "B" ? "text-blue-900" : "text-gray-400"
+                    } sm:text-sm text-xxs sm:mt-4 mt-2 `}
+                  >
+                    Min. Quantity
+                  </p>
+                  <div className="md:text-5xl sm:text-2xl text-xl  font-semibold flex items-center gap-1">
+                    <span
+                      className={`${
+                        select === "B" ? "text-blue-900" : ""
+                      } text-transparent bg-clip-text bg-gradient-to-r from-themeGreen to-themeLightBlue`}
+                    >
+                      200
                     </span>
-                    eriod
+                    <span className="sm:text-sm text-xxs">USDT</span>
                   </div>
-                  <div className="text-gray-400">24 Months</div>
-                </div>
-                <div className="flex justify-between gap-3 md:gap-0 items-center">
-                  <div className="whitespace-nowrap">
-                    <span className={`${select === "B" && "text-green-400"}`}>
-                      Min
+                  <div
+                    className={`${
+                      select === "B" ? "text-blue-900" : ""
+                    } sm:text-sm text-xxs flex items-center gap-1`}
+                  >
+                    worth of
+                    <span className="w-10">
+                      <Image
+                        src={"/fitLogo.svg"}
+                        width={3000}
+                        height={3000}
+                        alt="logo"
+                        className="h-full w-full"
+                      />
                     </span>
-                    . Quantity
                   </div>
-                  <div className="text-gray-400 text-nowrap">$200</div>
                 </div>
+                <p
+                  className={`sm:mt-6 mt-3 sm:text-sm text-xs text-gray-500 ${
+                    select === "B" ? "text-blue-900" : ""
+                  }`}
+                >
+                  APY
+                </p>
+                <h4
+                  className={`${
+                    select === "B" ? "text-blue-900" : ""
+                  } md:text-3xl sm:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-themeGreen to-themeLightBlue`}
+                >
+                  84-108%
+                </h4>
               </div>
             </button>
             <button
               onClick={() => setSelect("C")}
-              className={`flex flex-col ${
+              className={`${
                 select === "C"
-                  ? "bg-blue-600 bg-opacity-30"
-                  : "bg-white bg-opacity-10"
-              }  items-center rounded-md sm:p-6 3xs:p-3 p-2`}
+                  ? "bg-red-600"
+                  : "bg-gradient-to-r from-themeGreen to-themeLightBlue"
+              }  text-white p-0.5 rounded-xl relative transform hover:scale-105 transition-transform duration-300  md:w-64 sm:w-40 w-[120px]`}
             >
-              <div className="md:text-base text-sm">Pool C</div>
               <div
-                className={`md:text-lg text-sm text-nowrap text-gray-400 ${
-                  select === "C" ? "text-green-400" : "text-gray-400"
-                }`}
+                className={`${
+                  select === "C" ? "bg-red-600" : "bg-[#04042e] inner-shadow"
+                } md:p-6 p-2  rounded-xl`}
               >
-                Diamond Yields
-              </div>
-              <div className="flex flex-col md:gap-4 gap-2 mt-5 md:text-sm text-xxs md:w-44">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className={`${select === "C" && "text-green-400"}`}>
-                      A
-                    </span>
-                    PY
+                <div className="flex justify-between items-center mb-2">
+                  <span
+                    className={`${
+                      select === "C" ? "text-white" : "text-gray-400"
+                    } md:text-base sm:text-sm text-xs`}
+                  >
+                    Pool C
+                  </span>
+                  <div
+                    className={`${
+                      select === "C" ? "border-white" : "border-green-400"
+                    } w-4 h-4 bg-transparent border-2  rounded-full overflow-hidden p-0.5`}
+                  >
+                    {select === "C" && (
+                      <div className="w-full h-full bg-white rounded-full"></div>
+                    )}
                   </div>
-                  <div className="text-gray-400">96-120%</div>
                 </div>
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className={`${select === "C" && "text-green-400"}`}>
-                      P
+                <h2 className="md:text-xl sm:text-base text-sm font-semibold flex">
+                  Platinum Plan
+                </h2>
+                <p
+                  className={`${
+                    select === "C" ? "text-white" : "text-gray-400"
+                  } text-start w-full sm:text-base text-sm`}
+                >
+                  3 Year
+                </p>
+                <div className="flex flex-col items-center text-white">
+                  <p
+                    className={` ${
+                      select === "C" ? "text-white" : "text-gray-400"
+                    } sm:text-sm text-xxs sm:mt-4 mt-2 `}
+                  >
+                    Min. Quantity
+                  </p>
+                  <div className="md:text-5xl sm:text-2xl text-xl  font-semibold flex items-center gap-1">
+                    <span
+                      className={`${
+                        select === "C" ? "text-white" : ""
+                      } text-transparent bg-clip-text bg-gradient-to-r from-themeGreen to-themeLightBlue`}
+                    >
+                      400
                     </span>
-                    eriod
+                    <span className="sm:text-sm text-xxs">USDT</span>
                   </div>
-                  <div className="text-gray-400">36 Months</div>
-                </div>
-                <div className="flex justify-between gap-2 md:gap-0 items-center">
-                  <div className="whitespace-nowrap">
-                    <span className={`${select === "C" && "text-green-400"}`}>
-                      Min
+                  <div className="sm:text-sm text-xxs flex items-center gap-1">
+                    worth of
+                    <span className="w-10">
+                      <Image
+                        src={"/fitLogo.svg"}
+                        width={3000}
+                        height={3000}
+                        alt="logo"
+                        className="h-full w-full"
+                      />
                     </span>
-                    . Quantity
                   </div>
-                  <div className="text-gray-400 text-nowrap">$400</div>
                 </div>
+                <p
+                  className={`sm:mt-6 mt-3 sm:text-sm text-xs text-gray-500 ${
+                    select === "C" ? "text-white" : ""
+                  }`}
+                >
+                  APY
+                </p>
+                <h4
+                  className={`${
+                    select === "C" ? "text-white" : ""
+                  } md:text-3xl sm:text-xl  font-bold text-transparent bg-clip-text bg-gradient-to-r from-themeGreen to-themeLightBlue`}
+                >
+                  96-120%
+                </h4>
               </div>
             </button>
           </div>
+
           <div className="flex flex-col items-center mt-4 gap-4">
             <div>Stake Amount</div>
             <div className="flex sm:gap-4 gap-2 items-center">

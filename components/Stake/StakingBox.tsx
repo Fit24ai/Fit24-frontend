@@ -256,6 +256,8 @@ export default function StakingBox({ refetchTX, setRefetchTX }: any) {
     }, 800)
   }, [rewardReceipt, rewardError])
 
+  let serialNumber = 0
+
   return (
     <div className="flex flex-col gap-4 py-[20px]">
       <div>Your Stake & Rewards</div>
@@ -276,84 +278,79 @@ export default function StakingBox({ refetchTX, setRefetchTX }: any) {
         <div className="md:max-h-[50vh] max-h-[80vh] overflow-y-scroll min-w-[1200px] w-full">
           {!isLoading ? (
             stakes.map((item: IStakeDetails, index) => {
-              return (
-                <>
-                  {!item.isReferred && (
-                    <div
-                      key={index}
-                      className="grid grid-cols-11 w-full  px-4 py-3 gap-x-6 text-base  bg-gray-400 bg-opacity-20 border-b border-themeGreen"
-                    >
-                      <>
-                        <div className="text-sm text-center">{index + 1}</div>
-                        <div className="text-sm">
-                          {item.stakeId} -{" "}
-                          {!item.isReferred
-                            ? item.poolType && item.poolType <= 9
-                              ? "VESTED STAKE"
-                              : item.poolType <= 12
-                              ? "AUTO STAKE"
-                              : "COMPOUNDED"
-                            : "REFFERAL Reward"}
-                        </div>
-                        <a
-                          className="text-center text-blue-400"
-                          target="_blank"
-                          rel="noreferrer noopener"
-                          href={`${process.env.NEXT_PUBLIC_BINANCE_TESTNET_SCAN_URL}/tx/${item.txHash}`}
-                        >
-                          {smallAddress(item.txHash)}
-                        </a>
-                        <div className="flex flex-col items-center text-sm gap-1 justify-center">
-                          <span>
-                            {formattedDateTime(item.startTime).formattedDate}
-                          </span>
-                          <span>
-                            ({formattedDateTime(item.startTime).formattedTime})
-                          </span>
-                          {/* {formattedDate(item.startTime)} */}
-                        </div>
-
-                        <div className="flex items-center justify-center ">
-                          {item.poolType === 10
-                            ? "A"
-                            : item.poolType === 11
-                            ? "B"
-                            : "C"}
-                        </div>
-                        <a className="flex items-center justify-center">
-                          {item.amount.toFixed(2)}
-                        </a>
-                        <a className="flex items-center justify-center">
-                          {formattedStakeTenure(item.stakeDuration)}
-                        </a>
-                        <div className="flex items-center justify-center ">
-                          {formattedStakeDuration(
-                            item.startTime,
-                            item.stakeDuration
-                          )}
-                        </div>
-
-                        <div className="flex items-center justify-center ml-3">
-                          {item.apr}
-                        </div>
-                        <div className="flex items-center justify-center ml-3">
-                          {calculateTodaysReward(item.amount, item.apr)}
-                        </div>
-                        <div className=" flex items-center justify-center flex-col-2 gap-4">
-                          <StakeRewardClaimed stakeId={item.stakeId} />
-                          <a
-                            target="_blank"
-                            rel="noreferrer noopener"
-                            href={`${process.env.NEXT_PUBLIC_BINANCE_TESTNET_SCAN_URL}/tx/${item.txHash}`}
-                          >
-                            <FiExternalLink />
-                          </a>
-                        </div>
-                      </>
+              if (!item.isReferred) {
+                serialNumber++ // Increment serial number only for non-referred items
+                return (
+                  <div
+                    key={index}
+                    className="grid grid-cols-11 w-full px-4 py-3 gap-x-6 text-base bg-gray-400 bg-opacity-20 border-b border-themeGreen"
+                  >
+                    <div className="text-sm text-center">{serialNumber}</div>
+                    <div className="text-sm">
+                      {item.stakeId} -{" "}
+                      {!item.isReferred
+                        ? item.poolType && item.poolType <= 9
+                          ? "VESTED STAKE"
+                          : item.poolType <= 12
+                          ? "AUTO STAKE"
+                          : "COMPOUNDED"
+                        : "REFFERAL Reward"}
                     </div>
-                  )}
-                </>
-              )
+                    <a
+                      className="text-center text-blue-400"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      href={`${process.env.NEXT_PUBLIC_BINANCE_TESTNET_SCAN_URL}/tx/${item.txHash}`}
+                    >
+                      {smallAddress(item.txHash)}
+                    </a>
+                    <div className="flex flex-col items-center text-sm gap-1 justify-center">
+                      <span>
+                        {formattedDateTime(item.startTime).formattedDate}
+                      </span>
+                      <span>
+                        ({formattedDateTime(item.startTime).formattedTime})
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      {item.poolType === 10
+                        ? "A"
+                        : item.poolType === 11
+                        ? "B"
+                        : "C"}
+                    </div>
+                    <a className="flex items-center justify-center">
+                      {item.amount.toFixed(2)}
+                    </a>
+                    <a className="flex items-center justify-center">
+                      {formattedStakeTenure(item.stakeDuration)}
+                    </a>
+                    <div className="flex items-center justify-center">
+                      {formattedStakeDuration(
+                        item.startTime,
+                        item.stakeDuration
+                      )}
+                    </div>
+                    <div className="flex items-center justify-center ml-3">
+                      {item.apr}
+                    </div>
+                    <div className="flex items-center justify-center ml-3">
+                      {calculateTodaysReward(item.amount, item.apr)}
+                    </div>
+                    <div className="flex items-center justify-center flex-col-2 gap-4">
+                      <StakeRewardClaimed stakeId={item.stakeId} />
+                      <a
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        href={`${process.env.NEXT_PUBLIC_BINANCE_TESTNET_SCAN_URL}/tx/${item.txHash}`}
+                      >
+                        <FiExternalLink />
+                      </a>
+                    </div>
+                  </div>
+                )
+              }
+              return null // Return null for referred items
             })
           ) : (
             <div className="col-span-8 flex items-center justify-center">
