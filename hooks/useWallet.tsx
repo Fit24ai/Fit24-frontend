@@ -22,6 +22,9 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
   const { address, isConnected } = useAccount()
   const { open, close } = useWeb3Modal()
+  const [isRegisterPopup, setIsRegisterPopup] = useState<boolean>(false)
+  const [registerReferralPopup, setRegisterReferralPopup] =
+    useState<boolean>(false)
 
   const login = async (email?: string, number?: string) => {
     if (!address) return
@@ -29,6 +32,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       const response = await loginUser(address, email, number)
       if (response) {
         if (response.email === false) {
+          // setRegisterReferralPopup(true)
           setIsEmailPopup(true)
           setError(response.error)
           return response
@@ -83,6 +87,10 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
         error,
         setError,
         setIsLoggedIn,
+        isRegisterPopup,
+        setIsRegisterPopup,
+        registerReferralPopup,
+        setRegisterReferralPopup,
       }}
     >
       {children}

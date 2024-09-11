@@ -607,25 +607,27 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
               <div className="font-semibold w-12 sm:text-base text-sm">
                 USDT
               </div>
+
               <input
                 name="usdt"
                 className="3xs:w-[100px] w-[80px] sm:px-4 px-2 3xs:h-10 h-8 flex items-center justify-center bg-white bg-opacity-15 outline-themeGreen border-none focus:border-none rounded-sm text-sm sm:text-base"
                 disabled={!select}
                 value={
-                  amount
-                    ? amount * Number(process.env.NEXT_PUBLIC_TOKEN_PRICE)
-                    : 0
+                  !amount
+                    ? "" // Use an empty string when there is no value
+                    : amount * Number(process.env.NEXT_PUBLIC_TOKEN_PRICE)
                 }
                 type="number"
                 placeholder="0"
                 max={1000000}
                 onChange={handleSecondInputChange}
               />
+
               <input
                 name="fit24"
                 className="3xs:w-[100px] w-[80px] sm:px-4 px-2 3xs:h-10 h-8 flex items-center justify-center bg-white bg-opacity-15 outline-themeGreen border-none focus:border-none rounded-sm text-sm sm:text-base"
                 disabled={!select}
-                value={amount}
+                value={amount ?? ""} // Ensure empty string if amount is undefined
                 type="number"
                 placeholder={
                   select === "A" ? "2500" : select === "B" ? "5000" : "10000"
@@ -635,6 +637,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
                 max={1000000}
                 onChange={handleFirstInputChange}
               />
+
               <div className="w-14 sm:w-20">
                 <Image
                   src={"/fitLogo.svg"}
@@ -645,25 +648,22 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
                 />
               </div>
             </div>
-            {select &&
-              (select === "A" ? (
-                <div className="text-gray-300">
-                  * Minimum quantity to stake: $100
-                </div>
-              ) : select === "B" ? (
-                <div className="text-gray-300">
-                  * Minimum quantity to stake: $200
-                </div>
-              ) : (
-                <div className="text-gray-300">
-                  * Minimum quantity to stake: $400
-                </div>
-              ))}
+
+            {select && (
+              <div className="text-gray-300">
+                {select === "A"
+                  ? "* Minimum quantity to stake: $100"
+                  : select === "B"
+                  ? "* Minimum quantity to stake: $200"
+                  : "* Minimum quantity to stake: $400"}
+              </div>
+            )}
+
             <button
               onClick={handleContinue}
-              disabled={formError ? true : false}
+              disabled={!!formError}
               className={`w-[200px] mt-5 mx-auto bg-themeGreen text-white h-10 rounded-lg flex justify-center items-center ${
-                formError && "opacity-50 cursor-not-allowed"
+                formError ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
               {loading ? (

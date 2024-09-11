@@ -126,7 +126,7 @@ export default function LevelContainer() {
         <div className="text-xl font-medium">Total Members</div>
         <div className="text-2xl font-medium">{totalMembers.stakerCount}</div>
       </div>
-      <div className="flex gap-4 w-full overflow-x-auto hide-scrollbar">
+      <div className="flex gap-4 w-full overflow-x-auto pb-2">
         {levels.map((item, index) => {
           return (
             <button

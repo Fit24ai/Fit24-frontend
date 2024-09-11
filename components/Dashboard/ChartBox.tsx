@@ -31,12 +31,13 @@ import {
   getChainEnum,
   vestingChainId,
 } from "@/libs/chains"
-import { getNumber } from "@/libs/utils"
+import { getNumber, smallAddress } from "@/libs/utils"
 import { createTransaction } from "@/services/transaction"
 import { CgSpinner } from "react-icons/cg"
 import {
   createClaimReward,
   getAllStakesByUser,
+  getMyUpline,
   getTotalMembers,
   getTotalNetworkMembers,
   getTotalNetworkStaked,
@@ -48,6 +49,7 @@ import { referralAbi } from "@/libs/referralAbi"
 import { useReloadContext } from "@/context/Reload"
 import { BsSafeFill } from "react-icons/bs"
 import { FaHandHoldingUsd } from "react-icons/fa"
+import { Address } from "viem"
 // import { useReloadContext } from "@/context/Reload"
 
 ChartJS.register(
@@ -471,6 +473,23 @@ export default function ChartBox({ token }: { token: number }) {
     getLevel()
   }, [address, isLoggedIn])
 
+  const [upline, setUpline] = useState<string | undefined>()
+
+  const getupline = async () => {
+    try {
+      const res = await getMyUpline()
+      console.log("upline", res)
+      if (typeof res === "string") setUpline(res)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (!isLoggedIn) return
+    getupline()
+  }, [address, isLoggedIn])
+
   // console.log(refreesData[0].result)
 
   // const [networkMembers, setNetworkMembers] = useState<any>([])
@@ -594,6 +613,12 @@ export default function ChartBox({ token }: { token: number }) {
           </div>
         </div> */}
         {/* <div className="flex md:flex-row flex-col gap-4"> */}
+        {upline && (
+          <div>
+            <span className="font-semibold text-gray-400">My Upline - </span>
+            {smallAddress(upline)}
+          </div>
+        )}
         <div className="bg-white network-image-3 bg-opacity-10 max-w-80 w-full p-4 px-10 flex flex-col items-center gap-2  rounded-lg">
           <FaHandHoldingUsd size={24} />
           <div className="text-gray-400 text-sm">Todays Rewards</div>

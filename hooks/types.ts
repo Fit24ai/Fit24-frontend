@@ -9,4 +9,8 @@ export interface WalletContextProps {
     error: string | null;
     setError: React.Dispatch<React.SetStateAction<string | null>>;
     setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+    isRegisterPopup: boolean;
+    setIsRegisterPopup: React.Dispatch<React.SetStateAction<boolean>>;
+    registerReferralPopup: boolean;
+    setRegisterReferralPopup: React.Dispatch<React.SetStateAction<boolean>>;
   }

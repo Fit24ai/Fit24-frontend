@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Dispatch, ReactNode, useState } from "react"
+import { Dispatch, ReactNode, useEffect, useState } from "react"
 import Image from "next/image"
 import { IoClose } from "react-icons/io5"
 import { useWallet } from "@/hooks/useWallet"
@@ -25,7 +25,7 @@ export function EmailDialog({
   open: boolean
   setIsEmailPopup: any
 }) {
-  const { login, error, setError } = useWallet()
+  const { login, error, setError, isRegisterPopup } = useWallet()
   const [loading, setLoading] = useState(false)
   const [phone, setPhone] = useState<Value | undefined>()
 
@@ -56,6 +56,7 @@ export function EmailDialog({
       setLoading(false)
       console.log(error)
     }
+
     // if (res) {
     //   if (res.email === false) {
     //     setLoading(false);
@@ -69,6 +70,13 @@ export function EmailDialog({
     //   setLoading(false);
     // }
   }
+  useEffect(() => {
+    console.log("isRegisterPopup")
+    console.log(isRegisterPopup)
+    if (isRegisterPopup) {
+      setIsEmailPopup(false)
+    }
+  }, [isRegisterPopup])
   return (
     <Dialog open={open}>
       <DialogContent className="sm:max-w-md  outline-none border-none text-white bg-red-600 bg-gradient-to-br  from-[#056237] to-[#030f39]">

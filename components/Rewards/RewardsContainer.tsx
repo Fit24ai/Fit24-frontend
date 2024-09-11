@@ -1,6 +1,10 @@
 "use client"
 import { isValidAddress, smallAddress } from "@/libs/utils"
-import { getAllStakeTokens, getReferralStream } from "@/services/stakingService"
+import {
+  getAllStakeTokens,
+  getMyUpline,
+  getReferralStream,
+} from "@/services/stakingService"
 
 import Link from "next/link"
 import { useEffect, useState } from "react"
@@ -191,6 +195,23 @@ export default function RewardsContainer() {
   }
 
   const formattedClaimed = (date: any) => {}
+
+  const [upline, setUpline] = useState<string | undefined>()
+
+  const getupline = async () => {
+    try {
+      const res = await getMyUpline()
+      console.log("upline", res)
+      if (typeof res === "string") setUpline(res)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (!isLoggedIn) return
+    getupline()
+  }, [address, isLoggedIn])
   return (
     <div className="text-white w-full h-full  2md:py-8 py-4 2md:px-10 px-3">
       <div className="flex flex-col gap-6 items-center">
@@ -214,6 +235,12 @@ export default function RewardsContainer() {
           stakeRewards={stakeRewards}
           totalRewards={totalRewards}
         />
+        {upline && (
+          <div>
+            <span className="font-semibold text-gray-400">My Upline - </span>
+            {smallAddress(upline)}
+          </div>
+        )}
       </div>
       <div className="flex flex-col w-full gap-4 py-[20px]">
         <div className="flex w-full justify-between items-end">

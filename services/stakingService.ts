@@ -162,3 +162,11 @@ export const getDirectMembersData = async (level: number) => {
   )
   return res.data
 }
+export const getMyUpline = async () => {
+  const res = await http.get(`/staking/get-upline`, {
+    headers: {
+      Authorization: `Bearer ${getAuthToken()}`,
+    },
+  })
+  return res.data
+}
