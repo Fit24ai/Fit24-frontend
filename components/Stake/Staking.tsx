@@ -113,7 +113,15 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     if (!amount) return false
     if (!readResponse) return false
     if (readResponse[0].error) return false
-    if (getNumber(readResponse[0].result! as bigint, 18) < amount) return false
+    if (getNumber(readResponse[0].result! as bigint, 18) < amount) {
+      setDialogInfo({
+        type: "FAIL",
+        message: `Not Enough FIT24 balance`,
+        title: "FAIL",
+      })
+      setDialog(true)
+      return false
+    }
     return true
   }
 
@@ -121,7 +129,15 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     if (!amount) return false
     if (!readResponse) return false
     if (readResponse[1].error) return false
-    if (getNumber(readResponse[1].result! as bigint, 18) < amount) return false
+    if (getNumber(readResponse[1].result! as bigint, 18) < amount) {
+      setDialogInfo({
+        type: "FAIL",
+        message: `Not Enough FIT24 balance`,
+        title: "FAIL",
+      })
+      setDialog(true)
+      return false
+    }
 
     return true
   }

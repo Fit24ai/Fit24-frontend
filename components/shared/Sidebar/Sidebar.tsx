@@ -18,7 +18,7 @@ import { useWallet } from "@/hooks/useWallet"
 import copy from "copy-to-clipboard"
 import { TiTick } from "react-icons/ti"
 import { FaCheck } from "react-icons/fa6"
-import { getAllStakeTokens } from "@/services/stakingService"
+import { getAllStakeTokens, getMyUpline } from "@/services/stakingService"
 
 export default function Sidebar() {
   const items = [
@@ -95,8 +95,25 @@ export default function Sidebar() {
   useEffect(() => {
     if (isLoggedIn) getTokens()
   }, [isLoggedIn, address])
+
+  const [upline, setUpline] = useState<string | undefined>()
+
+  const getupline = async () => {
+    try {
+      const res = await getMyUpline()
+      console.log("upline", res)
+      if (typeof res === "string") setUpline(res)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (!isLoggedIn) return
+    getupline()
+  }, [address, isLoggedIn])
   return (
-    <div className="hidden h-full max-w-64 w-full px-4 xl:flex flex-col gap-6 pt-10 border-r border-gray-700 text-white">
+    <div className="hidden h-full max-w-64 w-full px-4 xl:flex flex-col gap-2 pt-10 border-r border-gray-700 text-white">
       <div className="w-full bg-[#020c2b] flex flex-col gap-2 rounded-lg py-2 px-4">
         <div className="w-full flex items-center justify-between">
           <div className="w-full flex items-center gap-2">
@@ -130,7 +147,13 @@ export default function Sidebar() {
           </div>
         )}
       </div>
-      <div className="flex flex-col gap-6 px-5 ">
+      {upline && (
+        <div className="mx-auto">
+          <span className="font-semibold text-sm text-gray-400">My Upline - </span>
+          {smallAddress(upline)}
+        </div>
+      )}
+      <div className="flex flex-col gap-6 px-5 mt-6">
         {items.map((item, index) => (
           <Link
             href={item.path}

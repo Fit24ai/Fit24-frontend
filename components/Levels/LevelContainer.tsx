@@ -16,6 +16,8 @@ import {
 import { useWallet } from "@/hooks/useWallet"
 import { smallAddress } from "@/libs/utils"
 import { CgSpinner } from "react-icons/cg"
+import { BiRightArrow } from "react-icons/bi"
+import { ArrowRight } from "lucide-react"
 
 export default function LevelContainer() {
   const [selectedLevel, setSelectedLevel] = useState(0)
@@ -43,6 +45,7 @@ export default function LevelContainer() {
   ]
 
   const [loading, setLoading] = useState(false)
+  const [memberLoading, setMemberLoading] = useState(false)
 
   // const { data: refreesData, isLoading: refeesLoading } = useReadContracts({
   //   allowFailure: true,
@@ -82,12 +85,15 @@ export default function LevelContainer() {
   }, [address, isLoggedIn])
 
   const getTotalMembersCount = async () => {
+    setMemberLoading(true)
     try {
       const res = await getTotalMembers()
       console.log("total members", res)
       setTotalMembers(res)
+      setMemberLoading(false)
     } catch (error) {
       console.log(error)
+      setMemberLoading(false)
     }
   }
 
@@ -124,7 +130,12 @@ export default function LevelContainer() {
     <div className="w-full flex flex-col h-screen gap-6 2md:py-8 py-4 2md:px-10 px-3">
       <div className="flex flex-col items-center gap-2">
         <div className="text-xl font-medium">Total Members</div>
-        <div className="text-2xl font-medium">{totalMembers.stakerCount}</div>
+        <div className="text-2xl font-medium">
+          {memberLoading ? <CgSpinner size={20} className="animate-spin" /> : totalMembers.stakerCount}
+        </div>
+      </div>
+      <div className="flex items-center gap-2 ml-auto text-sm">
+        Scroll Right <ArrowRight size={20} />
       </div>
       <div className="flex gap-4 w-full overflow-x-auto pb-2">
         {levels.map((item, index) => {

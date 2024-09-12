@@ -64,7 +64,7 @@ export function StatusDialog({
               <span className="font-semibold md:text-lg">
                 {title ? title : "Purchase Error"}
               </span>
-              <div className="text-[#525961] font-medium md:text-base text-sm leading-tight">
+              <div className="text-gray-400 font-medium md:text-base text-sm leading-tight">
                 {message}
               </div>
             </div>

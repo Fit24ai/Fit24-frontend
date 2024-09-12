@@ -435,6 +435,8 @@ export default function ChartBox({ token }: { token: number }) {
   }, [rewardReceipt, rewardError])
 
   console.log(pendingAmount, "fjfjfj")
+  const [memberLoading, setMemberLoading] = useState(false)
+  const [directMemberLoading, setDirectMemberLoading] = useState(false)
 
   const [totalMembers, setTotalMembers] = useState<any>({
     totalCount: 0,
@@ -444,12 +446,15 @@ export default function ChartBox({ token }: { token: number }) {
   })
   const [directMembers, setDirectMembers] = useState<any>([])
   const getTotalMembersCount = async () => {
+    setMemberLoading(true)
     try {
       const res = await getTotalMembers()
       console.log(res)
       setTotalMembers(res)
+      setMemberLoading(false)
     } catch (error) {
       console.log(error)
+      setMemberLoading(false)
     }
   }
 
@@ -459,12 +464,15 @@ export default function ChartBox({ token }: { token: number }) {
   }, [address, isLoggedIn])
 
   const getLevel = async () => {
+    setDirectMemberLoading(true)
     try {
       const res = await getUserLevel()
       console.log("direct members", res)
       setDirectMembers(res.memberData)
+      setDirectMemberLoading(false)
     } catch (error) {
       console.log(error)
+      setDirectMemberLoading(false)
     }
   }
 
@@ -473,22 +481,22 @@ export default function ChartBox({ token }: { token: number }) {
     getLevel()
   }, [address, isLoggedIn])
 
-  const [upline, setUpline] = useState<string | undefined>()
+  // const [upline, setUpline] = useState<string | undefined>()
 
-  const getupline = async () => {
-    try {
-      const res = await getMyUpline()
-      console.log("upline", res)
-      if (typeof res === "string") setUpline(res)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const getupline = async () => {
+  //   try {
+  //     const res = await getMyUpline()
+  //     console.log("upline", res)
+  //     if (typeof res === "string") setUpline(res)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
-  useEffect(() => {
-    if (!isLoggedIn) return
-    getupline()
-  }, [address, isLoggedIn])
+  // useEffect(() => {
+  //   if (!isLoggedIn) return
+  //   getupline()
+  // }, [address, isLoggedIn])
 
   // console.log(refreesData[0].result)
 
@@ -613,12 +621,12 @@ export default function ChartBox({ token }: { token: number }) {
           </div>
         </div> */}
         {/* <div className="flex md:flex-row flex-col gap-4"> */}
-        {upline && (
+        {/* {upline && (
           <div>
             <span className="font-semibold text-gray-400">My Upline - </span>
             {smallAddress(upline)}
           </div>
-        )}
+        )} */}
         <div className="bg-white network-image-3 bg-opacity-10 max-w-80 w-full p-4 px-10 flex flex-col items-center gap-2  rounded-lg">
           <FaHandHoldingUsd size={24} />
           <div className="text-gray-400 text-sm">Todays Rewards</div>
@@ -713,11 +721,23 @@ export default function ChartBox({ token }: { token: number }) {
         <div className="flex items-center gap-4">
           <div className="bg-black bg-opacity-35 w-28 p-4 flex flex-col items-center gap-1 flex-1 rounded-lg">
             <div className="text-gray-400 text-sm">Direct Members</div>
-            <div className="text-2xl">{directMembers.length}</div>
+            <div className="text-2xl">
+              {directMemberLoading ? (
+                <CgSpinner className="animate-spin" />
+              ) : (
+                directMembers.length
+              )}
+            </div>
           </div>
           <div className="bg-black bg-opacity-35 w-28 p-4 flex flex-col items-center gap-1 flex-1 rounded-lg">
             <div className="text-gray-400 text-sm">Total Team</div>
-            <div className="text-2xl">{totalMembers.stakerCount}</div>
+            <div className="text-2xl">
+              {memberLoading ? (
+                <CgSpinner className="animate-spin" />
+              ) : (
+                totalMembers.stakerCount
+              )}
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -727,7 +747,13 @@ export default function ChartBox({ token }: { token: number }) {
           </div>
           <div className="bg-black bg-opacity-35 w-28 p-4 flex flex-col items-center gap-1 flex-1 rounded-lg">
             <div className="text-gray-400 text-sm">Team Stake</div>
-            <div className="text-2xl">{totalMembers.totalTeamStakedAmount}</div>
+            <div className="text-2xl">
+              {memberLoading ? (
+                <CgSpinner className="animate-spin" />
+              ) : (
+                totalMembers.totalTeamStakedAmount
+              )}
+            </div>
           </div>
         </div>
       </div>
