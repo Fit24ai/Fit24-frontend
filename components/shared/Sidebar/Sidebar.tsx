@@ -112,6 +112,12 @@ export default function Sidebar() {
     if (!isLoggedIn) return
     getupline()
   }, [address, isLoggedIn])
+  useEffect(() => {
+    setTimeout(() => {
+      if (!isLoggedIn) return
+      getupline()
+    }, 2000)
+  }, [address])
   return (
     <div className="hidden h-full max-w-64 w-full px-4 xl:flex flex-col gap-2 pt-10 border-r border-gray-700 text-white">
       <div className="w-full bg-[#020c2b] flex flex-col gap-2 rounded-lg py-2 px-4">
@@ -149,7 +155,9 @@ export default function Sidebar() {
       </div>
       {upline && (
         <div className="mx-auto">
-          <span className="font-semibold text-sm text-gray-400">My Upline - </span>
+          <span className="font-semibold text-sm text-gray-400">
+            My Upline -{" "}
+          </span>
           {smallAddress(upline)}
         </div>
       )}

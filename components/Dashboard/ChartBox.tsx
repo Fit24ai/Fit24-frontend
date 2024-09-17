@@ -287,7 +287,7 @@ export default function ChartBox({ token }: { token: number }) {
       setClaimLoading(true)
       if (!address || !lastClaimedTimestamp) return
       const res: any = await getAllStakesByUser(address)
-      console.log(res)
+      console.log("stakes", res)
       console.log("stakes times", res.stakes[res.stakes.length - 1].startTime)
       console.log("timestamp", Number(lastClaimedTimestamp[0].result!))
       if (res.stakes[0].startTime > Number(lastClaimedTimestamp[0].result!)) {
@@ -632,10 +632,11 @@ export default function ChartBox({ token }: { token: number }) {
           <div className="text-gray-400 text-sm">Todays Rewards</div>
           <div className="text-2xl flex items-center gap-2">
             {/* 12,08 */}
-            {readTotalStakeAmount &&
+            {pendingAmount && pendingAmount.toFixed(4)}
+            {/* {readTotalStakeAmount &&
               getNumber(readTotalStakeAmount[0].result! as bigint, 18).toFixed(
                 4
-              )}
+              )} */}
             <span className="w-20">
               <Image
                 src={"/fitLogo.svg"}
@@ -704,7 +705,7 @@ export default function ChartBox({ token }: { token: number }) {
           </button>
           {showPopup && (
             <div className="absolute bg-white border text-black rounded-full border-gray-200 shadow-md top-14 w-fit left-[50%] p-2 z-10 text-semibold text-base text-nowrap">
-              {claimStakeCondition ? "Claim after 24 hours" : "Already Claimed"}
+              {pendingAmount === 0 ? "Already Claimed" : claimStakeCondition ? "Claim after 24 hours" : "Already Claimed"}
             </div>
           )}
         </div>

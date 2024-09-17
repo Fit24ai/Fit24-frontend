@@ -40,7 +40,9 @@ export const vestingAddress: AddressString =
 export const fit24TokenAddress: AddressString =
   "0xd04A199ed9Ae3D1099Ed9c010464F52a7FB5de73"
 export const fit24ContractAddress: AddressString =
-  "0xb0810a10FD74DeDFca66e91d759b7357a61f9EfB"
+  "0x8F8df3bfb61fd2a5D3297e438cB0a06db7f99948"
+// export const fit24ContractAddress: AddressString =
+//   "0xb0810a10FD74DeDFca66e91d759b7357a61f9EfB"
 // export const fit24ContractAddress: AddressString =
 //   "0xe3CC06a247187F8A33C50E09fE06D1537c47Ec40"
 // export const fit24ContractAddress: AddressString =

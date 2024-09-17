@@ -1,5 +1,5 @@
 "use client"
-import { isValidAddress, smallAddress } from "@/libs/utils"
+import { getNumber, isValidAddress, smallAddress } from "@/libs/utils"
 import {
   getAllStakeTokens,
   getMyUpline,
@@ -15,6 +15,7 @@ import { set } from "date-fns"
 import { referralAbi } from "@/libs/referralAbi"
 import {
   AddressString,
+  fit24ContractAddress,
   fit24ReferralContractAddress,
   vestingChainId,
 } from "@/libs/chains"
@@ -33,6 +34,7 @@ import {
 } from "@headlessui/react"
 import "react-date-range/dist/styles.css" // main css file
 import "react-date-range/dist/theme/default.css" // theme css file
+import { stakingAbi } from "@/libs/stakingAbi"
 
 export default function RewardsContainer() {
   const { isLoggedIn } = useWallet()
@@ -73,6 +75,15 @@ export default function RewardsContainer() {
     return daysLeft
   }
 
+  const getDays = (duration: number) => {
+    const millisecondsInADay: number = 1000 * 60 * 60 * 24
+
+    // Calculate the total days from the given duration (in seconds)
+    const days: number = Math.ceil(duration / (60 * 60 * 24))
+
+    return days
+  }
+
   const formattedDate = (unixTimestamp: number) => {
     const date = new Date(unixTimestamp * 1000)
     return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
@@ -110,30 +121,64 @@ export default function RewardsContainer() {
   const [referralRewards, setReferralRewards] = useState(0)
   const [stakeRewards, setStakeRewards] = useState(0)
 
+  // const getReferrals = async () => {
+  //   try {
+  //     setLoading(true)
+  //     const res = await getReferralStream()
+  //     console.log("rewards", res)
+  //     setReferralStream(res)
+  //     res.map((item: any, idx: number) => {
+  //       if (item.referralDetails.isReferred) {
+  //         setReferralRewards((prev) => prev + item.referralDetails.amount)
+  //       } else {
+  //         setStakeRewards((prev) => prev + item.referralDetails.amount)
+  //       }
+  //       setTotalRewards((prev) => prev + item.referralDetails.amount)
+  //     })
+  //     setLoading(false)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
   const getReferrals = async () => {
     try {
       setLoading(true)
       const res = await getReferralStream()
-      console.log("rewards", res)
-      setReferralStream(res)
-      res.map((item: any, idx: number) => {
+      let totalReferralRewards = 0
+      let totalStakeRewards = 0
+      let totalAllRewards = 0
+
+      res.forEach((item: any) => {
         if (item.referralDetails.isReferred) {
-          setReferralRewards((prev) => prev + item.referralDetails.amount)
+          totalReferralRewards += item.referralDetails.amount
         } else {
-          setStakeRewards((prev) => prev + item.referralDetails.amount)
+          totalStakeRewards += item.referralDetails.amount
         }
-        setTotalRewards((prev) => prev + item.referralDetails.amount)
+        totalAllRewards += item.referralDetails.amount
       })
+
+      setReferralRewards(totalReferralRewards)
+      // setStakeRewards(totalStakeRewards)
+      setTotalRewards(totalAllRewards)
+      setReferralStream(res)
       setLoading(false)
     } catch (error) {
       console.log(error)
     }
   }
+
   useEffect(() => {
     if (!isConnected) return
     if (!isLoggedIn) return
     getReferrals()
   }, [isConnected, address, isLoggedIn])
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     if (!isLoggedIn) return
+  //     getReferrals()
+  //   }, 2000)
+  // }, [address])
 
   const [token, setToken] = useState(0)
   const [refIncome, serRefIncome] = useState(0)
@@ -166,6 +211,8 @@ export default function RewardsContainer() {
   ])
   const [selectedFromLevel, setSelectedFromLevel] = useState(null)
 
+  const [filteredStream, setFilteredStream] = useState<any>([])
+
   // Filtering referralStream based on selected filters
   const filteredReferralStream = referralStream.filter((item: any) => {
     const referralLevel = item.referralDetails.level
@@ -185,6 +232,10 @@ export default function RewardsContainer() {
 
     return levelMatches && dateMatches
   })
+
+  useEffect(() => {
+    setFilteredStream(filteredReferralStream)
+  }, [dateRange, selectedFromLevel, referralStream])
 
   const levels = Array.from({ length: 24 }, (_, i) => i + 1)
 
@@ -212,6 +263,39 @@ export default function RewardsContainer() {
     if (!isLoggedIn) return
     getupline()
   }, [address, isLoggedIn])
+  useEffect(() => {
+    setTimeout(() => {
+      if (!isLoggedIn) return
+      getupline()
+    }, 2000)
+  }, [address])
+
+  const { data: readTotalStakeAmount, isLoading: totalStakeLoading } =
+    useReadContracts({
+      allowFailure: true,
+      contracts: [
+        {
+          abi: stakingAbi,
+          address: fit24ContractAddress,
+          functionName: "getUserTotalStakeReward",
+          chainId: vestingChainId,
+          args: [address],
+        },
+      ],
+    })
+
+  useEffect(() => {
+    if (!readTotalStakeAmount) return
+    setStakeRewards(getNumber(readTotalStakeAmount[0].result! as bigint, 18))
+    console.log(
+      "Stake Rewards",
+      getNumber(readTotalStakeAmount[0].result! as bigint, 18)
+    )
+    // setTotalRewards(
+    //   (prev) => prev + getNumber(readTotalStakeAmount[0].result! as bigint, 18)
+    // )
+  }, [readTotalStakeAmount])
+
   return (
     <div className="text-white w-full h-full  2md:py-8 py-4 2md:px-10 px-3">
       <div className="flex flex-col gap-6 items-center">
@@ -233,7 +317,7 @@ export default function RewardsContainer() {
         <Rewards
           referralRewards={referralRewards}
           stakeRewards={stakeRewards}
-          totalRewards={totalRewards}
+          totalRewards={totalRewards + stakeRewards}
         />
         {upline && (
           <div>
@@ -398,16 +482,21 @@ export default function RewardsContainer() {
                         item.referralDetails.startTime,
                         item.referralDetails.stakeDuration
                       )}
+                      {/* {getDays(item.referralDetails.stakeDuration)} */}
                     </div>
                     <div className="flex items-center justify-center ">
-                      {Number((item.referralDetails.apr * 100) / 366).toFixed(
-                        3
-                      )}
+                      {Number(
+                        (item.referralDetails.apr * 100) /
+                          getDays(item.referralDetails.stakeDuration)
+                      ).toFixed(3)}
                     </div>
                     <div className="flex items-center justify-center">
                       {(
-                        Number((item.referralDetails.apr * 100) / 366) *
-                        (366 -
+                        Number(
+                          (item.referralDetails.apr * 100) /
+                            getDays(item.referralDetails.stakeDuration)
+                        ) *
+                        (getDays(item.referralDetails.stakeDuration) -
                           formattedStakeDuration(
                             item.referralDetails.startTime,
                             item.referralDetails.stakeDuration

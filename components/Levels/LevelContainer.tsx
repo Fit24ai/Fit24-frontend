@@ -20,7 +20,7 @@ import { BiRightArrow } from "react-icons/bi"
 import { ArrowRight } from "lucide-react"
 
 export default function LevelContainer() {
-  const [selectedLevel, setSelectedLevel] = useState(0)
+  const [selectedLevel, setSelectedLevel] = useState(1)
   const { isLoggedIn } = useWallet()
   const { address } = useAccount()
   const [data, setData] = useState<any>([])
@@ -42,6 +42,105 @@ export default function LevelContainer() {
   const levels = [
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
     22, 23, 24,
+  ]
+
+  const levelsData = [
+    {
+      level: 1,
+      percentage: 16,
+    },
+    {
+      level: 2,
+      percentage: 4,
+    },
+    {
+      level: 3,
+      percentage: 2,
+    },
+    {
+      level: 4,
+      percentage: 2,
+    },
+    {
+      level: 5,
+      percentage: 2,
+    },
+    {
+      level: 6,
+      percentage: 2,
+    },
+    {
+      level: 7,
+      percentage: 4,
+    },
+    {
+      level: 8,
+      percentage: 2,
+    },
+    {
+      level: 9,
+      percentage: 2,
+    },
+    {
+      level: 10,
+      percentage: 2,
+    },
+    {
+      level: 11,
+      percentage: 2,
+    },
+    {
+      level: 12,
+      percentage: 2,
+    },
+    {
+      level: 13,
+      percentage: 4,
+    },
+    {
+      level: 14,
+      percentage: 2,
+    },
+    {
+      level: 15,
+      percentage: 2,
+    },
+    {
+      level: 16,
+      percentage: 2,
+    },
+    {
+      level: 17,
+      percentage: 2,
+    },
+    {
+      level: 18,
+      percentage: 2,
+    },
+    {
+      level: 19,
+      percentage: 4,
+    },
+    {
+      level: 20,
+      percentage: 2,
+    },
+    {
+      level: 21,
+      percentage: 2,
+    },
+    {
+      level: 22,
+      percentage: 2,
+    },
+    {
+      level: 23,
+      percentage: 2,
+    },
+    {
+      level: 24,
+      percentage: 2,
+    },
   ]
 
   const [loading, setLoading] = useState(false)
@@ -71,7 +170,7 @@ export default function LevelContainer() {
     try {
       const res = await getUserLevel()
       setLevel(res.levelCount)
-      setSelectedLevel(res.levelCount)
+      // setSelectedLevel(res.levelCount)
     } catch (error) {
       console.log(error)
     }
@@ -102,6 +201,16 @@ export default function LevelContainer() {
     getTotalMembersCount()
   }, [address, isLoggedIn])
 
+  useEffect(() => {
+    if (!address) return
+    setTimeout(() => {
+      if (!isLoggedIn) return
+      getLevel()
+      getTotalMembersCount()
+      getDirectMembersCount()
+    }, 2000)
+  }, [address])
+
   const getDirectMembersCount = async () => {
     try {
       setLoading(true)
@@ -131,20 +240,24 @@ export default function LevelContainer() {
       <div className="flex flex-col items-center gap-2">
         <div className="text-xl font-medium">Total Members</div>
         <div className="text-2xl font-medium">
-          {memberLoading ? <CgSpinner size={20} className="animate-spin" /> : totalMembers.stakerCount}
+          {memberLoading ? (
+            <CgSpinner size={20} className="animate-spin" />
+          ) : (
+            totalMembers.stakerCount
+          )}
         </div>
       </div>
       <div className="flex items-center gap-2 ml-auto text-sm">
         Scroll Right <ArrowRight size={20} />
       </div>
       <div className="flex gap-4 w-full overflow-x-auto pb-2">
-        {levels.map((item, index) => {
+        {levelsData.map((item, index) => {
           return (
             <button
               onClick={() => {
                 setSelectedLevel(index + 1)
               }}
-              disabled={level < index + 1}
+              // disabled={level < index + 1}
               key={index}
               className={`p-1 flex flex-col items-center w-full min-w-[120px]  ${
                 selectedLevel === index + 1
@@ -154,7 +267,7 @@ export default function LevelContainer() {
             >
               <div className="text-xs w-full flex items-center justify-between">
                 <div className="p-1 bg-themeGreen bg-opacity-10 rounded-md">
-                  12%
+                  {item.percentage}%
                 </div>
 
                 {level > index ? (
@@ -172,7 +285,7 @@ export default function LevelContainer() {
                   className="w-full"
                 />
               </div>
-              <div className="text-sm">Level {item}</div>
+              <div className="text-sm">Level {item.level}</div>
             </button>
           )
         })}

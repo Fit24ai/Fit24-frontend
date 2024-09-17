@@ -26,6 +26,18 @@ export default function ClaimHistory() {
     return `${day}-${month}-${year}-(${hours}:${minutes}:${seconds})`
   }
 
+  const formattedDateTime = (unixTimestamp: number) => {
+    const date = new Date(unixTimestamp * 1000)
+    const formattedDate = `${date.getDate()}-${
+      date.getMonth() + 1
+    }-${date.getFullYear()}`
+    const formattedTime = `${date.getHours()}:${date
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}:${date.getSeconds().toString().padStart(2, "0")}`
+    return { formattedDate, formattedTime }
+  }
+
   const claimedRewards = async () => {
     try {
       setLoading(true)
@@ -54,7 +66,10 @@ export default function ClaimHistory() {
         <div className="md:max-h-[50vh] max-h-[80vh] overflow-y-scroll min-w-[920px] w-full">
           {!isLoading ? (
             claimHistory.map((item: IClaimHistory, index) => (
-              <div key={index} className="grid grid-cols-4 w-full  px-4 py-3 gap-x-4 text-base  bg-gray-400 bg-opacity-20 border-b border-themeGreen">
+              <div
+                key={index}
+                className="grid grid-cols-4 w-full  px-4 py-3 gap-x-4 text-base  bg-gray-400 bg-opacity-20 border-b border-themeGreen"
+              >
                 <>
                   <div className="ml-10">
                     {/* {item.stakeId} -{" "} */}
@@ -70,8 +85,16 @@ export default function ClaimHistory() {
                   <a className="flex items-center justify-center">
                     {item.amount.toFixed(3)}
                   </a>
-                  <div className="flex items-center justify-center ml-4">
+                  {/* <div className="flex items-center justify-center ml-4">
                     {formattedDate(item.timestamp)}
+                  </div> */}
+                  <div className="flex flex-col items-center text-sm gap-1 justify-center">
+                    <span>
+                      {formattedDateTime(item.timestamp).formattedDate}
+                    </span>
+                    <span>
+                      ({formattedDateTime(item.timestamp).formattedTime})
+                    </span>
                   </div>
                   <div className="flex items-center justify-center text-blue-700">
                     <a
