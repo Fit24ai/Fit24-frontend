@@ -309,7 +309,10 @@ export default function ChartBox({ token }: { token: number }) {
       // }
       if (
         Math.floor(Date.now() / 1000) - res.stakes[0].startTime >
-          24 * 60 * 60 
+          24 * 60 * 60 &&
+        Math.floor(Date.now() / 1000) -
+          Number(lastClaimedTimestamp[0].result!) >
+          24 * 60 * 60
       ) {
         console.log(false)
         setClaimStakeCondition(false)

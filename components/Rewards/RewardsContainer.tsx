@@ -1,6 +1,7 @@
 "use client"
 import { getNumber, isValidAddress, smallAddress } from "@/libs/utils"
 import {
+  getAllClaimedReward,
   getAllStakeTokens,
   getMyUpline,
   getReferralStream,
@@ -35,6 +36,7 @@ import {
 import "react-date-range/dist/styles.css" // main css file
 import "react-date-range/dist/theme/default.css" // theme css file
 import { stakingAbi } from "@/libs/stakingAbi"
+import { it } from "node:test"
 
 export default function RewardsContainer() {
   const { isLoggedIn } = useWallet()
@@ -284,9 +286,51 @@ export default function RewardsContainer() {
       ],
     })
 
+  const {
+    data: readPendingAmount,
+    isLoading: pendingLoading,
+    refetch: refetchPendingAmount,
+  } = useReadContracts({
+    allowFailure: true,
+    contracts: [
+      {
+        abi: stakingAbi,
+        address: fit24ContractAddress,
+        functionName: "getPendingAmountForDay",
+        chainId: vestingChainId,
+        args: [address],
+      },
+    ],
+  })
+
+  const [historyAmount, setHistoryAmount] = useState(0)
+
+  const claimedRewards = async () => {
+    try {
+      setLoading(true)
+      const res = await getAllClaimedReward()
+      console.log(res)
+      let amount = 0
+      res.map((item: any) => {
+        amount = amount + item.amount
+      })
+      setHistoryAmount(amount)
+      setLoading(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
-    if (!readTotalStakeAmount) return
-    setStakeRewards(getNumber(readTotalStakeAmount[0].result! as bigint, 18))
+    claimedRewards()
+  }, [address])
+
+  useEffect(() => {
+    if (!readTotalStakeAmount || !readPendingAmount) return
+    setStakeRewards(
+      getNumber(readTotalStakeAmount[0].result! as bigint, 18) -
+        getNumber(readPendingAmount[0].result! as bigint, 18)
+    )
     console.log(
       "Stake Rewards",
       getNumber(readTotalStakeAmount[0].result! as bigint, 18)
@@ -294,7 +338,7 @@ export default function RewardsContainer() {
     // setTotalRewards(
     //   (prev) => prev + getNumber(readTotalStakeAmount[0].result! as bigint, 18)
     // )
-  }, [readTotalStakeAmount])
+  }, [readTotalStakeAmount, readPendingAmount])
 
   return (
     <div className="text-white w-full h-full  2md:py-8 py-4 2md:px-10 px-3">
@@ -316,8 +360,10 @@ export default function RewardsContainer() {
         </div>
         <Rewards
           referralRewards={referralRewards}
-          stakeRewards={stakeRewards}
-          totalRewards={totalRewards + stakeRewards}
+          // stakeRewards={stakeRewards}
+          stakeRewards={historyAmount}
+          totalRewards={totalRewards + historyAmount}
+          // totalRewards={totalRewards + stakeRewards}
         />
         {upline && (
           <div>
