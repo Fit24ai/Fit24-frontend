@@ -290,13 +290,32 @@ export default function ChartBox({ token }: { token: number }) {
       console.log("stakes", res)
       console.log("stakes times", res.stakes[res.stakes.length - 1].startTime)
       console.log("timestamp", Number(lastClaimedTimestamp[0].result!))
-      if (res.stakes[0].startTime > Number(lastClaimedTimestamp[0].result!)) {
-        console.log(true)
+      console.log(
+        "new time",
+        Math.floor(Date.now() / 1000) - res.stakes[0].startTime
+      )
+      // if (res.stakes[0].startTime > Number(lastClaimedTimestamp[0].result!)) {
+      //   console.log(true)
 
-        setClaimStakeCondition(true)
-      } else {
+      //   setClaimStakeCondition(true)
+      // } else {
+      //   console.log(false)
+      //   setClaimStakeCondition(false)
+      // }
+      // setClaimLoading(false)
+
+      // if(Number(lastClaimedTimestamp[0].result!)){
+
+      // }
+      if (
+        Math.floor(Date.now() / 1000) - res.stakes[0].startTime >
+          24 * 60 * 60 
+      ) {
         console.log(false)
         setClaimStakeCondition(false)
+      } else {
+        console.log(true)
+        setClaimStakeCondition(true)
       }
       setClaimLoading(false)
     } catch (error) {
@@ -705,7 +724,11 @@ export default function ChartBox({ token }: { token: number }) {
           </button>
           {showPopup && (
             <div className="absolute bg-white border text-black rounded-full border-gray-200 shadow-md top-14 w-fit left-[50%] p-2 z-10 text-semibold text-base text-nowrap">
-              {pendingAmount === 0 ? "Already Claimed" : claimStakeCondition ? "Claim after 24 hours" : "Already Claimed"}
+              {pendingAmount === 0
+                ? "Already Claimed"
+                : claimStakeCondition
+                ? "Claim after 24 hours"
+                : "Already Claimed"}
             </div>
           )}
         </div>
