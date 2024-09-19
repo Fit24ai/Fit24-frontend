@@ -142,6 +142,7 @@ export function NavbarDrawer() {
             </DrawerClose>
           </div> */}
           {/* <ConnectWallet /> */}
+          <ConnectWallet />
           <div className="w-full bg-[#020c2b] flex flex-col gap-2 rounded-lg py-2 px-4">
             <div className="w-full flex items-center justify-between">
               <div className="w-full flex items-center gap-2">
@@ -159,22 +160,22 @@ export function NavbarDrawer() {
             </div>
             {token > 0 && (
               <div className="w-full flex items-center gap-4 text-sm ">
-              <div>My Referral ID</div>
-              {/* <div> {address && smallAddress(address!)}</div> */}
-              <button
-                onClick={handleButtonClick}
-                disabled={isAlertVisible}
-                className="text-gray-400 flex items-center justify-center"
-              >
-                {isAlertVisible ? (
-                  <FaCheck size={20} />
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <LuCopy /> <span className="text-themeGreen">Copy</span>
-                  </div>
-                )}
-              </button>
-            </div>
+                <div>My Referral ID</div>
+                {/* <div> {address && smallAddress(address!)}</div> */}
+                <button
+                  onClick={handleButtonClick}
+                  disabled={isAlertVisible}
+                  className="text-gray-400 flex items-center justify-center"
+                >
+                  {isAlertVisible ? (
+                    <FaCheck size={20} />
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <LuCopy /> <span className="text-themeGreen">Copy</span>
+                    </div>
+                  )}
+                </button>
+              </div>
             )}
           </div>
 

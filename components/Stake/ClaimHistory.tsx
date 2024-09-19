@@ -58,7 +58,7 @@ export default function ClaimHistory() {
       <div>Claim History</div>
       <div className="flex flex-col  overflow-x-auto  rounded-xl">
         <div className="grid grid-cols-4 w-full p-4  gap-x-4  text-sm  min-w-[920px] bg-green-300 bg-opacity-20 border-b border-themeGreen">
-          <div className="ml-10">TX TYPE</div>
+          <div className="ml-10">TX ID & TYPE</div>
           <div className="text-center">CLAIMED TOKENS</div>
           <div className="text-center ">TIMESTAMP</div>
           <div className="text-center "> TRANSACTION HASH</div>
@@ -72,7 +72,7 @@ export default function ClaimHistory() {
               >
                 <>
                   <div className="ml-10">
-                    {/* {item.stakeId} -{" "} */}
+                    {item.stakeId} -{" "}
                     {!item.isReferred
                       ? item.poolType && item.poolType <= 9
                         ? "VESTED STAKE"
