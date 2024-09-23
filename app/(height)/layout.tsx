@@ -6,7 +6,7 @@ import Navbar from "@/components/shared/Navbar/Navbar"
 import { ReferralDialog } from "@/components/shared/ReferralDialog"
 import Sidebar from "@/components/shared/Sidebar/Sidebar"
 import { useParams } from "@/context/useParams"
-import { useWallet } from "@/hooks/useWallet"
+// import { useWallet } from "@/hooks/useWallet"
 import { useEffect, useState } from "react"
 import { useAccount } from "wagmi"
 // import { Metadata } from "next"
@@ -21,8 +21,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   // const { params } = useParams()
-  const { openWallet, disconnectWallet, isEmailPopup, setIsEmailPopup } =
-    useWallet()
+  // const { openWallet, disconnectWallet, isEmailPopup, setIsEmailPopup } =
+  //   useWallet()
   const [open, setOpen] = useState<boolean>(false)
   const { isConnected } = useAccount()
   useEffect(() => {
