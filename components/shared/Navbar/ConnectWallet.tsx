@@ -36,7 +36,7 @@ const ConnectWallet = ({ drawer }: { drawer?: boolean }) => {
   const { open } = useWeb3Modal()
   return (
     <>
-      <EmailDialog open={isEmailPopup} setIsEmailPopup={setIsEmailPopup} />
+      {/* <EmailDialog open={isEmailPopup} setIsEmailPopup={setIsEmailPopup} /> */}
       {drawer
         ? !isConnected && (
             <button

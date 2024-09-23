@@ -25,6 +25,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const [isRegisterPopup, setIsRegisterPopup] = useState<boolean>(false)
   const [registerReferralPopup, setRegisterReferralPopup] =
     useState<boolean>(false)
+  const [isAlert, setIsAlert] = useState<boolean>(false)
 
   const login = async (email?: string, number?: string) => {
     if (!address) return
@@ -55,6 +56,12 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const disconnectWallet = () => {
     disconnect()
   }
+
+  useEffect(() => {
+    if (isAlert) {
+      setIsEmailPopup(false)
+    }
+  }, [isAlert, isEmailPopup])
 
   const logout = () => {
     localStorage.removeItem("authToken")
@@ -91,6 +98,8 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
         setIsRegisterPopup,
         registerReferralPopup,
         setRegisterReferralPopup,
+        isAlert,
+        setIsAlert,
       }}
     >
       {children}

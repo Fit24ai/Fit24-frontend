@@ -108,18 +108,38 @@ export const getAllClaimedReward = async () => {
   return res.data
 }
 
-export const getReferralStream = async () => {
-  const res = await http.get(`/staking/get-referral-stream`, {
+export const getReferralStream = async (level?: number) => {
+  const url = level ? `/staking/get-referral-stream/${level}` : `/staking/get-referral-stream`;
+
+  const res = await http.get(url, {
+    headers: {
+      Authorization: `Bearer ${getAuthToken()}`,
+    },
+  });
+
+  console.log(res.data[0]);
+  return res.data;
+};
+
+
+export const getTotalMembers = async () => {
+  const res = await http.get(`/staking/get-total-members`, {
     headers: {
       Authorization: `Bearer ${getAuthToken()}`,
     },
   })
-  console.log(res.data[0])
   return res.data
 }
-
-export const getTotalMembers = async () => {
-  const res = await http.get(`/staking/get-total-members`, {
+export const getAllLevelRewardsClaimed = async () => {
+  const res = await http.get(`/staking/get-all-level-claimed-rewards`, {
+    headers: {
+      Authorization: `Bearer ${getAuthToken()}`,
+    },
+  })
+  return res.data
+}
+export const getAllStakeRewardsClaimed = async () => {
+  const res = await http.get(`/staking/get-all-stake-claimed-rewards`, {
     headers: {
       Authorization: `Bearer ${getAuthToken()}`,
     },

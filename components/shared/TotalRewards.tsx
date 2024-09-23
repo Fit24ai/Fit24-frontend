@@ -5,13 +5,7 @@ import { getNumber } from "@/libs/utils"
 import { useEffect } from "react"
 import { useAccount, useReadContracts } from "wagmi"
 
-const StakeRewardClaimed = ({
-  stakeId,
-  onRewardClaimed,
-}: {
-  stakeId: number
-  onRewardClaimed?: any
-}) => {
+export default function TotalRewardClaimed(stakeId: number) {
   const { address } = useAccount()
 
   const { data: readStakeRewardClaimed, isLoading: stakeRewardClaimedLoading } =
@@ -28,18 +22,8 @@ const StakeRewardClaimed = ({
       ],
     })
 
-  useEffect(() => {
-    if (!onRewardClaimed) return
-    if (!readStakeRewardClaimed) return
-    onRewardClaimed(getNumber(readStakeRewardClaimed[0].result! as bigint, 18))
-  }, [readStakeRewardClaimed])
-
   return (
-    <>
-      {readStakeRewardClaimed &&
-        getNumber(readStakeRewardClaimed[0].result! as bigint, 18).toFixed(3)}
-    </>
+    readStakeRewardClaimed &&
+    getNumber(readStakeRewardClaimed[0].result! as bigint, 18).toFixed(3)
   )
 }
-
-export default StakeRewardClaimed

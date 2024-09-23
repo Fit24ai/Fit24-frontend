@@ -29,10 +29,19 @@ import { BiLoader, BiLoaderCircle } from "react-icons/bi"
 import { FaRegCircleCheck } from "react-icons/fa6"
 import { VscError } from "react-icons/vsc"
 import { CgSpinner } from "react-icons/cg"
+import { useParams } from "@/context/useParams"
 
 export function AlertDialog({ stakeRef }: { stakeRef: string | undefined }) {
-  const { openWallet, isLoggedIn, disconnectWallet, setIsRegisterPopup } =
-    useWallet()
+  const { params, setParams } = useParams()
+  const { setIsEmailPopup, isEmailPopup } = useWallet()
+  const {
+    openWallet,
+    isLoggedIn,
+    disconnectWallet,
+    setIsRegisterPopup,
+    isAlert,
+    setIsAlert,
+  } = useWallet()
   const { address } = useAccount()
   const [openBox, setOpenBox] = useState(false)
   // const search = useSearchParams()
@@ -42,6 +51,7 @@ export function AlertDialog({ stakeRef }: { stakeRef: string | undefined }) {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
+  // const [stakeRef, setStakeRef] = useState<string | undefined>()
 
   const { writeContractAsync } = useWriteContract()
 
@@ -57,24 +67,37 @@ export function AlertDialog({ stakeRef }: { stakeRef: string | undefined }) {
       },
     ],
   })
+  // useEffect(() => {
+  //   if (params) {
+  //     setStakeRef(params)
+  //   }
+  // }, [params])
 
   useEffect(() => {
     if (!address) return
     if (registerLoading) return
     console.log(readRegister)
+
     if (readRegister) {
       if (
         readRegister[0].result === "0x0000000000000000000000000000000000000000"
       ) {
         if (!stakeRef) {
           setIsRegisterPopup(true)
-          setOpenBox(true)
+          setIsEmailPopup(false)
+          setIsAlert(true)
         }
       }
     }
   }, [address, registerLoading])
+
+  // useEffect(() => {
+  //   if (isEmailPopup === true) {
+  //     if (openBox === true) setOpenBox(false)
+  //   }
+  // }, [isEmailPopup])
   return (
-    <Dialog open={openBox}>
+    <Dialog open={isAlert}>
       <DialogContent className="sm:max-w-md  outline-none border-none text-white bg-red-600 bg-gradient-to-br  from-[#056237] to-[#030f39]">
         <div className=" w-full flex flex-col gap-4 items-center rounded-lg">
           <div className="text-xl font-bold mb-4 text-center">
@@ -83,8 +106,9 @@ export function AlertDialog({ stakeRef }: { stakeRef: string | undefined }) {
           <div>
             <button
               onClick={() => {
+                // setIsEmailPopup(false)
                 disconnectWallet()
-                setOpenBox(false)
+                setIsAlert(false)
               }}
               className="flex items-center justify-center h-12   w-full  mx-auto text-lg font-semibold bg-themeGreen rounded-full shadow shadow-white/30 bg-opacity-50 mt-6 col-start-1 px-6"
             >

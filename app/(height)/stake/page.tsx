@@ -1,3 +1,4 @@
+import { AlertDialog } from "@/components/shared/AlertDialog"
 import PageWrapper from "@/components/shared/PageWrapper"
 import Rewards from "@/components/Stake/Rewards"
 import StakeContainer from "@/components/Stake/StakeContainer"
@@ -22,6 +23,7 @@ export default function page({
     //   </div>
     // </div>
     <PageWrapper>
+      <AlertDialog stakeRef={undefined} />
       <StakeContainer tab={searchParams.tab} />
     </PageWrapper>
   )

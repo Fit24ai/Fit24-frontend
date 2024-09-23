@@ -40,6 +40,7 @@ export function ReferralDialog({ stakeRef }: { stakeRef: string | undefined }) {
     setIsEmailPopup,
     isRegisterPopup,
     disconnectWallet,
+    setIsAlert,
   } = useWallet()
   const { address, chain } = useAccount()
   const [openBox, setOpenBox] = useState(false)
@@ -107,7 +108,8 @@ export function ReferralDialog({ stakeRef }: { stakeRef: string | undefined }) {
     }
     setLoading(false)
     setSuccess(true)
-    // setIsEmailPopup(true)
+    setIsAlert(false)
+    setIsEmailPopup(true)
   }, [stakeReceipt, stakeError])
 
   useEffect(() => {
@@ -131,88 +133,89 @@ export function ReferralDialog({ stakeRef }: { stakeRef: string | undefined }) {
   return (
     <Dialog open={openBox}>
       {/* <div className="fixed inset-0 bg-black z-50 flex items-center justify-center"> */}
-        <DialogContent className=" outline-none border-none text-white bg-black min-w-[100vw] w-full h-[100vh] flex items-center justify-center">
-          <div className=" flex flex-col gap-4 items-center rounded-lg bg-gradient-to-br from-[#056237] to-[#030f39] py-6 w-fit px-6 sm:px-16">
-            {error ? (
+      <DialogContent className=" outline-none border-none text-white bg-black min-w-[100vw] w-full h-[100vh] flex items-center justify-center">
+        <div className=" flex flex-col gap-4 items-center rounded-lg bg-gradient-to-br from-[#056237] to-[#030f39] py-6 w-fit px-6 sm:px-16">
+          {error ? (
+            <div>
+              <div className="min-w-[200px] h-[100px] flex items-center justify-center text-red-500">
+                <VscError className="h-[50px] w-[50px]" />
+              </div>
+              <div className="text-center text-2xl font-bold">
+                Something went wrong
+              </div>
               <div>
-                <div className="min-w-[200px] h-[100px] flex items-center justify-center text-red-500">
-                  <VscError className="h-[50px] w-[50px]" />
-                </div>
-                <div className="text-center text-2xl font-bold">
-                  Something went wrong
-                </div>
-                <div>
-                  <button
-                    onClick={() => {
-                      disconnectWallet()
-                      router.push("/dashboard")
-                      setOpenBox(false)
-                    }}
-                    className="flex items-center justify-center h-12 w-full mx-auto text-lg font-semibold bg-[#F27052] rounded-full shadow shadow-white/30 bg-opacity-50 mt-6 col-start-1"
-                  >
-                    Close
-                  </button>
-                </div>
+                <button
+                  onClick={() => {
+                    disconnectWallet()
+                    router.push("/dashboard")
+                    setOpenBox(false)
+                  }}
+                  className="flex items-center justify-center h-12 w-full mx-auto text-lg font-semibold bg-[#F27052] rounded-full shadow shadow-white/30 bg-opacity-50 mt-6 col-start-1"
+                >
+                  Close
+                </button>
               </div>
-            ) : loading ? (
-              <div className="min-w-[200px] h-[100px] flex items-center justify-center text-themeOrange">
-                <CgSpinner className="h-[50px] w-[50px] animate-spin" />
+            </div>
+          ) : loading ? (
+            <div className="min-w-[200px] h-[100px] flex items-center justify-center text-themeOrange">
+              <CgSpinner className="h-[50px] w-[50px] animate-spin" />
+            </div>
+          ) : success ? (
+            <div>
+              <div className="min-w-[200px] h-[100px] flex items-center justify-center text-green-500">
+                <FaRegCircleCheck className="h-[50px] w-[50px]" />
               </div>
-            ) : success ? (
+              <div className="text-center text-2xl font-bold">
+                Registered Successfully
+              </div>
               <div>
-                <div className="min-w-[200px] h-[100px] flex items-center justify-center text-green-500">
-                  <FaRegCircleCheck className="h-[50px] w-[50px]" />
-                </div>
-                <div className="text-center text-2xl font-bold">
-                  Registered Successfully
-                </div>
-                <div>
-                  <button
-                    onClick={() => {
-                      router.push("/dashboard")
-                      setOpenBox(false)
-                    }}
-                    className="flex items-center justify-center h-12 w-full mx-auto text-lg font-semibold bg-[#F27052] rounded-full shadow shadow-white/30 bg-opacity-50 mt-6 col-start-1"
-                  >
-                    Close
-                  </button>
-                </div>
+                <button
+                  onClick={() => {
+                    router.push("/dashboard")
+                    setOpenBox(false)
+                  }}
+                  className="flex items-center justify-center h-12 w-full mx-auto text-lg font-semibold bg-[#F27052] rounded-full shadow shadow-white/30 bg-opacity-50 mt-6 col-start-1"
+                >
+                  Close
+                </button>
               </div>
-            ) : registered ? (
+            </div>
+          ) : registered ? (
+            <div>
+              <div className="text-2xl font-bold mb-4">
+                Referral already exists.
+              </div>
               <div>
-                <div className="text-2xl font-bold mb-4">
-                  Referral already exists.
-                </div>
-                <div>
-                  <button
-                    onClick={() => {
-                      setOpenBox(false)
-                      router.push("/dashboard")
-                    }}
-                    className="flex items-center justify-center h-12 w-full mx-auto text-lg font-semibold bg-[#F27052] rounded-full shadow shadow-white/30 bg-opacity-50 mt-6 col-start-1"
-                  >
-                    Close
-                  </button>
-                </div>
+                <button
+                  onClick={() => {
+                    
+                    setOpenBox(false)
+                    router.push("/dashboard")
+                  }}
+                  className="flex items-center justify-center h-12 w-full mx-auto text-lg font-semibold bg-[#F27052] rounded-full shadow shadow-white/30 bg-opacity-50 mt-6 col-start-1"
+                >
+                  Close
+                </button>
               </div>
-            ) : (
-              <>
-                <div className="text-2xl font-bold mb-4">
-                  Register your Referral
-                </div>
-                <div className="p-2 border rounded-lg">{refId}</div>
-                <div>
-                  <button
-                    onClick={handleRegisterReferral}
-                    className="flex items-center justify-center h-12 w-full mx-auto text-lg font-semibold bg-themeGreen rounded-full shadow shadow-white/30 bg-opacity-50 mt-6 col-start-1 px-6"
-                  >
-                    Register
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-        </DialogContent>
+            </div>
+          ) : (
+            <>
+              <div className="text-2xl font-bold mb-4">
+                Register your Referral
+              </div>
+              <div className="p-2 border rounded-lg">{refId}</div>
+              <div>
+                <button
+                  onClick={handleRegisterReferral}
+                  className="flex items-center justify-center h-12 w-full mx-auto text-lg font-semibold bg-themeGreen rounded-full shadow shadow-white/30 bg-opacity-50 mt-6 col-start-1 px-6"
+                >
+                  Register
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      </DialogContent>
       {/* </div> */}
     </Dialog>
   )

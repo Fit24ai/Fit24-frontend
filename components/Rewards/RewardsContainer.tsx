@@ -2,6 +2,8 @@
 import { getNumber, isValidAddress, smallAddress } from "@/libs/utils"
 import {
   getAllClaimedReward,
+  getAllLevelRewardsClaimed,
+  getAllStakeRewardsClaimed,
   getAllStakeTokens,
   getMyUpline,
   getReferralStream,
@@ -37,6 +39,8 @@ import "react-date-range/dist/styles.css" // main css file
 import "react-date-range/dist/theme/default.css" // theme css file
 import { stakingAbi } from "@/libs/stakingAbi"
 import { it } from "node:test"
+import StakeRewardClaimed from "../shared/StakeRewardClaimed"
+import TotalRewardClaimed from "../shared/TotalRewards"
 
 export default function RewardsContainer() {
   const { isLoggedIn } = useWallet()
@@ -45,6 +49,7 @@ export default function RewardsContainer() {
   const [isAlertVisible, setIsAlertVisible] = useState(false)
   const [isCopyAddress, setCopyAddress] = useState(false)
   const [isLoading, setLoading] = useState(false)
+  const [selectedFromLevel, setSelectedFromLevel] = useState(null)
 
   const { data: readReferrer, isLoading: referrerLoading } = useReadContracts({
     allowFailure: true,
@@ -120,49 +125,43 @@ export default function RewardsContainer() {
   }
 
   const [totalRewards, setTotalRewards] = useState(0)
-  const [referralRewards, setReferralRewards] = useState(0)
-  const [stakeRewards, setStakeRewards] = useState(0)
-
-  // const getReferrals = async () => {
-  //   try {
-  //     setLoading(true)
-  //     const res = await getReferralStream()
-  //     console.log("rewards", res)
-  //     setReferralStream(res)
-  //     res.map((item: any, idx: number) => {
-  //       if (item.referralDetails.isReferred) {
-  //         setReferralRewards((prev) => prev + item.referralDetails.amount)
-  //       } else {
-  //         setStakeRewards((prev) => prev + item.referralDetails.amount)
-  //       }
-  //       setTotalRewards((prev) => prev + item.referralDetails.amount)
-  //     })
-  //     setLoading(false)
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
+  const [referralRewards, setReferralRewards] = useState<any>(0)
+  const [stakeRewards, setStakeRewards] = useState<any>(0)
 
   const getReferrals = async () => {
     try {
       setLoading(true)
-      const res = await getReferralStream()
+      let res = []
+      if (selectedFromLevel) {
+        res = await getReferralStream(selectedFromLevel)
+      } else {
+        res = await getReferralStream()
+      }
+
       let totalReferralRewards = 0
       let totalStakeRewards = 0
       let totalAllRewards = 0
+      console.log(res)
 
       res.forEach((item: any) => {
         if (item.referralDetails.isReferred) {
-          totalReferralRewards += item.referralDetails.amount
+          if (item.referralDetails.totalClaimed)
+            totalReferralRewards += item.referralDetails.totalClaimed
         } else {
-          totalStakeRewards += item.referralDetails.amount
+          if (item.referralDetails.totalClaimed)
+            totalStakeRewards += item.referralDetails.totalClaimed
+          // totalStakeRewards += item.referralDetails.amount
         }
-        totalAllRewards += item.referralDetails.amount
+        if (item.referralDetails.totalClaimed)
+          totalAllRewards += item.referralDetails.totalClaimed
+        // totalAllRewards += item.referralDetails.amount
       })
 
-      setReferralRewards(totalReferralRewards)
+      // setReferralRewards(totalReferralRewards)
+      console.log("totalReferralRewards", totalReferralRewards)
       // setStakeRewards(totalStakeRewards)
-      setTotalRewards(totalAllRewards)
+      console.log("totalStakeRewards", totalStakeRewards)
+      console.log("referralStream", res)
       setReferralStream(res)
       setLoading(false)
     } catch (error) {
@@ -174,7 +173,9 @@ export default function RewardsContainer() {
     if (!isConnected) return
     if (!isLoggedIn) return
     getReferrals()
-  }, [isConnected, address, isLoggedIn])
+    // claimedRewards()
+  }, [isConnected, address, isLoggedIn, selectedFromLevel])
+
   // useEffect(() => {
   //   setTimeout(() => {
   //     if (!isLoggedIn) return
@@ -211,17 +212,16 @@ export default function RewardsContainer() {
       key: "selection",
     },
   ])
-  const [selectedFromLevel, setSelectedFromLevel] = useState(null)
 
-  const [filteredStream, setFilteredStream] = useState<any>([])
+  // const [filteredStream, setFilteredStream] = useState<any>([])
 
   // Filtering referralStream based on selected filters
   const filteredReferralStream = referralStream.filter((item: any) => {
-    const referralLevel = item.referralDetails.level
+    // const referralLevel = item.referralDetails.level
     const referralTimestamp: any = item.referralDetails.startTime * 1000
 
-    const levelMatches =
-      selectedFromLevel === null || referralLevel === selectedFromLevel
+    // const levelMatches =
+    //   selectedFromLevel === null || referralLevel === selectedFromLevel
 
     const startDate: any = dateRange[0].startDate
     const endDate: any = dateRange[0].endDate
@@ -232,12 +232,13 @@ export default function RewardsContainer() {
       (referralTimestamp >= startDate.getTime() &&
         referralTimestamp <= endDate.getTime())
 
-    return levelMatches && dateMatches
+    return dateMatches
   })
 
-  useEffect(() => {
-    setFilteredStream(filteredReferralStream)
-  }, [dateRange, selectedFromLevel, referralStream])
+  // useEffect(() => {
+  //   setReferralRewards(0)
+  //   setFilteredStream(filteredReferralStream)
+  // }, [dateRange, selectedFromLevel, referralStream])
 
   const levels = Array.from({ length: 24 }, (_, i) => i + 1)
 
@@ -261,16 +262,16 @@ export default function RewardsContainer() {
     }
   }
 
-  useEffect(() => {
-    if (!isLoggedIn) return
-    getupline()
-  }, [address, isLoggedIn])
-  useEffect(() => {
-    setTimeout(() => {
-      if (!isLoggedIn) return
-      getupline()
-    }, 2000)
-  }, [address])
+  // useEffect(() => {
+  //   if (!isLoggedIn) return
+  //   getupline()
+  // }, [address, isLoggedIn])
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     if (!isLoggedIn) return
+  //     getupline()
+  //   }, 2000)
+  // }, [address])
 
   const { data: readTotalStakeAmount, isLoading: totalStakeLoading } =
     useReadContracts({
@@ -303,42 +304,68 @@ export default function RewardsContainer() {
     ],
   })
 
-  const [historyAmount, setHistoryAmount] = useState(0)
+  // const [historyAmount, setHistoryAmount] = useState(0)
 
-  const claimedRewards = async () => {
+  // const claimedRewards = async () => {
+  //   try {
+  //     setLoading(true)
+  //     const res = await getAllClaimedReward()
+  //     // console.log(res)
+  //     let amount = 0
+  //     res.map((item: any) => {
+  //       amount = amount + item.amount
+  //     })
+  //     setHistoryAmount(amount)
+  //     setLoading(false)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   if (!readTotalStakeAmount || !readPendingAmount) return
+  //   setStakeRewards(
+  //     getNumber(readTotalStakeAmount[0].result! as bigint, 18) -
+  //       getNumber(readPendingAmount[0].result! as bigint, 18)
+  //   )
+  //   console.log(
+  //     "Stake Rewards",
+  //     getNumber(readTotalStakeAmount[0].result! as bigint, 18)
+  //   )
+  //   // setTotalRewards(
+  //   //   (prev) => prev + getNumber(readTotalStakeAmount[0].result! as bigint, 18)
+  //   // )
+  // }, [readTotalStakeAmount, readPendingAmount])
+
+  // const handleRewardClaimed = (reward: any) => {
+  //   setReferralRewards((prevRewards) => prevRewards + reward)
+  // }
+
+  const getAllLevelRewardsClaimedByUser = async () => {
     try {
-      setLoading(true)
-      const res = await getAllClaimedReward()
+      const res = await getAllLevelRewardsClaimed()
       console.log(res)
-      let amount = 0
-      res.map((item: any) => {
-        amount = amount + item.amount
-      })
-      setHistoryAmount(amount)
-      setLoading(false)
+      setReferralRewards(res.rewards)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const getAllStakeRewardsClaimedByUser = async () => {
+    try {
+      const res = await getAllStakeRewardsClaimed()
+      console.log(res)
+      setStakeRewards(res.rewards)
     } catch (error) {
       console.log(error)
     }
   }
 
   useEffect(() => {
-    claimedRewards()
-  }, [address])
-
-  useEffect(() => {
-    if (!readTotalStakeAmount || !readPendingAmount) return
-    setStakeRewards(
-      getNumber(readTotalStakeAmount[0].result! as bigint, 18) -
-        getNumber(readPendingAmount[0].result! as bigint, 18)
-    )
-    console.log(
-      "Stake Rewards",
-      getNumber(readTotalStakeAmount[0].result! as bigint, 18)
-    )
-    // setTotalRewards(
-    //   (prev) => prev + getNumber(readTotalStakeAmount[0].result! as bigint, 18)
-    // )
-  }, [readTotalStakeAmount, readPendingAmount])
+    if (!isConnected) return
+    if (!isLoggedIn) return
+    getAllLevelRewardsClaimedByUser()
+    getAllStakeRewardsClaimedByUser()
+  }, [isConnected, address, isLoggedIn])
 
   return (
     <div className="text-white w-full h-full  2md:py-8 py-4 2md:px-10 px-3">
@@ -361,8 +388,10 @@ export default function RewardsContainer() {
         <Rewards
           referralRewards={referralRewards}
           // stakeRewards={stakeRewards}
-          stakeRewards={historyAmount}
-          totalRewards={totalRewards + historyAmount}
+          stakeRewards={stakeRewards}
+          totalRewards={stakeRewards + referralRewards}
+          // stakeRewards={historyAmount}
+          // totalRewards={totalRewards + historyAmount}
           // totalRewards={totalRewards + stakeRewards}
         />
         {upline && (
@@ -466,7 +495,7 @@ export default function RewardsContainer() {
           </div>
           <div className="md:max-h-[50vh] max-h-[80vh] overflow-y-scroll min-w-[1000px] w-full">
             {!isLoading ? (
-              filteredReferralStream.map((item: any, index) => (
+              filteredReferralStream.map((item: any, index: number) => (
                 <div
                   key={index}
                   className="grid grid-cols-11 w-full  px-4 py-3 gap-x-4 text-base  bg-gray-400 bg-opacity-20 border-t border-themeGreen"
@@ -531,13 +560,22 @@ export default function RewardsContainer() {
                       {/* {getDays(item.referralDetails.stakeDuration)} */}
                     </div>
                     <div className="flex items-center justify-center ">
-                      {Number(
+                      {/* {Number(
                         (item.referralDetails.apr * 100) /
                           getDays(item.referralDetails.stakeDuration)
+                      ).toFixed(3)} */}
+                      {/* {Number(
+                        getDays(item.referralDetails.stakeDuration) /
+                          item.referralDetails.amount
+                      ).toFixed(3)} */}
+                      {Number(
+                        (item.referralDetails.amount *
+                          item.referralDetails.apr) /
+                          36500
                       ).toFixed(3)}
                     </div>
                     <div className="flex items-center justify-center">
-                      {(
+                      {/* {(s
                         Number(
                           (item.referralDetails.apr * 100) /
                             getDays(item.referralDetails.stakeDuration)
@@ -547,7 +585,15 @@ export default function RewardsContainer() {
                             item.referralDetails.startTime,
                             item.referralDetails.stakeDuration
                           ))
-                      ).toFixed(3)}
+                      ).toFixed(3)} */}
+
+                      {/* {item.referralDetails.totalClaimed
+                        ? Number(item.referralDetails.totalClaimed).toFixed(3)
+                        : 0.0} */}
+                      <StakeRewardClaimed
+                        stakeId={item.referralDetails.stakeId}
+                        // onRewardClaimed={handleRewardClaimed}
+                      />
                     </div>
 
                     <div className="flex items-center justify-center text-blue-700">

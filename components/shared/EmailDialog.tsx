@@ -51,6 +51,7 @@ export function EmailDialog({
         setData({ email: "", number: undefined })
         setLoading(false)
         setError(null)
+        window.location.reload()
       }
     } catch (error) {
       setLoading(false)
