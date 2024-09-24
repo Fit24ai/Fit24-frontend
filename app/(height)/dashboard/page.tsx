@@ -12,8 +12,7 @@ export default function page({
 }: {
   searchParams: { stakeRef: string | undefined }
 }) {
-  const { openWallet, disconnectWallet, isEmailPopup, setIsEmailPopup } =
-    useWallet()
+  const { openWallet, disconnectWallet, isEmailPopup, setIsEmailPopup } = useWallet()
   return (
     <PageWrapper>
       <AlertDialog stakeRef={undefined} />
