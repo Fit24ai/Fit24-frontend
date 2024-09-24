@@ -306,7 +306,13 @@ export default function ChartBox({ token }: { token: number }) {
   const getAllUserStakes = async () => {
     try {
       setClaimLoading(true)
-      if (!address || !lastClaimedTimestamp || !userDailyRewardClaimed) return
+      if (
+        !address ||
+        !lastClaimedTimestamp ||
+        !userDailyRewardClaimed ||
+        !readPendingAmount
+      )
+        return
 
       const res: any = await getAllStakesByUser(address)
       console.log("userDailyRewardClaimed", userDailyRewardClaimed[0].result)
@@ -330,7 +336,21 @@ export default function ChartBox({ token }: { token: number }) {
       // if(Number(lastClaimedTimestamp[0].result!)){
 
       // }
-      if (
+      if (res.stakes.length === 0) {
+        setClaimStakeCondition(true)
+      } else if (res.stakes.length === 1) {
+        if (
+          Math.floor(Date.now() / 1000) -
+            res.stakes[res.stakes.length - 1].startTime >
+            24 * 60 * 60 &&
+          userDailyRewardClaimed[0].result! === false
+        ) {
+          setClaimStakeCondition(false)
+        } else {
+          setClaimStakeCondition(true)
+          setPendingAmount(0)
+        }
+      } else if (
         Math.floor(Date.now() / 1000) -
           res.stakes[res.stakes.length - 1].startTime >
           24 * 60 * 60 &&
@@ -342,6 +362,7 @@ export default function ChartBox({ token }: { token: number }) {
         // console.log(true)
         setClaimStakeCondition(true)
       }
+
       setClaimLoading(false)
     } catch (error) {
       // console.log(error)
@@ -669,30 +690,6 @@ export default function ChartBox({ token }: { token: number }) {
             </div>
           </div>
         </div>
-        {/* <div className="flex items-center gap-4">
-          <div className="bg-white bg-opacity-10 w-28 p-4 flex flex-col items-center gap-1 flex-1 rounded-lg">
-            <div className="text-gray-400 text-sm">Total Rewards</div>
-            <div className="text-2xl">
-              {" "}
-              12,08
-              <span className=" text-themeGreen"> Fit24</span>
-            </div>
-          </div>
-          <div className="bg-white bg-opacity-10 w-28 p-4 flex flex-col items-center gap-1 flex-1 rounded-lg">
-            <div className="text-gray-400 text-sm">Today Rewards</div>
-            <div className="text-2xl">
-              01,08
-              <span className=" text-themeGreen"> Fit24</span>
-            </div>
-          </div>
-        </div> */}
-        {/* <div className="flex md:flex-row flex-col gap-4"> */}
-        {/* {upline && (
-          <div>
-            <span className="font-semibold text-gray-400">My Upline - </span>
-            {smallAddress(upline)}
-          </div>
-        )} */}
         <div className="bg-white network-image-3 bg-opacity-10 max-w-80 w-full p-4 px-10 flex flex-col items-center gap-2  rounded-lg">
           <FaHandHoldingUsd size={24} />
           <div className="text-gray-400 text-sm">Todays Rewards</div>
@@ -713,37 +710,6 @@ export default function ChartBox({ token }: { token: number }) {
               />
             </span>
           </div>
-          {/* </div> */}
-          {/* <div className="flex flex-col gap-4  w-full">
-            <div className="network-image-4 flex flex-1 justify-between p-3 w-full rounded-lg gap-12 items-center">
-              <span className="w-16">
-                <Image
-                  src={"/fitLogo.svg"}
-                  width={3000}
-                  height={30000}
-                  alt="logo"
-                  className="h-full w-full"
-                />
-              </span>
-              <div className="text-gray-400 text-sm text-nowrap">
-                0.024 USDT
-              </div>
-            </div>
-            <div className="network-image-4 flex flex-1 justify-between p-3 w-full rounded-lg gap-12 items-center">
-              <span className="w-16">
-                <Image
-                  src={"/fitLogo.svg"}
-                  width={3000}
-                  height={30000}
-                  alt="logo"
-                  className="h-full w-full"
-                />
-              </span>
-              <div className="text-gray-400 text-sm text-nowrap">
-                0.024 USDT
-              </div>
-            </div>
-          </div> */}
         </div>
         <div className="relative max-w-80 w-full">
           {/* {claimStakeCondition ? (
@@ -782,7 +748,7 @@ export default function ChartBox({ token }: { token: number }) {
             </button>
           )} */}
           {claimStakeCondition ? (
-            <div className="text-center">Availble to claim after 24 Hours</div>
+            <div className="text-center">Available to claim after 24 Hours</div>
           ) : (
             <button
               onClick={claimReward}

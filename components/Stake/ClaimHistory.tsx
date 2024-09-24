@@ -74,9 +74,7 @@ export default function ClaimHistory() {
                   <div className="ml-10">
                     {item.stakeId} -{" "}
                     {!item.isReferred
-                      ? item.poolType && item.poolType <= 9
-                        ? "VESTED STAKE"
-                        : item.poolType <= 12
+                      ? item.poolType && item.poolType <= 12
                         ? "AUTO STAKE"
                         : "COMPOUNDED"
                       : "REFFERAL REWARD"}

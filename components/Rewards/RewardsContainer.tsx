@@ -522,7 +522,12 @@ export default function RewardsContainer() {
                       {item.referreDetails.amount.toFixed(2)}
                     </a>
                     <div className="flex items-center justify-center ">
-                      {item.referralDetails.amount}
+                      {/* {item.referralDetails.amount} */}
+                      {Number(
+                        (item.referralDetails.amount *
+                          item.referralDetails.apr) /
+                          100
+                      ).toFixed(3)}
                     </div>
                     <div className="flex items-center justify-center ">
                       {item.referralDetails.level}
