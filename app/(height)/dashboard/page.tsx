@@ -7,7 +7,7 @@ import { ReferralDialog } from "@/components/shared/ReferralDialog"
 import { useWallet } from "@/hooks/useWallet"
 import React from "react"
 
-export default function page({
+export default function DashboardPage({
   searchParams,
 }: {
   searchParams: { stakeRef: string | undefined }
