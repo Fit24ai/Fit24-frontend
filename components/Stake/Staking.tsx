@@ -24,7 +24,7 @@ import { ChangeEvent, Fragment, useContext, useEffect, useState } from "react"
 import { CgSpinner } from "react-icons/cg"
 import { IoClose } from "react-icons/io5"
 import { TiTick } from "react-icons/ti"
-import { parseEther } from "viem"
+import { parseEther, parseUnits } from "viem"
 import {
   useAccount,
   useReadContracts,
@@ -266,6 +266,11 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       })
       setDialog(true)
     }
+  }
+
+  const handlePay = async () => {
+    console.log(parseUnits(String(usdAmount!), 18))
+
   }
 
   useEffect(() => {
@@ -681,7 +686,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
             )}
 
             <button
-              onClick={handleContinue}
+              onClick={handlePay}
               disabled={!!formError}
               className={`w-[200px] mt-5 mx-auto bg-themeGreen text-white h-10 rounded-lg flex justify-center items-center ${
                 formError ? "opacity-50 cursor-not-allowed" : ""
