@@ -338,6 +338,7 @@ export default function ChartBox({ token }: { token: number }) {
       // }
       if (res.stakes.length === 0) {
         setClaimStakeCondition(true)
+        setPendingAmount(0)
       } else if (res.stakes.length >= 1) {
         if (
           Math.floor(Date.now() / 1000) -
@@ -457,6 +458,7 @@ export default function ChartBox({ token }: { token: number }) {
     lastClaimedTimestampLoading,
     userDailyRewardClaimed,
     userDailyRewardClaimedLoading,
+    readPendingAmount,
   ])
 
   useEffect(() => {
