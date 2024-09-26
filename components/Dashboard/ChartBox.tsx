@@ -338,7 +338,7 @@ export default function ChartBox({ token }: { token: number }) {
       // }
       if (res.stakes.length === 0) {
         setClaimStakeCondition(true)
-      } else if (res.stakes.length === 1) {
+      } else if (res.stakes.length >= 1) {
         if (
           Math.floor(Date.now() / 1000) -
             res.stakes[res.stakes.length - 1].startTime >

@@ -45,6 +45,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
   const [select, setSelect] = useState("")
   const [loading, setLoading] = useState(false)
   const [amount, setAmount] = useState<number | undefined>(undefined)
+  const [usdAmount, setUsdAmount] = useState<number | undefined>(undefined)
   const [dialog, setDialog] = useState(false)
   const [formError, setFormError] = useState<string | undefined>(undefined)
   const [stakeHash, setStakeHash] = useState<AddressString | undefined>(
@@ -182,11 +183,12 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     if (value > 1000000) return
 
     setAmount(value ? value : undefined)
+    setUsdAmount(value * Number(process.env.NEXT_PUBLIC_TOKEN_PRICE))
   }
 
   const handleSecondInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value)
-
+    setUsdAmount(value)
     if (value > 1000000) return
 
     const calculatedFirstInputValue =
@@ -250,15 +252,10 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       await createTransaction(tx, getChainEnum(getChain(chain).id))
       await createStake(tx, poolToContractPoolConverter(select))
       setStakeHash(tx)
-      setDialogInfo({
-        type: "SUCCESS",
-        message: `Token staked successfully`,
-        title: "Success",
-      })
-      setDialog(true)
-      setLoading(false)
+
       setSelect("")
       setAmount(0)
+      setUsdAmount(0)
     } catch (error) {
       console.log(error)
       setLoading(false)
@@ -286,6 +283,13 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       setDialog(true)
       return
     }
+    setDialogInfo({
+      type: "SUCCESS",
+      message: `Token staked successfully`,
+      title: "Success",
+    })
+    setDialog(true)
+    setLoading(false)
     verifyStakingRecord(stakeHash)
     // setLoading(false)
     setTimeout(() => {
@@ -628,11 +632,12 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
                 name="usdt"
                 className="3xs:w-[100px] w-[80px] sm:px-4 px-2 3xs:h-10 h-8 flex items-center justify-center bg-white bg-opacity-15 outline-themeGreen border-none focus:border-none rounded-sm text-sm sm:text-base"
                 disabled={!select}
-                value={
-                  !amount
-                    ? "" // Use an empty string when there is no value
-                    : amount * Number(process.env.NEXT_PUBLIC_TOKEN_PRICE)
-                }
+                value={usdAmount ?? ""}
+                // value={
+                //   !amount
+                //     ? "" // Use an empty string when there is no value
+                //     : (amount * Number(process.env.NEXT_PUBLIC_TOKEN_PRICE)).toFixed(4)
+                // }
                 type="number"
                 placeholder="0"
                 max={1000000}

@@ -51,7 +51,7 @@ export function EmailDialog({
         setData({ email: "", number: undefined })
         setLoading(false)
         setError(null)
-        window.location.reload()
+        window.location.href = '/';
       }
     } catch (error) {
       setLoading(false)
