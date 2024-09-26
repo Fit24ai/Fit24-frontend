@@ -174,7 +174,15 @@ export default function RewardsContainer() {
     if (!isLoggedIn) return
     getReferrals()
     // claimedRewards()
-  }, [isConnected, address, isLoggedIn, selectedFromLevel])
+  }, [isLoggedIn, selectedFromLevel])
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!isLoggedIn) return
+      getReferrals()
+    }, 2000)
+    // claimedRewards()
+  }, [address])
 
   // useEffect(() => {
   //   setTimeout(() => {
@@ -189,6 +197,7 @@ export default function RewardsContainer() {
     return await getAllStakeTokens()
   }
   useEffect(() => {
+    if (!isLoggedIn) return
     getTokens()
       .then((data) => {
         setToken(data.tokens)
@@ -204,6 +213,26 @@ export default function RewardsContainer() {
         serRefIncome(0)
       })
   }, [isLoggedIn])
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!isLoggedIn) return
+      getTokens()
+        .then((data) => {
+          setToken(data.tokens)
+        })
+        .catch((err) => {
+          setToken(0)
+        })
+      getUserRefIncome()
+        .then((data) => {
+          serRefIncome(data.referralIncome)
+        })
+        .catch((err) => {
+          serRefIncome(0)
+        })
+    }, 2000)
+  }, [address])
 
   const [dateRange, setDateRange] = useState<any>([
     {

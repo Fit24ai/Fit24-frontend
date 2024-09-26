@@ -7,8 +7,10 @@ import { useWallet } from "@/hooks/useWallet"
 import { getUserRefIncome, getUserTokens } from "@/services/token"
 import Image from "next/image"
 import { getAllStakeTokens } from "@/services/stakingService"
+import { useAccount } from "wagmi"
 
 export default function DashboardContainer() {
+  const { address } = useAccount()
   const { isLoggedIn } = useWallet()
   const [token, setToken] = useState(0)
   const [refIncome, serRefIncome] = useState(0)
@@ -16,6 +18,7 @@ export default function DashboardContainer() {
     return await getAllStakeTokens()
   }
   useEffect(() => {
+    if (!isLoggedIn) return
     getTokens()
       .then((data) => {
         setToken(data.tokens)
@@ -31,6 +34,26 @@ export default function DashboardContainer() {
         serRefIncome(0)
       })
   }, [isLoggedIn])
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!isLoggedIn) return
+      getTokens()
+        .then((data) => {
+          setToken(data.tokens)
+        })
+        .catch((err) => {
+          setToken(0)
+        })
+      getUserRefIncome()
+        .then((data) => {
+          serRefIncome(data.referralIncome)
+        })
+        .catch((err) => {
+          serRefIncome(0)
+        })
+    }, 2000)
+  }, [address])
   return (
     <div className="w-full flex flex-col 2md:gap-6 gap-4 2md:py-8 py-4 2md:px-10 px-3 text-white pb-10">
       <div className="flex flex-col items-center gap-2 ">
@@ -70,7 +93,7 @@ export default function DashboardContainer() {
           </div>
         </div>
       </div> */}
-      <ChartBox token={token}  />
+      <ChartBox token={token} />
     </div>
   )
 }
