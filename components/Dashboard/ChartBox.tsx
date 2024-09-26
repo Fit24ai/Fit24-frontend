@@ -266,7 +266,7 @@ export default function ChartBox({ token }: { token: number }) {
     title: string
   }>({ type: "SUCCESS", message: "", title: "" })
   const [dialog, setDialog] = useState(false)
-  const [claimStakeCondition, setClaimStakeCondition] = useState(false)
+  const [claimStakeCondition, setClaimStakeCondition] = useState(true)
   const [showPopup, setShowPopup] = useState(false)
   const [pendingAmount, setPendingAmount] = useState<number | undefined>()
   // const { reload, setReload } = useReloadContext();
@@ -374,27 +374,6 @@ export default function ChartBox({ token }: { token: number }) {
     getAllUserStakes()
   }, [address, lastClaimedTimestamp, lastClaimedTimestampLoading])
 
-  // const getAllUserStakes = async () => {
-  //   try {
-  //     setLoading(true);
-  //     setClaimLoading(true)
-  //     if (!address || !lastClaimedTimestamp) return;
-  //     const res: any = await getAllStakesByUser(address);
-  //     setStakes(res.stakes);
-  //     if((res.stakes[res.stakes.length - 1].startTime)> Number(lastClaimedTimestamp[0].result!) ){
-  //       setClaimStakeCondition(true)
-  //     }else{
-  //       setClaimStakeCondition(false)
-  //     }
-  //     setLoading(false);
-  //     setClaimLoading(false)
-  //   } catch (error) {
-  //     console.log(error)
-  //     setLoading(false)
-  //     setClaimLoading(false)
-  //   }
-  // };
-
   const { data: readTotalStakeAmount, isLoading: totalStakeLoading } =
     useReadContracts({
       allowFailure: true,
@@ -483,10 +462,6 @@ export default function ChartBox({ token }: { token: number }) {
   useEffect(() => {
     if (!readPendingAmount) return
     setPendingAmount(getNumber(readPendingAmount[0].result! as bigint, 18))
-    // console.log(
-    //   "pending amount",
-    //   getNumber(readPendingAmount[0].result! as bigint, 18)
-    // )
   }, [readPendingAmount])
 
   const { data: rewardReceipt, error: rewardError } =
@@ -516,12 +491,8 @@ export default function ChartBox({ token }: { token: number }) {
     })
     setDialog(true)
     refetchPendingAmount()
-    // setTimeout(() => {
-    //   setReload((prev) => !prev);
-    // }, 800);
   }, [rewardReceipt, rewardError])
 
-  // console.log(pendingAmount, "fjfjfj")
   const [memberLoading, setMemberLoading] = useState(false)
   const [directMemberLoading, setDirectMemberLoading] = useState(false)
 
@@ -536,11 +507,9 @@ export default function ChartBox({ token }: { token: number }) {
     setMemberLoading(true)
     try {
       const res = await getTotalMembers()
-      // console.log(res)
       setTotalMembers(res)
       setMemberLoading(false)
     } catch (error) {
-      // console.log(error)
       setMemberLoading(false)
     }
   }
@@ -554,11 +523,9 @@ export default function ChartBox({ token }: { token: number }) {
     setDirectMemberLoading(true)
     try {
       const res = await getUserLevel()
-      // console.log("direct members", res)
       setDirectMembers(res.memberData)
       setDirectMemberLoading(false)
     } catch (error) {
-      // console.log(error)
       setDirectMemberLoading(false)
     }
   }
@@ -567,77 +534,6 @@ export default function ChartBox({ token }: { token: number }) {
     if (!isLoggedIn) return
     getLevel()
   }, [address, isLoggedIn])
-
-  // const [upline, setUpline] = useState<string | undefined>()
-
-  // const getupline = async () => {
-  //   try {
-  //     const res = await getMyUpline()
-  //     console.log("upline", res)
-  //     if (typeof res === "string") setUpline(res)
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   if (!isLoggedIn) return
-  //   getupline()
-  // }, [address, isLoggedIn])
-
-  // console.log(refreesData[0].result)
-
-  // const [networkMembers, setNetworkMembers] = useState<any>([])
-
-  // const { data: allMemberData, isLoading: allMemberLoading } = useReadContracts(
-  //   {
-  //     allowFailure: true,
-  //     contracts: [
-  //       {
-  //         abi: stakingAbi,
-  //         address: fit24ContractAddress,
-  //         functionName: "getAllUsers",
-  //         chainId: vestingChainId,
-  //         args: [address],
-  //       },
-  //     ],
-  //   }
-  // )
-
-  // useEffect(() => {
-  //   if (!isLoggedIn) return
-  //   console.log(allMemberData)
-  //   if (!allMemberData || !allMemberData[0] || !allMemberData[0].result) return
-  //   console.log("network", allMemberData[0].result)
-  //   setNetworkMembers(allMemberData[0].result)
-  // }, [address, isLoggedIn])
-
-  // const { data: totalStakedTokensData, isLoading: totalStakedTokensLoading } =
-  //   useReadContracts({
-  //     allowFailure: true,
-  //     contracts: [
-  //       {
-  //         abi: stakingAbi,
-  //         address: fit24ContractAddress,
-  //         functionName: "totalStakedTokens",
-  //         chainId: vestingChainId,
-  //         args: [address],
-  //       },
-  //     ],
-  //   })
-
-  // useEffect(() => {
-  //   if (!isLoggedIn) return
-  //   console.log(totalStakedTokensData)
-  //   if (
-  //     !totalStakedTokensData ||
-  //     !totalStakedTokensData[0] ||
-  //     !totalStakedTokensData[0].result
-  //   )
-  //     return
-  //   console.log("network staked", totalStakedTokensData[0].result)
-  //   setNetworkMembers(totalStakedTokensData[0].result)
-  // }, [address, isLoggedIn])
 
   return (
     <div className="w-full flex 2md:flex-row flex-col items-center 2md:items-start gap-6 2md:gap-0 justify-between">
