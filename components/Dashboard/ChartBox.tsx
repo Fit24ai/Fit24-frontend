@@ -339,6 +339,7 @@ export default function ChartBox({ token }: { token: number }) {
       if (res.stakes.length === 0) {
         setClaimStakeCondition(true)
         setPendingAmount(0)
+        console.log(true)
       } else if (res.stakes.length >= 1) {
         if (
           Math.floor(Date.now() / 1000) -
@@ -346,9 +347,11 @@ export default function ChartBox({ token }: { token: number }) {
             24 * 60 * 60 &&
           userDailyRewardClaimed[0].result! === false
         ) {
+          console.log(false)
           setClaimStakeCondition(false)
         } else {
           setClaimStakeCondition(true)
+          console.log(true)
           setPendingAmount(0)
         }
       } else if (

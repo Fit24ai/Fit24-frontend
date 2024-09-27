@@ -291,16 +291,16 @@ export default function RewardsContainer() {
     }
   }
 
-  // useEffect(() => {
-  //   if (!isLoggedIn) return
-  //   getupline()
-  // }, [address, isLoggedIn])
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     if (!isLoggedIn) return
-  //     getupline()
-  //   }, 2000)
-  // }, [address])
+  useEffect(() => {
+    if (!isLoggedIn) return
+    getupline()
+  }, [address, isLoggedIn])
+  useEffect(() => {
+    setTimeout(() => {
+      if (!isLoggedIn) return
+      getupline()
+    }, 2000)
+  }, [address])
 
   const { data: readTotalStakeAmount, isLoading: totalStakeLoading } =
     useReadContracts({

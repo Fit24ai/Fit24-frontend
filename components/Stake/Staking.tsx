@@ -283,6 +283,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       setDialog(true)
       return
     }
+    verifyStakingRecord(stakeHash)
     setDialogInfo({
       type: "SUCCESS",
       message: `Token staked successfully`,
@@ -290,11 +291,13 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     })
     setDialog(true)
     setLoading(false)
-    verifyStakingRecord(stakeHash)
     // setLoading(false)
+
     setTimeout(() => {
-      setReload((prev) => !prev)
-      console.log("hshshshshshhshshshs")
+      // setReload((prev) => !prev)
+
+      // console.log("hshshshshshhshshshs")
+      window.location.reload()
     }, 2000)
   }, [stakeReceipt, stakeError])
 
