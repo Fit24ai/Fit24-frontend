@@ -50,6 +50,7 @@ import { useReloadContext } from "@/context/Reload"
 import { BsSafeFill } from "react-icons/bs"
 import { FaHandHoldingUsd } from "react-icons/fa"
 import { Address } from "viem"
+import { StatusDialog } from "../shared/StatusDialog"
 // import { useReloadContext } from "@/context/Reload"
 
 ChartJS.register(
@@ -303,80 +304,80 @@ export default function ChartBox({ token }: { token: number }) {
     if (!lastClaimedTimestamp) return
     setTimestamp(Number(lastClaimedTimestamp[0].result!))
   }, [address, lastClaimedTimestamp, lastClaimedTimestampLoading])
-  const getAllUserStakes = async () => {
-    try {
-      setClaimLoading(true)
-      if (
-        !address ||
-        !lastClaimedTimestamp ||
-        !userDailyRewardClaimed ||
-        !readPendingAmount
-      )
-        return
+  // const getAllUserStakes = async () => {
+  //   try {
+  //     setClaimLoading(true)
+  //     if (
+  //       !address ||
+  //       !lastClaimedTimestamp ||
+  //       !userDailyRewardClaimed ||
+  //       !readPendingAmount
+  //     )
+  //       return
 
-      const res: any = await getAllStakesByUser(address)
-      console.log("userDailyRewardClaimed", userDailyRewardClaimed[0].result)
-      // console.log("stakes", res)
-      // console.log("stakes times", res.stakes[res.stakes.length - 1].startTime)
-      // console.log("timestamp", Number(lastClaimedTimestamp[0].result!))
-      // console.log(
-      //   "new time",
-      //   Math.floor(Date.now() / 1000) - res.stakes[0].startTime
-      // )
-      // if (res.stakes[0].startTime > Number(lastClaimedTimestamp[0].result!)) {
-      //   console.log(true)
+  //     const res: any = await getAllStakesByUser(address)
+  //     console.log("userDailyRewardClaimed", userDailyRewardClaimed[0].result)
+  //     // console.log("stakes", res)
+  //     // console.log("stakes times", res.stakes[res.stakes.length - 1].startTime)
+  //     // console.log("timestamp", Number(lastClaimedTimestamp[0].result!))
+  //     // console.log(
+  //     //   "new time",
+  //     //   Math.floor(Date.now() / 1000) - res.stakes[0].startTime
+  //     // )
+  //     // if (res.stakes[0].startTime > Number(lastClaimedTimestamp[0].result!)) {
+  //     //   console.log(true)
 
-      //   setClaimStakeCondition(true)
-      // } else {
-      //   console.log(false)
-      //   setClaimStakeCondition(false)
-      // }
-      // setClaimLoading(false)
+  //     //   setClaimStakeCondition(true)
+  //     // } else {
+  //     //   console.log(false)
+  //     //   setClaimStakeCondition(false)
+  //     // }
+  //     // setClaimLoading(false)
 
-      // if(Number(lastClaimedTimestamp[0].result!)){
+  //     // if(Number(lastClaimedTimestamp[0].result!)){
 
-      // }
-      if (res.stakes.length === 0) {
-        setClaimStakeCondition(true)
-        setPendingAmount(0)
-        console.log(true)
-      } else if (res.stakes.length >= 1) {
-        if (
-          Math.floor(Date.now() / 1000) -
-            res.stakes[res.stakes.length - 1].startTime >
-            24 * 60 * 60 &&
-          userDailyRewardClaimed[0].result! === false
-        ) {
-          console.log(false)
-          setClaimStakeCondition(false)
-        } else {
-          setClaimStakeCondition(true)
-          console.log(true)
-          setPendingAmount(0)
-        }
-      } else if (
-        Math.floor(Date.now() / 1000) -
-          res.stakes[res.stakes.length - 1].startTime >
-          24 * 60 * 60 &&
-        userDailyRewardClaimed[0].result! === false
-      ) {
-        // console.log(false)
-        setClaimStakeCondition(false)
-      } else {
-        // console.log(true)
-        setClaimStakeCondition(true)
-      }
+  //     // }
+  //     if (res.stakes.length === 0) {
+  //       setClaimStakeCondition(true)
+  //       setPendingAmount(0)
+  //       console.log(true)
+  //     } else if (res.stakes.length >= 1) {
+  //       if (
+  //         Math.floor(Date.now() / 1000) -
+  //           res.stakes[res.stakes.length - 1].startTime >
+  //           24 * 60 * 60 &&
+  //         userDailyRewardClaimed[0].result! === false
+  //       ) {
+  //         console.log(false)
+  //         setClaimStakeCondition(false)
+  //       } else {
+  //         setClaimStakeCondition(true)
+  //         console.log(true)
+  //         setPendingAmount(0)
+  //       }
+  //     } else if (
+  //       Math.floor(Date.now() / 1000) -
+  //         res.stakes[res.stakes.length - 1].startTime >
+  //         24 * 60 * 60 &&
+  //       userDailyRewardClaimed[0].result! === false
+  //     ) {
+  //       // console.log(false)
+  //       setClaimStakeCondition(false)
+  //     } else {
+  //       // console.log(true)
+  //       setClaimStakeCondition(true)
+  //     }
 
-      setClaimLoading(false)
-    } catch (error) {
-      // console.log(error)
-      setClaimLoading(false)
-    }
-  }
+  //     setClaimLoading(false)
+  //   } catch (error) {
+  //     // console.log(error)
+  //     setClaimLoading(false)
+  //   }
+  // }
 
-  useEffect(() => {
-    getAllUserStakes()
-  }, [address, lastClaimedTimestamp, lastClaimedTimestampLoading])
+  // useEffect(() => {
+  //   getAllUserStakes()
+  // }, [address, lastClaimedTimestamp, lastClaimedTimestampLoading])
 
   const { data: readTotalStakeAmount, isLoading: totalStakeLoading } =
     useReadContracts({
@@ -453,6 +454,81 @@ export default function ChartBox({ token }: { token: number }) {
     ],
   })
 
+  const getAllUserStakes = async () => {
+    try {
+      setClaimLoading(true)
+      if (
+        !address ||
+        !lastClaimedTimestamp ||
+        !userDailyRewardClaimed ||
+        !readPendingAmount
+      )
+        return
+
+      const res: any = await getAllStakesByUser(address)
+      console.log("userDailyRewardClaimed", userDailyRewardClaimed[0].result)
+      // console.log("stakes", res)
+      // console.log("stakes times", res.stakes[res.stakes.length - 1].startTime)
+      // console.log("timestamp", Number(lastClaimedTimestamp[0].result!))
+      // console.log(
+      //   "new time",
+      //   Math.floor(Date.now() / 1000) - res.stakes[0].startTime
+      // )
+      // if (res.stakes[0].startTime > Number(lastClaimedTimestamp[0].result!)) {
+      //   console.log(true)
+
+      //   setClaimStakeCondition(true)
+      // } else {
+      //   console.log(false)
+      //   setClaimStakeCondition(false)
+      // }
+      // setClaimLoading(false)
+
+      // if(Number(lastClaimedTimestamp[0].result!)){
+
+      // }
+      if (res.stakes.length === 0) {
+        setClaimStakeCondition(true)
+        setPendingAmount(0)
+        console.log(true)
+      } else if (res.stakes.length >= 1) {
+        if (
+          Math.floor(Date.now() / 1000) -
+            res.stakes[res.stakes.length - 1].startTime >
+            24 * 60 * 60 &&
+          userDailyRewardClaimed[0].result! === false
+        ) {
+          console.log(false)
+          setPendingAmount(
+            getNumber(readPendingAmount[0].result! as bigint, 18)
+          )
+          setClaimStakeCondition(false)
+        } else {
+          setClaimStakeCondition(true)
+          console.log(true)
+          setPendingAmount(0)
+        }
+      } else if (
+        Math.floor(Date.now() / 1000) -
+          res.stakes[res.stakes.length - 1].startTime >
+          24 * 60 * 60 &&
+        userDailyRewardClaimed[0].result! === false
+      ) {
+        // console.log(false)
+        setPendingAmount(getNumber(readPendingAmount[0].result! as bigint, 18))
+        setClaimStakeCondition(false)
+      } else {
+        // console.log(true)
+        setClaimStakeCondition(true)
+      }
+
+      setClaimLoading(false)
+    } catch (error) {
+      // console.log(error)
+      setClaimLoading(false)
+    }
+  }
+
   useEffect(() => {
     getAllUserStakes()
   }, [
@@ -462,12 +538,13 @@ export default function ChartBox({ token }: { token: number }) {
     userDailyRewardClaimed,
     userDailyRewardClaimedLoading,
     readPendingAmount,
+    pendingLoading,
   ])
 
-  useEffect(() => {
-    if (!readPendingAmount) return
-    setPendingAmount(getNumber(readPendingAmount[0].result! as bigint, 18))
-  }, [readPendingAmount])
+  // useEffect(() => {
+  //   if (!readPendingAmount) return
+  //   setPendingAmount(getNumber(readPendingAmount[0].result! as bigint, 18))
+  // }, [readPendingAmount])
 
   const { data: rewardReceipt, error: rewardError } =
     useWaitForTransactionReceipt({
@@ -494,6 +571,7 @@ export default function ChartBox({ token }: { token: number }) {
       message: `Reward Claimed Successfully`,
       title: "Success",
     })
+    setClaimStakeCondition(true)
     setDialog(true)
     refetchPendingAmount()
   }, [rewardReceipt, rewardError])
@@ -541,79 +619,87 @@ export default function ChartBox({ token }: { token: number }) {
   }, [address, isLoggedIn])
 
   return (
-    <div className="w-full flex 2md:flex-row flex-col items-center 2md:items-start gap-6 2md:gap-0 justify-between">
-      <div className="2md:max-w-[57%] max-w-[650px] w-full flex flex-col gap-6 items-center">
-        {/* <div className="flex flex-col items-center gap-2 ">
+    <>
+      <StatusDialog
+        open={dialog}
+        setOpen={setDialog}
+        type={dialogInfo.type}
+        message={dialogInfo.message}
+        title={dialogInfo.title}
+      />
+      <div className="w-full flex 2md:flex-row flex-col items-center 2md:items-start gap-6 2md:gap-0 justify-between">
+        <div className="2md:max-w-[57%] max-w-[650px] w-full flex flex-col gap-6 items-center">
+          {/* <div className="flex flex-col items-center gap-2 ">
           <div className="text-xl font-medium">Total Staked</div>
           <div className="text-2xl font-medium">
             {Number(token).toFixed(2)} Fit24
           </div>
         </div> */}
-        <div className="flex flex-col gap-2 w-full  2md:order-none order-1">
-          <div>Network Statistics</div>
-          <div className="flex gap-4 w-full  items-center overflow-x-auto hide-scrollbar">
-            <div className="flex flex-col items-center flex-1 min-w-36 rounded-lg gap-2  network-image-1  p-3 ">
-              <IoMdPerson size={24} />
-              <div className="text-xl">{totalNetworkMembers}</div>
-              <div className="text-gray-300 text-xs">All Members</div>
-            </div>
-            <div className="flex flex-col items-center flex-1 rounded-lg  network-image-2 gap-2  p-3 min-w-36">
-              <BsSafeFill size={24} />
-              <div className="text-xl">{totalNetworkStaked}</div>
-              <div className="text-gray-300 text-xs">Total Stake</div>
-            </div>
-            <div className="flex flex-col items-center flex-1 rounded-lg  network-image-3 gap-2  p-3 min-w-36">
-              <FaHandHoldingUsd size={24} />
-              <div className="text-xl">{totalNetworkWithdrawal}</div>
-              <div className="text-gray-300 text-xs">Total Withdrawals</div>
-            </div>
-          </div>
-        </div>
-        <div className="h-60 w-full  bg-black flex justify-center items-center py-4 !px-6 bg-opacity-35 rounded-xl">
-          <div className="flex flex-col gap-2 max-w-[650px] text-white w-full h-full">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <Image
-                  src={"/coin/fitcoin.svg"}
-                  alt="coin"
-                  width={25}
-                  height={25}
-                />
-                <span className="text-base font-semibold">Fit24</span>
+          <div className="flex flex-col gap-2 w-full  2md:order-none order-1">
+            <div>Network Statistics</div>
+            <div className="flex gap-4 w-full  items-center overflow-x-auto hide-scrollbar">
+              <div className="flex flex-col items-center flex-1 min-w-36 rounded-lg gap-2  network-image-1  p-3 ">
+                <IoMdPerson size={24} />
+                <div className="text-xl">{totalNetworkMembers}</div>
+                <div className="text-gray-300 text-xs">All Members</div>
               </div>
-              <div className="text-right">
-                <span className=" font-semibold">$2,113.80</span>
-                <div className="text-xs text-green-500">+2.76%</div>
+              <div className="flex flex-col items-center flex-1 rounded-lg  network-image-2 gap-2  p-3 min-w-36">
+                <BsSafeFill size={24} />
+                <div className="text-xl">{totalNetworkStaked}</div>
+                <div className="text-gray-300 text-xs">Total Stake</div>
+              </div>
+              <div className="flex flex-col items-center flex-1 rounded-lg  network-image-3 gap-2  p-3 min-w-36">
+                <FaHandHoldingUsd size={24} />
+                <div className="text-xl">{totalNetworkWithdrawal}</div>
+                <div className="text-gray-300 text-xs">Total Withdrawals</div>
               </div>
             </div>
-            <div className="w-full flex-1">
-              <Line data={data} options={options} />
+          </div>
+          <div className="h-60 w-full  bg-black flex justify-center items-center py-4 !px-6 bg-opacity-35 rounded-xl">
+            <div className="flex flex-col gap-2 max-w-[650px] text-white w-full h-full">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Image
+                    src={"/coin/fitcoin.svg"}
+                    alt="coin"
+                    width={25}
+                    height={25}
+                  />
+                  <span className="text-base font-semibold">Fit24</span>
+                </div>
+                <div className="text-right">
+                  <span className=" font-semibold">$2,113.80</span>
+                  <div className="text-xs text-green-500">+2.76%</div>
+                </div>
+              </div>
+              <div className="w-full flex-1">
+                <Line data={data} options={options} />
+              </div>
             </div>
           </div>
-        </div>
-        <div className="bg-white network-image-3 bg-opacity-10 max-w-80 w-full p-4 px-10 flex flex-col items-center gap-2  rounded-lg">
-          <FaHandHoldingUsd size={24} />
-          <div className="text-gray-400 text-sm">Todays Rewards</div>
-          <div className="text-2xl flex items-center gap-2">
-            {/* 12,08 */}
-            {pendingAmount && pendingAmount.toFixed(4)}
-            {/* {readTotalStakeAmount &&
+          <div className="bg-white network-image-3 bg-opacity-10 max-w-80 w-full p-4 px-10 flex flex-col items-center gap-2  rounded-lg">
+            <FaHandHoldingUsd size={24} />
+            <div className="text-gray-400 text-sm">Todays Rewards</div>
+            <div className="text-2xl flex items-center gap-2">
+              {/* 12,08 */}
+              {pendingAmount && pendingAmount.toFixed(4)}
+              {/* {readTotalStakeAmount &&
               getNumber(readTotalStakeAmount[0].result! as bigint, 18).toFixed(
                 4
               )} */}
-            <span className="w-20">
-              <Image
-                src={"/fitLogo.svg"}
-                width={3000}
-                height={30000}
-                alt="logo"
-                className="h-full w-full"
-              />
-            </span>
+              <span className="w-20">
+                <Image
+                  src={"/fitLogo.svg"}
+                  width={3000}
+                  height={30000}
+                  alt="logo"
+                  className="h-full w-full"
+                />
+              </span>
+            </div>
           </div>
-        </div>
-        <div className="relative max-w-80 w-full">
-          {/* {claimStakeCondition ? (
+          <div className="relative max-w-80 w-full">
+            {/* {claimStakeCondition ? (
             pendingAmount ? (
               pendingAmount > 0 && (
                 <div className="text-center">
@@ -648,93 +734,96 @@ export default function ChartBox({ token }: { token: number }) {
               )}
             </button>
           )} */}
-          {claimStakeCondition ? (
-            <div className="text-center">Available to claim after 24 Hours</div>
-          ) : (
-            <button
-              onClick={claimReward}
-              onMouseOver={() => {
-                if (claimStakeCondition) {
-                  setShowPopup(true)
-                } else if (!!!pendingAmount) {
-                  setShowPopup(true)
-                } else {
-                  return
-                }
-              }}
-              onMouseLeave={() => setShowPopup(false)}
-              disabled={!pendingAmount || claimStakeCondition}
-              className="max-w-80 w-full disabled:opacity-50 disabled:cursor-not-allowed mb-10 bg-themeGreen text-white h-10 rounded-lg"
-            >
-              {isClaimLoading ? (
-                <div className="flex justify-center items-center">
-                  <CgSpinner className="text-2xl animate-spin !text-black flex items-center justify-end" />
-                </div>
-              ) : (
-                "Claim Reward"
-              )}
-            </button>
-          )}
+            {claimStakeCondition ? (
+              <div className="text-center">
+                Available to claim after 24 Hours
+              </div>
+            ) : (
+              <button
+                onClick={claimReward}
+                onMouseOver={() => {
+                  if (claimStakeCondition) {
+                    setShowPopup(true)
+                  } else if (!!!pendingAmount) {
+                    setShowPopup(true)
+                  } else {
+                    return
+                  }
+                }}
+                onMouseLeave={() => setShowPopup(false)}
+                disabled={!pendingAmount || claimStakeCondition}
+                className="max-w-80 w-full disabled:opacity-50 disabled:cursor-not-allowed mb-10 bg-themeGreen text-white h-10 rounded-lg"
+              >
+                {isClaimLoading ? (
+                  <div className="flex justify-center items-center">
+                    <CgSpinner className="text-2xl animate-spin !text-black flex items-center justify-end" />
+                  </div>
+                ) : (
+                  "Claim Reward"
+                )}
+              </button>
+            )}
 
-          {showPopup && (
-            <div className="absolute bg-white border text-black rounded-full border-gray-200 shadow-md top-14 w-fit left-[50%] p-2 z-10 text-semibold text-base text-nowrap">
-              {pendingAmount === 0
-                ? "Already Claimed"
-                : claimStakeCondition
-                ? "Claim after 24 hours"
-                : "Already Claimed"}
+            {showPopup && (
+              <div className="absolute bg-white border text-black rounded-full border-gray-200 shadow-md top-14 w-fit left-[50%] p-2 z-10 text-semibold text-base text-nowrap">
+                {pendingAmount === 0
+                  ? "Already Claimed"
+                  : claimStakeCondition
+                  ? "Claim after 24 hours"
+                  : "Already Claimed"}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="2md:max-w-[40%] w-full max-w-96 flex flex-col gap-4">
+          <div className=" h-[350px] w-full hidden 2md:flex p-4 flex-col gap-6 bg-black bg-opacity-35 rounded-xl">
+            <div className="h-[50%]">
+              <Doughnut data={doughnutData} options={doughnutOptions} />
             </div>
-          )}
+            <div className="h-[50%]">
+              <Bar data={barData} options={barOptions} />
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="bg-black bg-opacity-35 w-28 p-4 flex flex-col items-center gap-1 flex-1 rounded-lg">
+              <div className="text-gray-400 text-sm">Direct Members</div>
+              <div className="text-2xl">
+                {directMemberLoading ? (
+                  <CgSpinner className="animate-spin" />
+                ) : (
+                  directMembers.length
+                )}
+              </div>
+            </div>
+            <div className="bg-black bg-opacity-35 w-28 p-4 flex flex-col items-center gap-1 flex-1 rounded-lg">
+              <div className="text-gray-400 text-sm">Total Team</div>
+              <div className="text-2xl">
+                {memberLoading ? (
+                  <CgSpinner className="animate-spin" />
+                ) : (
+                  totalMembers.stakerCount
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="bg-black bg-opacity-35 w-28 p-4 flex flex-col items-center gap-1 flex-1 rounded-lg">
+              <div className="text-gray-400 text-sm">My Stake</div>
+              <div className="text-2xl">{token}</div>
+            </div>
+            <div className="bg-black bg-opacity-35 w-28 p-4 flex flex-col items-center gap-1 flex-1 rounded-lg">
+              <div className="text-gray-400 text-sm">Team Stake</div>
+              <div className="text-2xl">
+                {memberLoading ? (
+                  <CgSpinner className="animate-spin" />
+                ) : (
+                  totalMembers.totalTeamStakedAmount
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="2md:max-w-[40%] w-full max-w-96 flex flex-col gap-4">
-        <div className=" h-[350px] w-full hidden 2md:flex p-4 flex-col gap-6 bg-black bg-opacity-35 rounded-xl">
-          <div className="h-[50%]">
-            <Doughnut data={doughnutData} options={doughnutOptions} />
-          </div>
-          <div className="h-[50%]">
-            <Bar data={barData} options={barOptions} />
-          </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="bg-black bg-opacity-35 w-28 p-4 flex flex-col items-center gap-1 flex-1 rounded-lg">
-            <div className="text-gray-400 text-sm">Direct Members</div>
-            <div className="text-2xl">
-              {directMemberLoading ? (
-                <CgSpinner className="animate-spin" />
-              ) : (
-                directMembers.length
-              )}
-            </div>
-          </div>
-          <div className="bg-black bg-opacity-35 w-28 p-4 flex flex-col items-center gap-1 flex-1 rounded-lg">
-            <div className="text-gray-400 text-sm">Total Team</div>
-            <div className="text-2xl">
-              {memberLoading ? (
-                <CgSpinner className="animate-spin" />
-              ) : (
-                totalMembers.stakerCount
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="bg-black bg-opacity-35 w-28 p-4 flex flex-col items-center gap-1 flex-1 rounded-lg">
-            <div className="text-gray-400 text-sm">My Stake</div>
-            <div className="text-2xl">{token}</div>
-          </div>
-          <div className="bg-black bg-opacity-35 w-28 p-4 flex flex-col items-center gap-1 flex-1 rounded-lg">
-            <div className="text-gray-400 text-sm">Team Stake</div>
-            <div className="text-2xl">
-              {memberLoading ? (
-                <CgSpinner className="animate-spin" />
-              ) : (
-                totalMembers.totalTeamStakedAmount
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </>
   )
 }
