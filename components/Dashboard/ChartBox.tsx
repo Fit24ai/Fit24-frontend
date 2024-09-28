@@ -303,6 +303,7 @@ export default function ChartBox({ token }: { token: number }) {
   useEffect(() => {
     if (!lastClaimedTimestamp) return
     setTimestamp(Number(lastClaimedTimestamp[0].result!))
+    refetchUserDailyRewardClaimed()
   }, [address, lastClaimedTimestamp, lastClaimedTimestampLoading])
   // const getAllUserStakes = async () => {
   //   try {
@@ -441,6 +442,7 @@ export default function ChartBox({ token }: { token: number }) {
   const {
     data: userDailyRewardClaimed,
     isLoading: userDailyRewardClaimedLoading,
+    refetch: refetchUserDailyRewardClaimed,
   } = useReadContracts({
     allowFailure: true,
     contracts: [
