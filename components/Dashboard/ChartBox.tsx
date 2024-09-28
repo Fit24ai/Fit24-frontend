@@ -459,6 +459,7 @@ export default function ChartBox({ token }: { token: number }) {
   const getAllUserStakes = async () => {
     try {
       setClaimLoading(true)
+      console.log("address", address)
       console.log("lastClaimedTimestamp", lastClaimedTimestamp)
       console.log("userDailyRewardClaimed", userDailyRewardClaimed)
       console.log("readPendingAmount", readPendingAmount)
@@ -469,7 +470,6 @@ export default function ChartBox({ token }: { token: number }) {
         !readPendingAmount
       )
         return
-
       const res: any = await getAllStakesByUser(address)
       console.log("userDailyRewardClaimed", userDailyRewardClaimed[0].result)
       // console.log("stakes", res)
@@ -535,6 +535,13 @@ export default function ChartBox({ token }: { token: number }) {
   }
 
   useEffect(() => {
+    if (
+      !address ||
+      !lastClaimedTimestamp ||
+      !userDailyRewardClaimed ||
+      !readPendingAmount
+    )
+      return
     getAllUserStakes()
   }, [
     address,
