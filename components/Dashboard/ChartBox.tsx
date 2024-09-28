@@ -459,6 +459,9 @@ export default function ChartBox({ token }: { token: number }) {
   const getAllUserStakes = async () => {
     try {
       setClaimLoading(true)
+      console.log("lastClaimedTimestamp", lastClaimedTimestamp)
+      console.log("userDailyRewardClaimed", userDailyRewardClaimed)
+      console.log("readPendingAmount", readPendingAmount)
       if (
         !address ||
         !lastClaimedTimestamp ||
