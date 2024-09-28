@@ -541,6 +541,7 @@ export default function ChartBox({ token }: { token: number }) {
     userDailyRewardClaimedLoading,
     readPendingAmount,
     pendingLoading,
+    refetchUserDailyRewardClaimed,
   ])
 
   // useEffect(() => {
