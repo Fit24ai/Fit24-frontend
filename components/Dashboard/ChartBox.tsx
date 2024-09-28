@@ -537,6 +537,7 @@ export default function ChartBox({ token }: { token: number }) {
   useEffect(() => {
     if (
       !address ||
+      !isLoggedIn ||
       !lastClaimedTimestamp ||
       !userDailyRewardClaimed ||
       !readPendingAmount
@@ -544,6 +545,7 @@ export default function ChartBox({ token }: { token: number }) {
       return
     getAllUserStakes()
   }, [
+    isLoggedIn,
     address,
     lastClaimedTimestamp,
     lastClaimedTimestampLoading,
