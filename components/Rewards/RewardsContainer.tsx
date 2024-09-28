@@ -602,6 +602,11 @@ export default function RewardsContainer() {
                         getDays(item.referralDetails.stakeDuration) /
                           item.referralDetails.amount
                       ).toFixed(3)} */}
+                      {/* {Number(
+                        (item.referralDetails.amount *
+                          item.referralDetails.apr) /
+                          36500 
+                      ).toFixed(3)} */}
                       {Number(
                         (item.referralDetails.amount *
                           item.referralDetails.apr) /

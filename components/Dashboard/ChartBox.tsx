@@ -451,7 +451,8 @@ export default function ChartBox({ token }: { token: number }) {
         address: fit24ContractAddress,
         functionName: "userDailyRewardClaimed",
         chainId: vestingChainId,
-        args: [address, (Number(lastTimestamp) + 86400).toString()],
+        args: [address, (Number(lastTimestamp) + 3600).toString()],
+        // args: [address, (Number(lastTimestamp) + 86400).toString()],
       },
     ],
   })
@@ -500,9 +501,15 @@ export default function ChartBox({ token }: { token: number }) {
         if (
           Math.floor(Date.now() / 1000) -
             res.stakes[res.stakes.length - 1].startTime >
-            24 * 60 * 60 &&
+            1 * 60 * 60 &&
           userDailyRewardClaimed[0].result! === false
         ) {
+        // if (
+        //   Math.floor(Date.now() / 1000) -
+        //     res.stakes[res.stakes.length - 1].startTime >
+        //     24 * 60 * 60 &&
+        //   userDailyRewardClaimed[0].result! === false
+        // ) {
           console.log(false)
           setPendingAmount(
             getNumber(readPendingAmount[0].result! as bigint, 18)
