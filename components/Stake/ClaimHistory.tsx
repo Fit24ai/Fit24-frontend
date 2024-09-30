@@ -73,11 +73,7 @@ export default function ClaimHistory() {
                 <>
                   <div className="ml-10">
                     {item.stakeId} -{" "}
-                    {!item.isReferred
-                      ? item.poolType && item.poolType <= 12
-                        ? "AUTO STAKE"
-                        : "COMPOUNDED"
-                      : "REFFERAL REWARD"}
+                    {!item.isReferred ? "AUTO STAKE" : "REFFERAL REWARD"}
                   </div>
 
                   <a className="flex items-center justify-center">
