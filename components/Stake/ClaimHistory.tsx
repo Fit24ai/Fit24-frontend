@@ -61,7 +61,7 @@ export default function ClaimHistory() {
           <div className="ml-10">TX ID & TYPE</div>
           <div className="text-center">CLAIMED TOKENS</div>
           <div className="text-center ">TIMESTAMP</div>
-          <div className="text-center "> TRANSACTION HASH</div>
+          <div className="text-center ">TRANSACTION HASH</div>
         </div>
         <div className="md:max-h-[50vh] max-h-[80vh] overflow-y-scroll min-w-[920px] w-full">
           {!isLoading ? (
@@ -73,11 +73,7 @@ export default function ClaimHistory() {
                 <>
                   <div className="ml-10">
                     {item.stakeId} -{" "}
-                    {!item.isReferred
-                      ? item.poolType && item.poolType <= 12
-                        ? "AUTO STAKE"
-                        : "COMPOUNDED"
-                      : "REFFERAL REWARD"}
+                    {!item.isReferred ? "AUTO STAKE" : "REFFERAL REWARD"}
                   </div>
 
                   <a className="flex items-center justify-center">

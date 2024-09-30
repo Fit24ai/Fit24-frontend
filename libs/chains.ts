@@ -33,7 +33,7 @@ export const blockfit = defineChain({
 export const ethereumPaymentAddress: AddressString =
   "0xA47010B505f8C5696eC6C95a7Bfe9E28C977EC6E"
 export const binancePaymentAddress: AddressString =
-  "0x15600Fc6bd21c54b3F8cBF6a04562C2021f0d3F2"
+  "0x1d8bB89dE3e0C3b8B7cb2C0B1c93021f6d94AE4b"
 export const vestingAddress: AddressString =
   "0x9Ae55AEFb2Aa047627EF42B67aD49730517DAb52"
 
@@ -50,6 +50,9 @@ export const fit24ContractAddress: AddressString =
 
 export const fit24ReferralContractAddress: AddressString =
   "0xeb0B6A10159d31912a01b5DA2E49b37De7FB916c"
+
+
+  export const usdtTokenAddress : AddressString = "0x776D9c4Cab12287414093832C3AA3ED214E44719"
 
 // * PROD
 // export const ethereumPaymentAddress: AddressString =

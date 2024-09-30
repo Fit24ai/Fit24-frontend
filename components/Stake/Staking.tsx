@@ -6,6 +6,7 @@ import {
   getChain,
   getChainEnum,
   getPaymentContractAddress,
+  usdtTokenAddress,
   vestingChainId,
 } from "@/libs/chains"
 import { stakingAbi } from "@/libs/stakingAbi"
@@ -18,7 +19,11 @@ import {
   getNumber,
 } from "@/libs/utils"
 import { getAPR } from "@/services/randomiser"
-import { createTransaction } from "@/services/transaction"
+import {
+  createTransaction,
+  getMessageHash,
+  getSignerSignature,
+} from "@/services/transaction"
 import { Dialog, Transition } from "@headlessui/react"
 import { ChangeEvent, Fragment, useContext, useEffect, useState } from "react"
 import { CgSpinner } from "react-icons/cg"
@@ -31,15 +36,35 @@ import {
   useWriteContract,
   useSwitchChain,
   useWaitForTransactionReceipt,
+  useSignMessage,
+  useSignTypedData,
 } from "wagmi"
-import { createStake, verifyStakingRecord } from "@/services/stakingService"
+import {
+  createStake,
+  getMyUpline,
+  verifyStakingRecord,
+} from "@/services/stakingService"
 import { useReloadContext } from "@/context/Reload"
 import Image from "next/image"
 import { StatusDialog } from "../shared/StatusDialog"
+import { paymentAbi } from "@/libs/paymentAbi"
+import { useWallet } from "@/hooks/useWallet"
+import { createWalletClient, custom } from "viem"
+import { bscTestnet } from "viem/chains"
+import Viem from "viem"
+import { solidityPackedKeccak256 } from "ethers"
+import { signMessage } from "@wagmi/core"
+import { v4 } from "uuid"
+import { config } from "@/libs/wagmi"
+import { createStakingTransaction } from "@/services/stakingTransaction"
+// import { useSignMessage } from "wagmi"
+// import { ethers } from 'ethers';
+
 // import StatusDialog from "../shared/StatusDialog"
 
 export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
   const { setReload } = useReloadContext()
+  const { isLoggedIn } = useWallet()
   const { chain, address, isConnected } = useAccount()
   const { error, switchChain, chains } = useSwitchChain()
   const [select, setSelect] = useState("")
@@ -70,17 +95,20 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     contracts: [
       {
         abi: tokenAbi,
-        address: fit24TokenAddress,
+        address: usdtTokenAddress,
         functionName: "balanceOf",
         chainId: vestingChainId,
         args: formatArray([address]),
       },
       {
         abi: tokenAbi,
-        address: fit24TokenAddress,
+        address: usdtTokenAddress,
         functionName: "allowance",
         chainId: vestingChainId,
-        args: formatArray([address, fit24ContractAddress]),
+        args: formatArray([
+          address,
+          getPaymentContractAddress(getChain(chain).id),
+        ]),
       },
     ],
   })
@@ -111,13 +139,14 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     })
 
   const isValid = () => {
-    if (!amount) return false
+    if (!usdAmount) return false
+    console.log(readResponse)
     if (!readResponse) return false
     if (readResponse[0].error) return false
-    if (getNumber(readResponse[0].result! as bigint, 18) < amount) {
+    if (getNumber(readResponse[0].result! as bigint, 18) < usdAmount) {
       setDialogInfo({
         type: "FAIL",
-        message: `Not Enough FIT24 balance`,
+        message: `Not Enough USD balance`,
         title: "FAIL",
       })
       setDialog(true)
@@ -127,10 +156,10 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
   }
 
   const isAllowance = () => {
-    if (!amount) return false
+    if (!usdAmount) return false
     if (!readResponse) return false
     if (readResponse[1].error) return false
-    if (getNumber(readResponse[1].result! as bigint, 18) < amount) {
+    if (getNumber(readResponse[1].result! as bigint, 18) < usdAmount) {
       // setDialogInfo({
       //   type: "FAIL",
       //   message: `Not Enough FIT24 balance`,
@@ -148,10 +177,13 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     try {
       const tx = await writeContractAsync({
         abi: tokenAbi,
-        address: fit24TokenAddress,
+        address: usdtTokenAddress,
         functionName: "approve",
         chainId: vestingChainId,
-        args: [fit24ContractAddress, parseEther("100000000")],
+        args: [
+          getPaymentContractAddress(getChain(chain).id),
+          parseEther("100000000"),
+        ],
       })
       setApprovalHash(tx)
       return
@@ -252,7 +284,6 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       await createTransaction(tx, getChainEnum(getChain(chain).id))
       await createStake(tx, poolToContractPoolConverter(select))
       setStakeHash(tx)
-
       setSelect("")
       setAmount(0)
       setUsdAmount(0)
@@ -268,9 +299,77 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     }
   }
 
+  const [upline, setUpline] = useState<string | undefined>()
+
+  const buyToken = async () => {
+    if (chain?.id !== vestingChainId)
+      return switchChain({
+        chainId: vestingChainId,
+      })
+    console.log("Yash")
+    if (!isValid()) return
+    console.log("Yash1")
+    if (!isAllowance()) {
+      return approveAllowance()
+    }
+    console.log("Yash2")
+    try {
+      setLoading(true)
+      // const noonce = v4()
+      // console.log("noonce", noonce)
+      // const messageHash = solidityPackedKeccak256(
+      //   ["string", "address", "uint256"],
+      //   [noonce, upline, usdAmount]
+      // )
+      // if (!upline || !usdAmount) return
+      // const messageHash = await getMessageHash(noonce, upline, usdAmount)
+      // console.log("messageHash", messageHash)
+      // const signature = await getSignerSignature(messageHash)
+      // console.log("signature", signature)
+      // const provider = new Viem.providers.Web3Provider(window.ethereum);
+      // const signer = await provider.getSigner();
+      const { apr } = await getAPR(select)
+      const tx = await writeContractAsync({
+        abi: paymentAbi,
+        //@ts-ignore
+        address: getPaymentContractAddress(getChain(chain).id),
+        functionName: "payWithReferral",
+        chainId: getChain(chain).id,
+        args: [
+          parseEther(String(usdAmount!)),
+          usdtTokenAddress,
+          upline,
+          apr * 10,
+          poolToContractPoolConverter(select),
+        ],
+        value: BigInt(0),
+      })
+      console.log(tx)
+      await createStakingTransaction(tx, getChainEnum(getChain(chain).id))
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      console.log(error)
+    }
+  }
+
+  const getupline = async () => {
+    try {
+      const res = await getMyUpline()
+      console.log("upline", res)
+      if (typeof res === "string") setUpline(res)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (!isLoggedIn) return
+    getupline()
+  }, [address, isLoggedIn])
+
   const handlePay = async () => {
     console.log(parseUnits(String(usdAmount!), 18))
-
   }
 
   useEffect(() => {
@@ -686,7 +785,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
             )}
 
             <button
-              onClick={handlePay}
+              onClick={buyToken}
               disabled={!!formError}
               className={`w-[200px] mt-5 mx-auto bg-themeGreen text-white h-10 rounded-lg flex justify-center items-center ${
                 formError ? "opacity-50 cursor-not-allowed" : ""

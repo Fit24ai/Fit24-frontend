@@ -3,7 +3,7 @@ import { getAuthToken } from "@/libs/utils"
 import axios from "axios"
 
 const http = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/transaction`,
+  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/staking-transaction`,
   headers: {
     "Content-Type": "application/json",
   },
@@ -50,13 +50,13 @@ export async function getMessageHash(
   ).data
 }
 
-export async function createTransaction(
+export async function createStakingTransaction(
   transactionHash: AddressString,
   chain: ChainEnum
 ) {
   return (
     await http.post(
-      "/",
+      "/create",
       {
         transactionHash,
         chain,

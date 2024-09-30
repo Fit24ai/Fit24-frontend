@@ -291,10 +291,10 @@ export default function RewardsContainer() {
     }
   }
 
-  // useEffect(() => {
-  //   if (!isLoggedIn) return
-  //   getupline()
-  // }, [address, isLoggedIn])
+  useEffect(() => {
+    if (!isLoggedIn) return
+    getupline()
+  }, [address, isLoggedIn])
   // useEffect(() => {
   //   setTimeout(() => {
   //     if (!isLoggedIn) return
