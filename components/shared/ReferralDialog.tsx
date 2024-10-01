@@ -129,6 +129,7 @@ export function ReferralDialog({ stakeRef }: { stakeRef: string | undefined }) {
         setRegistered(true)
       }
       setRefId(refId)
+      setIsEmailPopup(false)
       setOpenBox(true)
     }
   }, [address, registerLoading, isEmailPopup])
