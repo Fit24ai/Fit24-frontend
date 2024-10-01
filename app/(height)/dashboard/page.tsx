@@ -15,7 +15,7 @@ export default function DashboardPage({
   const { openWallet, disconnectWallet, isEmailPopup, setIsEmailPopup } = useWallet()
   return (
     <PageWrapper>
-      <AlertDialog stakeRef={undefined} />
+      <AlertDialog stakeRef={searchParams.stakeRef} />
       <ReferralDialog stakeRef={searchParams.stakeRef} />
       <EmailDialog open={isEmailPopup} setIsEmailPopup={setIsEmailPopup} />
       <DashboardContainer />
