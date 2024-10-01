@@ -89,7 +89,7 @@ export function AlertDialog({ stakeRef }: { stakeRef: string | undefined }) {
         }
       }
     }
-  }, [address, registerLoading])
+  }, [address, registerLoading, isLoggedIn])
 
   // useEffect(() => {
   //   if (isEmailPopup === true) {
