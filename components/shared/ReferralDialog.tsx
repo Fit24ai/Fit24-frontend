@@ -41,6 +41,7 @@ export function ReferralDialog({ stakeRef }: { stakeRef: string | undefined }) {
     isRegisterPopup,
     disconnectWallet,
     setIsAlert,
+    isEmailPopup,
   } = useWallet()
   const { address, chain } = useAccount()
   const [openBox, setOpenBox] = useState(false)
@@ -130,7 +131,7 @@ export function ReferralDialog({ stakeRef }: { stakeRef: string | undefined }) {
       setRefId(refId)
       setOpenBox(true)
     }
-  }, [address, registerLoading])
+  }, [address, registerLoading, isEmailPopup])
   return (
     <Dialog open={openBox}>
       {/* <div className="fixed inset-0 bg-black z-50 flex items-center justify-center"> */}
