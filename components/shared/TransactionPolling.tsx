@@ -80,20 +80,20 @@ export default function TransactionPollingService({
     return (
       <div className="flex flex-col items-center justify-center text-center gap-4">
         <div className="text-3xl font-bold">Deposit Successful</div>
-        <IoCheckmarkCircleOutline className="text-6xl text-[#F27052]" />
+        <IoCheckmarkCircleOutline className="text-6xl text-themeGreen" />
         <div className="font-medium">Waiting for the Tokens to Deposit</div>
         <div className="flex items-center justify-between gap-4">
           <a
             href={`${process.env.NEXT_PUBLIC_ICO_SCAN_URL}/tx/${data?.distributionHash}`}
             target="_blank"
             rel="noreferrer noopener"
-            className="flex items-center justify-center h-12 !px-16 mx-auto text-lg text-black font-semibold border-2 bg-white border-[#F27052] rounded-full shadow shadow-white/30 bg-opacity-50"
+            className="flex items-center justify-center h-12 !sm:px-16 px-4 py-2 mx-auto text-lg text-black font-semibold border-2 bg-white border-themeGreen rounded-full shadow shadow-white/30 bg-opacity-50"
           >
             View Transaction
           </a>
           <button
             onClick={action}
-            className="flex items-center justify-center h-12 !px-16 mx-auto text-lg font-semibold bg-[#F27052] rounded-full shadow shadow-white/30 bg-opacity-50"
+            className="flex items-center justify-center h-12 !px-16 mx-auto text-lg font-semibold bg-themeGreen rounded-full shadow shadow-white/30 bg-opacity-50"
           >
             Close
           </button>
