@@ -533,13 +533,8 @@ export default function RewardsContainer() {
                     <div className="text-sm">
                       {item.referralDetails.stakeId} -{" "}
                       {!item.referralDetails.isReferred
-                        ? item.referralDetails.poolType &&
-                          item.referralDetails.poolType <= 9
-                          ? "VESTED STAKE"
-                          : item.poolType <= 12
-                          ? "AUTO STAKE"
-                          : "COMPOUNDED"
-                        : "LEVEL REWARD"}
+                        ? "AUTO STAKE"
+                        : "REFERRAL REWARD"}
                     </div>
                     <div
                       className="flex items-center justify-center cursor-pointer"

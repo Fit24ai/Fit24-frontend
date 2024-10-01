@@ -309,7 +309,6 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     chainId: getChain(chain).id,
   })
 
-
   const [upline, setUpline] = useState<string | undefined>()
 
   const buyToken = async () => {
