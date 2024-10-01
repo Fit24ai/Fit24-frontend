@@ -23,6 +23,7 @@ export default function Home({
 
   useEffect(() => {
     if (!isConnected) return
+    console.log("searchParamsiiii", searchParams.stakeRef)
     if (searchParams.stakeRef) {
       console.log("params", searchParams.stakeRef)
       // setParams(searchParams.stakeRef)
