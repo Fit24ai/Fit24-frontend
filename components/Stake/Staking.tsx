@@ -249,7 +249,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
           address,
         ],
       })
-      await createTransaction(tx, getChainEnum(getChain(chain).id))
+      // await createTransaction(tx, getChainEnum(getChain(chain).id))
       await createStake(tx, poolToContractPoolConverter(select))
       setStakeHash(tx)
 

@@ -32,6 +32,7 @@ import Link from "next/link"
 // import StatusDialog from "../shared/StatusDialog";
 import { CgSpinner } from "react-icons/cg"
 import { BiLoaderCircle } from "react-icons/bi"
+import { useWallet } from "@/hooks/useWallet"
 
 export default function StakingBox({ refetchTX, setRefetchTX }: any) {
   const { reload, setReload } = useReloadContext()
@@ -55,6 +56,7 @@ export default function StakingBox({ refetchTX, setRefetchTX }: any) {
   const [rewardHash, setRewardHash] = useState<AddressString | undefined>(
     undefined
   )
+  const {isLoggedIn} = useWallet();
 
   const { data: lastClaimedTimestamp, isLoading: lastClaimedTimestampLoading } =
     useReadContracts({
@@ -216,6 +218,7 @@ export default function StakingBox({ refetchTX, setRefetchTX }: any) {
   }
 
   useEffect(() => {
+    if(!isLoggedIn) return
     getAllUserStakes()
   }, [
     address,
@@ -223,6 +226,7 @@ export default function StakingBox({ refetchTX, setRefetchTX }: any) {
     lastClaimedTimestamp,
     lastClaimedTimestampLoading,
     refetchTX,
+    isLoggedIn,
   ])
 
   useEffect(() => {
