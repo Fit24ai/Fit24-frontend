@@ -189,7 +189,6 @@ export function ReferralDialog({ stakeRef }: { stakeRef: string | undefined }) {
               <div>
                 <button
                   onClick={() => {
-                    
                     setOpenBox(false)
                     router.push("/dashboard")
                   }}
@@ -204,7 +203,9 @@ export function ReferralDialog({ stakeRef }: { stakeRef: string | undefined }) {
               <div className="text-2xl font-bold mb-4">
                 Register your Referral
               </div>
-              <div className="p-2 border rounded-lg">{refId}</div>
+              <div className="p-2 border sm:text-base text-sm rounded-lg">
+                {refId}
+              </div>
               <div>
                 <button
                   onClick={handleRegisterReferral}

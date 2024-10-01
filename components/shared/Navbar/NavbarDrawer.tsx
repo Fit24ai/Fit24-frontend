@@ -22,14 +22,14 @@ import { IoIosPeople, IoMdNotifications } from "react-icons/io"
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { IoMenu } from "react-icons/io5"
 import { AiFillGift } from "react-icons/ai"
-import { useAccount } from "wagmi"
+import { useAccount, useDisconnect } from "wagmi"
 import { smallAddress } from "@/libs/utils"
 import { ChainSelect } from "./ChainSelect"
 import { LuCopy } from "react-icons/lu"
 import copy from "copy-to-clipboard"
 import { FaCheck } from "react-icons/fa"
 import { useWallet } from "@/hooks/useWallet"
-import { getAllStakeTokens } from "@/services/stakingService"
+import { getAllStakeTokens, getMyUpline } from "@/services/stakingService"
 
 export function NavbarDrawer() {
   // const searchParams = useSearchParams()
@@ -92,6 +92,8 @@ export function NavbarDrawer() {
     },
   ]
 
+  const { disconnect } = useDisconnect()
+
   const { address } = useAccount()
   const { isLoggedIn } = useWallet()
   const [token, setToken] = useState(0)
@@ -116,6 +118,29 @@ export function NavbarDrawer() {
   useEffect(() => {
     if (isLoggedIn) getTokens()
   }, [isLoggedIn, address])
+
+  const [upline, setUpline] = useState<string | undefined>()
+
+  const getupline = async () => {
+    try {
+      const res = await getMyUpline()
+      console.log("upline", res)
+      if (typeof res === "string") setUpline(res)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (!isLoggedIn) return
+    getupline()
+  }, [address, isLoggedIn])
+  useEffect(() => {
+    setTimeout(() => {
+      if (!isLoggedIn) return
+      getupline()
+    }, 2000)
+  }, [address])
   return (
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
@@ -123,7 +148,7 @@ export function NavbarDrawer() {
           <IoMenu className="h-full w-full stroke-1" />
         </button>
       </DrawerTrigger>
-      <DrawerContent className="z-[150] ml-auto h-full w-[300px] bg-gradient-to-bl  to-[#053921] from-[#030f39] border-none">
+      <DrawerContent className=" ml-auto h-full w-[300px] bg-gradient-to-bl  to-[#053921] from-[#030f39] border-none">
         <div className="flex h-full flex-col overflow-y-auto px-4 py-4 pt-10 scrollbar-hide text-white gap-6">
           {/* <div className="flex items-center justify-between px-6">
             <Link href={"/"}>
@@ -142,7 +167,9 @@ export function NavbarDrawer() {
             </DrawerClose>
           </div> */}
           {/* <ConnectWallet /> */}
-          <ConnectWallet />
+          <button disabled>
+            <ConnectWallet />
+          </button>
           <div className="w-full bg-[#020c2b] flex flex-col gap-2 rounded-lg py-2 px-4">
             <div className="w-full flex items-center justify-between">
               <div className="w-full flex items-center gap-2">
@@ -179,6 +206,13 @@ export function NavbarDrawer() {
             )}
           </div>
 
+          {upline && (
+            <div>
+              <span className="font-semibold text-gray-400">My Upline - </span>
+              {smallAddress(upline)}
+            </div>
+          )}
+
           <div className="flex flex-col gap-2">
             <div className="text-xs text-gray-400">Main Pages</div>
             <div className="flex flex-col gap-4 bg-white bg-opacity-10 p-4 rounded-lg">
@@ -210,6 +244,7 @@ export function NavbarDrawer() {
               ))}
             </div>
           </div>
+          <button className="bg-themeGreen py-1.5 rounded-lg" onClick={() => disconnect()}>Logout</button>
           {/* <Link
             className={`mt-2 px-6 py-4 text-lg tracking-wider font-bold ${
               pathname.startsWith("/case-study")

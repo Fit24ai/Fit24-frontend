@@ -295,43 +295,43 @@ export default function RewardsContainer() {
     if (!isLoggedIn) return
     getupline()
   }, [address, isLoggedIn])
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     if (!isLoggedIn) return
-  //     getupline()
-  //   }, 2000)
-  // }, [address])
+  useEffect(() => {
+    setTimeout(() => {
+      if (!isLoggedIn) return
+      getupline()
+    }, 2000)
+  }, [address])
 
-  const { data: readTotalStakeAmount, isLoading: totalStakeLoading } =
-    useReadContracts({
-      allowFailure: true,
-      contracts: [
-        {
-          abi: stakingAbi,
-          address: fit24ContractAddress,
-          functionName: "getUserTotalStakeReward",
-          chainId: vestingChainId,
-          args: [address],
-        },
-      ],
-    })
+  // const { data: readTotalStakeAmount, isLoading: totalStakeLoading } =
+  //   useReadContracts({
+  //     allowFailure: true,
+  //     contracts: [
+  //       {
+  //         abi: stakingAbi,
+  //         address: fit24ContractAddress,
+  //         functionName: "getUserTotalStakeReward",
+  //         chainId: vestingChainId,
+  //         args: [address],
+  //       },
+  //     ],
+  //   })
 
-  const {
-    data: readPendingAmount,
-    isLoading: pendingLoading,
-    refetch: refetchPendingAmount,
-  } = useReadContracts({
-    allowFailure: true,
-    contracts: [
-      {
-        abi: stakingAbi,
-        address: fit24ContractAddress,
-        functionName: "getPendingAmountForDay",
-        chainId: vestingChainId,
-        args: [address],
-      },
-    ],
-  })
+  // const {
+  //   data: readPendingAmount,
+  //   isLoading: pendingLoading,
+  //   refetch: refetchPendingAmount,
+  // } = useReadContracts({
+  //   allowFailure: true,
+  //   contracts: [
+  //     {
+  //       abi: stakingAbi,
+  //       address: fit24ContractAddress,
+  //       functionName: "getPendingAmountForDay",
+  //       chainId: vestingChainId,
+  //       args: [address],
+  //     },
+  //   ],
+  // })
 
   // const [historyAmount, setHistoryAmount] = useState(0)
 
@@ -436,7 +436,6 @@ export default function RewardsContainer() {
           <div className="flex gap-4 items-center">
             {/* Date Range Picker with Dropdown */}
             <div>
-              {/* <label className="text-white">Select Date Range:</label> */}
               <button
                 onClick={toggleDatePicker}
                 className="bg-white bg-opacity-20 p-2 rounded-lg text-sm"
@@ -448,7 +447,7 @@ export default function RewardsContainer() {
 
               {showDatePicker && (
                 <div className="relative">
-                  <div className="absolute z-50 mt-2 bg-white text-black right-0  border rounded-lg shadow-lg">
+                  <div className="absolute z-50 mt-2 bg-white text-black border rounded-lg shadow-lg md:min-w-[570px] min-w-[350px] w-full overflow-auto md:right-0 right-[-100%]">
                     <DateRangePicker
                       ranges={dateRange}
                       onChange={(item: any) => setDateRange([item.selection])}
@@ -467,6 +466,7 @@ export default function RewardsContainer() {
                 </div>
               )}
             </div>
+
             <div className="flex flex-col">
               <Listbox
                 value={selectedFromLevel}
@@ -596,6 +596,11 @@ export default function RewardsContainer() {
                       {/* {Number(
                         getDays(item.referralDetails.stakeDuration) /
                           item.referralDetails.amount
+                      ).toFixed(3)} */}
+                      {/* {Number(
+                        (item.referralDetails.amount *
+                          item.referralDetails.apr) /
+                          36500 
                       ).toFixed(3)} */}
                       {Number(
                         (item.referralDetails.amount *

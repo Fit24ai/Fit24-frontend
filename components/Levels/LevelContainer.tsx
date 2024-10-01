@@ -250,7 +250,7 @@ export default function LevelContainer() {
       <div className="flex items-center gap-2 ml-auto text-sm">
         Scroll Right <ArrowRight size={20} />
       </div>
-      <div className="flex gap-4 w-full overflow-x-auto pb-2">
+      <div className="flex gap-4 w-full overflow-x-auto min-h-[120px] pb-2">
         {levelsData.map((item, index) => {
           return (
             <button
