@@ -57,6 +57,7 @@ import { signMessage } from "@wagmi/core"
 import { v4 } from "uuid"
 import { config } from "@/libs/wagmi"
 import { createStakingTransaction } from "@/services/stakingTransaction"
+import TransferDialog from "../shared/TransferDialog"
 // import { useSignMessage } from "wagmi"
 // import { ethers } from 'ethers';
 
@@ -79,6 +80,10 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
   const [approvalHash, setApprovalHash] = useState<AddressString | undefined>(
     undefined
   )
+  const [paymentHash, setPaymentHash] = useState<AddressString | undefined>(
+    undefined
+  )
+  const [depositOpen, setDepositOpen] = useState(false)
   const [dialogInfo, setDialogInfo] = useState<{
     type: "SUCCESS" | "FAIL"
     message: string
@@ -249,55 +254,61 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     }
   }
 
-  const handleContinue = async () => {
-    if (chain?.id !== vestingChainId)
-      return switchChain({
-        chainId: vestingChainId,
-      })
-    if (!isValid()) return
-    if (!isAllowance()) {
-      return approveAllowance()
-    }
-    try {
-      setLoading(true)
-      const { apr } = await getAPR(select)
-      console.log(
-        parseEther(String(amount)),
-        poolToContractPoolConverter(select),
-        apr * 10,
-        address,
-        getChain(chain).id,
-        "consolell"
-      )
-      const tx = await writeContractAsync({
-        abi: stakingAbi,
-        address: fit24ContractAddress,
-        functionName: "StakeTokens",
-        chainId: getChain(chain).id,
-        args: [
-          parseEther(String(amount)),
-          poolToContractPoolConverter(select),
-          apr * 10,
-          address,
-        ],
-      })
-      await createTransaction(tx, getChainEnum(getChain(chain).id))
-      await createStake(tx, poolToContractPoolConverter(select))
-      setStakeHash(tx)
-      setSelect("")
-      setAmount(0)
-      setUsdAmount(0)
-    } catch (error) {
-      console.log(error)
-      setLoading(false)
-      setDialogInfo({
-        type: "FAIL",
-        message: "Something went wrong",
-        title: "Error Buying Token",
-      })
-      setDialog(true)
-    }
-  }
+  // const handleContinue = async () => {
+  //   if (chain?.id !== vestingChainId)
+  //     return switchChain({
+  //       chainId: vestingChainId,
+  //     })
+  //   if (!isValid()) return
+  //   if (!isAllowance()) {
+  //     return approveAllowance()
+  //   }
+  //   try {
+  //     setLoading(true)
+  //     const { apr } = await getAPR(select)
+  //     console.log(
+  //       parseEther(String(amount)),
+  //       poolToContractPoolConverter(select),
+  //       apr * 10,
+  //       address,
+  //       getChain(chain).id,
+  //       "consolell"
+  //     )
+  //     const tx = await writeContractAsync({
+  //       abi: stakingAbi,
+  //       address: fit24ContractAddress,
+  //       functionName: "StakeTokens",
+  //       chainId: getChain(chain).id,
+  //       args: [
+  //         parseEther(String(amount)),
+  //         poolToContractPoolConverter(select),
+  //         apr * 10,
+  //         address,
+  //       ],
+  //     })
+  //     await createTransaction(tx, getChainEnum(getChain(chain).id))
+  //     await createStake(tx, poolToContractPoolConverter(select))
+  //     setStakeHash(tx)
+  //     setSelect("")
+  //     setAmount(0)
+  //     setUsdAmount(0)
+  //   } catch (error) {
+  //     console.log(error)
+  //     setLoading(false)
+  //     setDialogInfo({
+  //       type: "FAIL",
+  //       message: "Something went wrong",
+  //       title: "Error Buying Token",
+  //     })
+  //     setDialog(true)
+  //   }
+  // }
+
+  const { data: txReceipt, error: txError } = useWaitForTransactionReceipt({
+    hash: paymentHash,
+    chainId: getChain(chain).id,
+  })
+
 
   const [upline, setUpline] = useState<string | undefined>()
 
@@ -306,28 +317,12 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       return switchChain({
         chainId: vestingChainId,
       })
-    console.log("Yash")
     if (!isValid()) return
-    console.log("Yash1")
     if (!isAllowance()) {
       return approveAllowance()
     }
-    console.log("Yash2")
     try {
       setLoading(true)
-      // const noonce = v4()
-      // console.log("noonce", noonce)
-      // const messageHash = solidityPackedKeccak256(
-      //   ["string", "address", "uint256"],
-      //   [noonce, upline, usdAmount]
-      // )
-      // if (!upline || !usdAmount) return
-      // const messageHash = await getMessageHash(noonce, upline, usdAmount)
-      // console.log("messageHash", messageHash)
-      // const signature = await getSignerSignature(messageHash)
-      // console.log("signature", signature)
-      // const provider = new Viem.providers.Web3Provider(window.ethereum);
-      // const signer = await provider.getSigner();
       const { apr } = await getAPR(select)
       const tx = await writeContractAsync({
         abi: paymentAbi,
@@ -346,12 +341,37 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       })
       console.log(tx)
       await createStakingTransaction(tx, getChainEnum(getChain(chain).id))
-      setLoading(false)
+      setPaymentHash(tx)
+      // setLoading(false)
     } catch (error) {
       setLoading(false)
+      setDialogInfo({
+        type: "FAIL",
+        message: "Something went wrong",
+        title: "Error Buying Token",
+      })
       console.log(error)
     }
   }
+
+  useEffect(() => {
+    if (!amount) return
+    if (!paymentHash) return
+    if (txError) {
+      setLoading(false)
+      setDialogInfo({
+        type: "FAIL",
+        message: "Something went wrong",
+        title: "Error Buying Token",
+      })
+      setDialog(true)
+      return
+    }
+    if (!txReceipt) return
+    setLoading(false)
+    setDepositOpen(true)
+    // callWebhook()
+  }, [txReceipt, txError])
 
   const getupline = async () => {
     try {
@@ -372,35 +392,35 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     console.log(parseUnits(String(usdAmount!), 18))
   }
 
-  useEffect(() => {
-    if (!stakeHash) return
-    console.log(stakeReceipt)
-    console.log(stakeError)
+  // useEffect(() => {
+  //   if (!stakeHash) return
+  //   console.log(stakeReceipt)
+  //   console.log(stakeError)
 
-    if (stakeError) {
-      // setLoading(false)
-      setDialogInfo({
-        type: "FAIL",
-        message: "Something went wrong",
-        title: "Error Buying Token",
-      })
-      setDialog(true)
-      return
-    }
-    setDialogInfo({
-      type: "SUCCESS",
-      message: `Token staked successfully`,
-      title: "Success",
-    })
-    setDialog(true)
-    setLoading(false)
-    verifyStakingRecord(stakeHash)
-    // setLoading(false)
-    setTimeout(() => {
-      setReload((prev) => !prev)
-      console.log("hshshshshshhshshshs")
-    }, 2000)
-  }, [stakeReceipt, stakeError])
+  //   if (stakeError) {
+  //     // setLoading(false)
+  //     setDialogInfo({
+  //       type: "FAIL",
+  //       message: "Something went wrong",
+  //       title: "Error Buying Token",
+  //     })
+  //     setDialog(true)
+  //     return
+  //   }
+  //   setDialogInfo({
+  //     type: "SUCCESS",
+  //     message: `Token staked successfully`,
+  //     title: "Success",
+  //   })
+  //   setDialog(true)
+  //   setLoading(false)
+  //   verifyStakingRecord(stakeHash)
+  //   // setLoading(false)
+  //   setTimeout(() => {
+  //     setReload((prev) => !prev)
+  //     console.log("hshshshshshhshshshs")
+  //   }, 2000)
+  // }, [stakeReceipt, stakeError])
 
   useEffect(() => {
     if (!approvalHash) return
@@ -421,7 +441,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       return
     }
     setTimeout(() => {
-      handleContinue()
+      buyToken()
     }, 800)
   }, [approvalHash, approvalData, approvalError, refetch, readResponse])
 
@@ -445,6 +465,11 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
         type={dialogInfo.type}
         message={dialogInfo.message}
         title={dialogInfo.title}
+      />
+      <TransferDialog
+        open={depositOpen}
+        setOpen={setDepositOpen}
+        hash={paymentHash}
       />
       <div className="flex flex-col gap-4 flex-1">
         {/* <div className="text-lg">Staking</div> */}
