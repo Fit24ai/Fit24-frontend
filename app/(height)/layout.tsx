@@ -1,6 +1,7 @@
 "use client"
 import { AlertDialog } from "@/components/shared/AlertDialog"
 import { EmailDialog } from "@/components/shared/EmailDialog"
+import Footer from "@/components/shared/Footer"
 import { LoginDialog } from "@/components/shared/LoginDialog"
 import Navbar from "@/components/shared/Navbar/Navbar"
 import { ReferralDialog } from "@/components/shared/ReferralDialog"
@@ -32,17 +33,21 @@ export default function RootLayout({
   // console.log("paramsHeight", params)
 
   return (
-    <div className={`h-screen flex overflow-hidden`}>
-      {open && (
-        <div className="w-[100vw] h-[100vh] bg-black fixed top-0 z-50"></div>
-      )}
-      {/* <AlertDialog stakeRef= {}/> */}
-      {/* <ReferralDialog stakeRef={params} /> */}
-      <LoginDialog open={open} setOpen={setOpen} />
-      {/* <EmailDialog open={isEmailPopup} setIsEmailPopup={setIsEmailPopup} /> */}
-      {/* <Navbar /> */}
-      <Sidebar />
-      {children}
-    </div>
+    <>
+      <Navbar />
+      <div className={`h-screen flex overflow-hidden`}>
+        {open && (
+          <div className="w-[100vw] h-[100vh] bg-black fixed top-0 z-50"></div>
+        )}
+        {/* <AlertDialog stakeRef= {}/> */}
+        {/* <ReferralDialog stakeRef={params} /> */}
+        <LoginDialog open={!isConnected} setOpen={setOpen} />
+        {/* <EmailDialog open={isEmailPopup} setIsEmailPopup={setIsEmailPopup} /> */}
+        {/* <Navbar /> */}
+        <Sidebar />
+        {children}
+      </div>
+      <Footer />
+    </>
   )
 }
