@@ -109,7 +109,8 @@ export function ReferralDialog({ stakeRef }: { stakeRef: string | undefined }) {
     setLoading(false)
     setSuccess(true)
     setIsAlert(false)
-    setIsEmailPopup(true)
+    // setIsEmailPopup(true)
+    window.location.href = "/"
   }, [stakeReceipt, stakeError])
 
   useEffect(() => {
