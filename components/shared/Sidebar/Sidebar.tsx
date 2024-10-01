@@ -63,7 +63,7 @@ export default function Sidebar() {
 
   const handleButtonClick = () => {
     setIsAlertVisible(true)
-    copy(`${window.location.origin}?stakeRef=${address}`)
+    copy(`${window.location.origin}/dashboard?stakeRef=${address}`)
     setTimeout(() => {
       setIsAlertVisible(false)
     }, 3000)
