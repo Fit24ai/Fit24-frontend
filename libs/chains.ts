@@ -29,33 +29,50 @@ export const blockfit = defineChain({
   },
 })
 
-// * DEV
+// * PROD
 export const ethereumPaymentAddress: AddressString =
-  "0xA47010B505f8C5696eC6C95a7Bfe9E28C977EC6E"
+  "0x8B7547c84D435e96812b54B7d2AaEA48D4c49EDB"
 export const binancePaymentAddress: AddressString =
-  "0x1d8bB89dE3e0C3b8B7cb2C0B1c93021f6d94AE4b"
-export const vestingAddress: AddressString =
+  "0x72e56adb351Bc1DA1A37B2C5bB6cA40fBB373322"
+
+  // ! NOT USED
+  export const vestingAddress: AddressString =
   "0x9Ae55AEFb2Aa047627EF42B67aD49730517DAb52"
 
 export const fit24TokenAddress: AddressString =
-  "0xd04A199ed9Ae3D1099Ed9c010464F52a7FB5de73"
+  "0xe30ce7C1daF26c9748B19B6b16D7B41d6254089B"
 export const fit24ContractAddress: AddressString =
-  "0xE7f3E0243a3b3b478350d93CA4Fe965DF61Eb58B"
+  "0x6a9f5Dae49b4414DFd32Cfd2aEea6f809E9CDE81"
 
 export const fit24ReferralContractAddress: AddressString =
-  "0x3075Fd2a09e5a4a182924aA7442fC5E293ca1371"
+  "0x9Ebb1aeA67d601b6292B19Bafa94f2424ee5a662"
+// * DEV
+// export const ethereumPaymentAddress: AddressString =
+//   "0xA47010B505f8C5696eC6C95a7Bfe9E28C977EC6E"
+// export const binancePaymentAddress: AddressString =
+//   "0x1d8bB89dE3e0C3b8B7cb2C0B1c93021f6d94AE4b"
+// export const vestingAddress: AddressString =
+//   "0x9Ae55AEFb2Aa047627EF42B67aD49730517DAb52"
+
+// export const fit24TokenAddress: AddressString =
+//   "0xd04A199ed9Ae3D1099Ed9c010464F52a7FB5de73"
+// export const fit24ContractAddress: AddressString =
+//   "0xE7f3E0243a3b3b478350d93CA4Fe965DF61Eb58B"
+
+// export const fit24ReferralContractAddress: AddressString =
+//   "0x3075Fd2a09e5a4a182924aA7442fC5E293ca1371"
 
 // * PROD
-// export const binanceUsdtTokenAddress: AddressString =
-//   "0x55d398326f99059fF775485246999027B3197955"
-// export const ethereumUsdtTokenAddress: AddressString =
-//   "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+export const binanceUsdtTokenAddress: AddressString =
+  "0x55d398326f99059fF775485246999027B3197955"
+export const ethereumUsdtTokenAddress: AddressString =
+  "0xdAC17F958D2ee523a2206206994597C13D831ec7"
 
 // * DEV
-export const binanceUsdtTokenAddress: AddressString =
-  "0x776D9c4Cab12287414093832C3AA3ED214E44719"
-export const ethereumUsdtTokenAddress: AddressString =
-  "0x776D9c4Cab12287414093832C3AA3ED214E44719"
+// export const binanceUsdtTokenAddress: AddressString =
+//   "0x776D9c4Cab12287414093832C3AA3ED214E44719"
+// export const ethereumUsdtTokenAddress: AddressString =
+//   "0x776D9c4Cab12287414093832C3AA3ED214E44719"
 
 // * PROD
 // export const ethereumPaymentAddress: AddressString =
@@ -66,16 +83,16 @@ export const ethereumUsdtTokenAddress: AddressString =
 //   "0xFb97CAC3B41078bc026CB05BD9f15F8204aa7bc2"
 
 // * DEV
-export const vestingChainId = bscTestnet.id
+// export const vestingChainId = bsc.id
 
-export const ETHEREUM = holesky
-export const BINANCE = bscTestnet
+// export const ETHEREUM = holesky
+// export const BINANCE = bscTestnet
 
 // * PROD
-// export const vestingChainId = blockfit.id
+export const vestingChainId = blockfit.id
 
-// export const ETHEREUM = mainnet
-// export const BINANCE = bsc
+export const ETHEREUM = mainnet
+export const BINANCE = bsc
 
 // * PROD
 // export const tokens: {

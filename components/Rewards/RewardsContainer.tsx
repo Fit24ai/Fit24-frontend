@@ -634,7 +634,7 @@ export default function RewardsContainer() {
                       <a
                         target="_blank"
                         rel="noreferrer noopener"
-                        href={`${process.env.NEXT_PUBLIC_BINANCE_TESTNET_SCAN_URL}/tx/${item.referralDetails.txHash}`}
+                        href={`${process.env.NEXT_PUBLIC_ICO_SCAN_URL}/tx/${item.referralDetails.txHash}`}
                       >
                         {`${item.referralDetails.txHash.slice(0, 7)}..`}
                       </a>

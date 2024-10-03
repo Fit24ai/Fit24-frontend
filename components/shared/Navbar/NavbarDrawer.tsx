@@ -167,9 +167,7 @@ export function NavbarDrawer() {
             </DrawerClose>
           </div> */}
           {/* <ConnectWallet /> */}
-          <button disabled>
-            <ConnectWallet />
-          </button>
+          <ConnectWallet drawer />
           <div className="w-full bg-[#020c2b] flex flex-col gap-2 rounded-lg py-2 px-4">
             <div className="w-full flex items-center justify-between">
               <div className="w-full flex items-center gap-2">
@@ -244,7 +242,12 @@ export function NavbarDrawer() {
               ))}
             </div>
           </div>
-          <button className="bg-themeGreen py-1.5 rounded-lg" onClick={() => disconnect()}>Logout</button>
+          <button
+            className="bg-themeGreen py-1.5 rounded-lg"
+            onClick={() => disconnect()}
+          >
+            Logout
+          </button>
           {/* <Link
             className={`mt-2 px-6 py-4 text-lg tracking-wider font-bold ${
               pathname.startsWith("/case-study")
