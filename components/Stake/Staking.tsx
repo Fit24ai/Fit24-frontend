@@ -103,14 +103,14 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
         abi: tokenAbi,
         address: getUsdtTokenAddress(getChain(chain).id),
         functionName: "balanceOf",
-        chainId: vestingChainId,
+        chainId: getChain(chain).id,
         args: formatArray([address]),
       },
       {
         abi: tokenAbi,
         address: getUsdtTokenAddress(getChain(chain).id),
         functionName: "allowance",
-        chainId: vestingChainId,
+        chainId: getChain(chain).id,
         args: formatArray([
           address,
           getPaymentContractAddress(getChain(chain).id),
@@ -132,7 +132,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
         abi: tokenAbi,
         address: fit24TokenAddress,
         functionName: "balanceOf",
-        chainId: vestingChainId,
+        chainId: getChain(chain).id,
         args: formatArray([address]),
       },
     ],
@@ -185,7 +185,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
         abi: tokenAbi,
         address: getUsdtTokenAddress(getChain(chain).id),
         functionName: "approve",
-        chainId: vestingChainId,
+        chainId: getChain(chain).id,
         args: [
           getPaymentContractAddress(getChain(chain).id),
           parseEther("100000000"),
@@ -262,10 +262,10 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
   const [upline, setUpline] = useState<string | undefined>()
 
   const buyToken = async () => {
-    if (chain?.id !== vestingChainId)
-      return switchChain({
-        chainId: vestingChainId,
-      })
+    // if (chain?.id !== vestingChainId)
+    //   return switchChain({
+    //     chainId: vestingChainId,
+    //   })
     if (!isValid()) return
     if (!isAllowance()) {
       return approveAllowance()
