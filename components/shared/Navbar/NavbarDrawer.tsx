@@ -208,7 +208,7 @@ export function NavbarDrawer() {
 
           {upline && (
             <div>
-              <span className="font-semibold text-gray-400">My Upline - </span>
+              <span className="font-semibold text-gray-400">Sponsor Id - </span>
               {smallAddress(upline)}
             </div>
           )}
