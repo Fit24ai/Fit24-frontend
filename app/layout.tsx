@@ -28,10 +28,10 @@ export default function RootLayout({
           <Web3ModalProvider>
             <WalletProvider>
               <div className="image-bg">
-                <Navbar />
+                {/* <Navbar /> */}
                 {children}
               </div>
-              <Footer />
+              {/* <Footer /> */}
             </WalletProvider>
           </Web3ModalProvider>
         </body>

@@ -63,7 +63,7 @@ export default function Sidebar() {
 
   const handleButtonClick = () => {
     setIsAlertVisible(true)
-    copy(`${window.location.origin}?stakeRef=${address}`)
+    copy(`${window.location.origin}/dashboard?stakeRef=${address}`)
     setTimeout(() => {
       setIsAlertVisible(false)
     }, 3000)
@@ -131,7 +131,7 @@ export default function Sidebar() {
           {/* <div className="bg-[#056237] px-3 py-1 rounded-xl text-sm">
             Blokfit
           </div> */}
-          {/* <ChainSelect /> */}
+          <ChainSelect />
         </div>
         {token > 0 && (
           <div className="w-full flex items-center gap-4 text-sm ">

@@ -220,7 +220,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     if (value > 1000000) return
 
     setAmount(value ? value : undefined)
-    setUsdAmount(value * Number(process.env.NEXT_PUBLIC_TOKEN_PRICE))
+    setUsdAmount(value * 0.04)
   }
 
   const handleSecondInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -228,8 +228,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     setUsdAmount(value)
     if (value > 1000000) return
 
-    const calculatedFirstInputValue =
-      value / Number(process.env.NEXT_PUBLIC_TOKEN_PRICE)
+    const calculatedFirstInputValue = value / 0.04
 
     // Now update the first input value
     if (select === "A" && calculatedFirstInputValue < 2500) {
@@ -341,6 +340,8 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       console.log(tx)
       await createStakingTransaction(tx, getChainEnum(getChain(chain).id))
       setPaymentHash(tx)
+      // setAmount(0)
+      // setUsdAmount(0)
       // setLoading(false)
     } catch (error) {
       setLoading(false)
@@ -764,7 +765,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
                 // value={
                 //   !amount
                 //     ? "" // Use an empty string when there is no value
-                //     : (amount * Number(process.env.NEXT_PUBLIC_TOKEN_PRICE)).toFixed(4)
+                //     : (amount * 0.04).toFixed(4)
                 // }
                 type="number"
                 placeholder="0"

@@ -42,7 +42,10 @@ const TransferDialog = ({
                 className={`relative transition-all transform h-fit p-8 bg-white rounded-3xl shadow-sm`}
               >
                 <TransactionPollingService
-                  action={() => setOpen(false)}
+                  action={() => {
+                    window.location.reload()
+                    setOpen(false)
+                  }}
                   hash={hash}
                 />
               </Dialog.Panel>
