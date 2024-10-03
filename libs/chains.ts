@@ -41,28 +41,27 @@ export const fit24TokenAddress: AddressString =
   "0xd04A199ed9Ae3D1099Ed9c010464F52a7FB5de73"
 export const fit24ContractAddress: AddressString =
   "0xE7f3E0243a3b3b478350d93CA4Fe965DF61Eb58B"
-// export const fit24ContractAddress: AddressString =
-//   "0xe86FAe5693351bE8BD58Bde4C3660A715969532F"
-// export const fit24ContractAddress: AddressString =
-//   "0xb0810a10FD74DeDFca66e91d759b7357a61f9EfB"
-// export const fit24ContractAddress: AddressString =
-//   "0xe3CC06a247187F8A33C50E09fE06D1537c47Ec40"
-// export const fit24ContractAddress: AddressString =
-//   "0xeadbc8c7a9faac417a48bdf7a0a4eee4b7ffeaaa"
 
-// export const fit24ReferralContractAddress: AddressString =
-//   "0xeb0B6A10159d31912a01b5DA2E49b37De7FB916c"
 export const fit24ReferralContractAddress: AddressString =
-  "0x7214f89A295d3cc18D8Ad0752B773Eb92a46b7bd"
+  "0x3075Fd2a09e5a4a182924aA7442fC5E293ca1371"
 
+// * PROD
+// export const binanceUsdtTokenAddress: AddressString =
+//   "0x55d398326f99059fF775485246999027B3197955"
+// export const ethereumUsdtTokenAddress: AddressString =
+//   "0xdAC17F958D2ee523a2206206994597C13D831ec7"
 
-  export const usdtTokenAddress : AddressString = "0x776D9c4Cab12287414093832C3AA3ED214E44719"
+// * DEV
+export const binanceUsdtTokenAddress: AddressString =
+  "0x776D9c4Cab12287414093832C3AA3ED214E44719"
+export const ethereumUsdtTokenAddress: AddressString =
+  "0x776D9c4Cab12287414093832C3AA3ED214E44719"
 
 // * PROD
 // export const ethereumPaymentAddress: AddressString =
-//   "0xC8368489d0050b0F2947d5ece5CCA26e285d4C5F"
+//   "0x8B7547c84D435e96812b54B7d2AaEA48D4c49EDB"
 // export const binancePaymentAddress: AddressString =
-//   "0x66d5f9804cA50da3Fa06E155bedaDa5f8F36bafD"
+//   "0x72e56adb351Bc1DA1A37B2C5bB6cA40fBB373322"
 // export const vestingAddress: AddressString =
 //   "0xFb97CAC3B41078bc026CB05BD9f15F8204aa7bc2"
 
@@ -172,6 +171,18 @@ export function getPaymentContractAddress(chainId: number) {
       return binancePaymentAddress
     case blockfit.id:
       return undefined
+    default:
+      throw new Error("Invalid chainId")
+  }
+}
+export function getUsdtTokenAddress(chainId: number) {
+  switch (chainId) {
+    case ETHEREUM.id:
+      return ethereumUsdtTokenAddress
+    case BINANCE.id:
+      return binanceUsdtTokenAddress
+    // case blockfit.id:
+    //   return undefined
     default:
       throw new Error("Invalid chainId")
   }

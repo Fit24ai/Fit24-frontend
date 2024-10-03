@@ -285,100 +285,12 @@ export default function ChartBox({ token }: { token: number }) {
     })
 
   const [lastTimestamp, setTimestamp] = useState<number | undefined>()
-  // const {
-  //   data: userDailyRewardClaimed,
-  //   isLoading: userDailyRewardClaimedLoading,
-  // } = useReadContracts({
-  //   allowFailure: true,
-  //   contracts: [
-  //     {
-  //       abi: stakingAbi,
-  //       address: fit24ContractAddress,
-  //       functionName: "userDailyRewardClaimed",
-  //       chainId: vestingChainId,
-  //     },
-  //   ],
-  // })
 
   useEffect(() => {
     if (!lastClaimedTimestamp) return
     setTimestamp(Number(lastClaimedTimestamp[0].result!))
     refetchUserDailyRewardClaimed()
   }, [address, lastClaimedTimestamp, lastClaimedTimestampLoading])
-  // const getAllUserStakes = async () => {
-  //   try {
-  //     setClaimLoading(true)
-  //     if (
-  //       !address ||
-  //       !lastClaimedTimestamp ||
-  //       !userDailyRewardClaimed ||
-  //       !readPendingAmount
-  //     )
-  //       return
-
-  //     const res: any = await getAllStakesByUser(address)
-  //     console.log("userDailyRewardClaimed", userDailyRewardClaimed[0].result)
-  //     // console.log("stakes", res)
-  //     // console.log("stakes times", res.stakes[res.stakes.length - 1].startTime)
-  //     // console.log("timestamp", Number(lastClaimedTimestamp[0].result!))
-  //     // console.log(
-  //     //   "new time",
-  //     //   Math.floor(Date.now() / 1000) - res.stakes[0].startTime
-  //     // )
-  //     // if (res.stakes[0].startTime > Number(lastClaimedTimestamp[0].result!)) {
-  //     //   console.log(true)
-
-  //     //   setClaimStakeCondition(true)
-  //     // } else {
-  //     //   console.log(false)
-  //     //   setClaimStakeCondition(false)
-  //     // }
-  //     // setClaimLoading(false)
-
-  //     // if(Number(lastClaimedTimestamp[0].result!)){
-
-  //     // }
-  //     if (res.stakes.length === 0) {
-  //       setClaimStakeCondition(true)
-  //       setPendingAmount(0)
-  //       console.log(true)
-  //     } else if (res.stakes.length >= 1) {
-  //       if (
-  //         Math.floor(Date.now() / 1000) -
-  //           res.stakes[res.stakes.length - 1].startTime >
-  //           24 * 60 * 60 &&
-  //         userDailyRewardClaimed[0].result! === false
-  //       ) {
-  //         console.log(false)
-  //         setClaimStakeCondition(false)
-  //       } else {
-  //         setClaimStakeCondition(true)
-  //         console.log(true)
-  //         setPendingAmount(0)
-  //       }
-  //     } else if (
-  //       Math.floor(Date.now() / 1000) -
-  //         res.stakes[res.stakes.length - 1].startTime >
-  //         24 * 60 * 60 &&
-  //       userDailyRewardClaimed[0].result! === false
-  //     ) {
-  //       // console.log(false)
-  //       setClaimStakeCondition(false)
-  //     } else {
-  //       // console.log(true)
-  //       setClaimStakeCondition(true)
-  //     }
-
-  //     setClaimLoading(false)
-  //   } catch (error) {
-  //     // console.log(error)
-  //     setClaimLoading(false)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   getAllUserStakes()
-  // }, [address, lastClaimedTimestamp, lastClaimedTimestampLoading])
 
   const { data: readTotalStakeAmount, isLoading: totalStakeLoading } =
     useReadContracts({
@@ -588,12 +500,12 @@ export default function ChartBox({ token }: { token: number }) {
     }
     createClaimReward(rewardHash)
     setClaimLoading(false)
+    setClaimStakeCondition(true)
     setDialogInfo({
       type: "SUCCESS",
       message: `Reward Claimed Successfully`,
       title: "Success",
     })
-    setClaimStakeCondition(true)
     setDialog(true)
     refetchPendingAmount()
   }, [rewardReceipt, rewardError])

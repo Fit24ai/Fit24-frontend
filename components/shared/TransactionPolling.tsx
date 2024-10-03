@@ -8,6 +8,7 @@ import {
 import { getTransactions } from "@/services/stakingTransaction"
 import { useEffect, useState } from "react"
 import { BsExclamationDiamond } from "react-icons/bs"
+import { CgSpinner } from "react-icons/cg"
 import { IoCheckmarkCircleOutline } from "react-icons/io5"
 
 export default function TransactionPollingService({
@@ -53,11 +54,16 @@ export default function TransactionPollingService({
     return () => clearInterval(intervalId)
   }, [])
 
-  if (distributionStatus === DistributionStatusEnum.PENDING || distributionStatus === DistributionStatusEnum.PROCESSING)
+  if (
+    distributionStatus === DistributionStatusEnum.PENDING ||
+    distributionStatus === DistributionStatusEnum.PROCESSING
+  )
     return (
       <div className="flex flex-col items-center justify-center text-center gap-8">
         <div className="text-3xl font-bold">Payment Successful</div>
-        <div className="loader"></div>
+        <div>
+          <CgSpinner className="text-6xl animate-spin" />
+        </div>
         <div className="font-medium">
           <div>Waiting for the Tokens to Deposit</div>
           <div className="text-xs">

@@ -131,7 +131,7 @@ export default function Sidebar() {
           {/* <div className="bg-[#056237] px-3 py-1 rounded-xl text-sm">
             Blokfit
           </div> */}
-          <ChainSelect />
+          {/* <ChainSelect /> */}
         </div>
         {token > 0 && (
           <div className="w-full flex items-center gap-4 text-sm ">
@@ -156,7 +156,7 @@ export default function Sidebar() {
       {upline && (
         <div className="mx-auto">
           <span className="font-semibold text-sm text-gray-400">
-            My Upline -{" "}
+            Sponsor Id -{" "}
           </span>
           {smallAddress(upline)}
         </div>

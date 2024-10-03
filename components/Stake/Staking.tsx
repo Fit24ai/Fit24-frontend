@@ -6,7 +6,7 @@ import {
   getChain,
   getChainEnum,
   getPaymentContractAddress,
-  usdtTokenAddress,
+  getUsdtTokenAddress,
   vestingChainId,
 } from "@/libs/chains"
 import { stakingAbi } from "@/libs/stakingAbi"
@@ -58,6 +58,7 @@ import { v4 } from "uuid"
 import { config } from "@/libs/wagmi"
 import { createStakingTransaction } from "@/services/stakingTransaction"
 import TransferDialog from "../shared/TransferDialog"
+import { paymentReceived } from "@/services/webhook"
 // import { useSignMessage } from "wagmi"
 // import { ethers } from 'ethers';
 
@@ -100,14 +101,14 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     contracts: [
       {
         abi: tokenAbi,
-        address: usdtTokenAddress,
+        address: getUsdtTokenAddress(getChain(chain).id),
         functionName: "balanceOf",
         chainId: vestingChainId,
         args: formatArray([address]),
       },
       {
         abi: tokenAbi,
-        address: usdtTokenAddress,
+        address: getUsdtTokenAddress(getChain(chain).id),
         functionName: "allowance",
         chainId: vestingChainId,
         args: formatArray([
@@ -182,7 +183,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     try {
       const tx = await writeContractAsync({
         abi: tokenAbi,
-        address: usdtTokenAddress,
+        address: getUsdtTokenAddress(getChain(chain).id),
         functionName: "approve",
         chainId: vestingChainId,
         args: [
@@ -225,8 +226,8 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
 
   const handleSecondInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value)
-    setUsdAmount(value)
     if (value > 1000000) return
+    setUsdAmount(value ? value : undefined)
 
     const calculatedFirstInputValue = value / 0.04
 
@@ -330,7 +331,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
         chainId: getChain(chain).id,
         args: [
           parseEther(String(usdAmount!)),
-          usdtTokenAddress,
+          getUsdtTokenAddress(getChain(chain).id),
           upline,
           apr * 10,
           poolToContractPoolConverter(select),
@@ -368,6 +369,15 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       return
     }
     if (!txReceipt) return
+    paymentReceived(
+      {
+        amount: parseEther(String(usdAmount!)).toString(),
+        token: getUsdtTokenAddress(getChain(chain).id),
+        user: address!,
+        transaction_hash: paymentHash,
+      },
+      getChainEnum(getChain(chain).id)
+    )
     setLoading(false)
     setDepositOpen(true)
     // callWebhook()
@@ -387,10 +397,6 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     if (!isLoggedIn) return
     getupline()
   }, [address, isLoggedIn])
-
-  const handlePay = async () => {
-    console.log(parseUnits(String(usdAmount!), 18))
-  }
 
   // useEffect(() => {
   //   if (!stakeHash) return
@@ -761,7 +767,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
                 name="usdt"
                 className="3xs:w-[100px] w-[80px] sm:px-4 px-2 3xs:h-10 h-8 flex items-center justify-center bg-white bg-opacity-15 outline-themeGreen border-none focus:border-none rounded-sm text-sm sm:text-base"
                 disabled={!select}
-                value={usdAmount ?? ""}
+                value={amount ? usdAmount ?? "" : ""}
                 // value={
                 //   !amount
                 //     ? "" // Use an empty string when there is no value
@@ -777,7 +783,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
                 name="fit24"
                 className="3xs:w-[100px] w-[80px] sm:px-4 px-2 3xs:h-10 h-8 flex items-center justify-center bg-white bg-opacity-15 outline-themeGreen border-none focus:border-none rounded-sm text-sm sm:text-base"
                 disabled={!select}
-                value={amount ?? ""} // Ensure empty string if amount is undefined
+                value={usdAmount ? amount ?? "" : ""} // Ensure empty string if amount is undefined
                 type="number"
                 placeholder={
                   select === "A" ? "2500" : select === "B" ? "5000" : "10000"
@@ -819,7 +825,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
               {loading ? (
                 <CgSpinner className="text-2xl animate-spin text-white" />
               ) : (
-                "Stake"
+                "Buy & Stake"
               )}
             </button>
           </div>

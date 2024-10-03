@@ -80,35 +80,38 @@ const ConnectWallet = ({ drawer }: { drawer?: boolean }) => {
         //     {smallAddress(address)}
         //   </button>
         // </>
-        <Listbox>
-          <ListboxButton className="inline-flex relative truncate w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 z-[200]">
-            <div className="flex items-center gap-1 w-full">
-              <div className="truncate block"> {smallAddress(address)}</div>
-            </div>
-          </ListboxButton>
-          <ListboxOptions
-            anchor="bottom"
-            className="w-24 absolute mt-1 max-h-60 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-[200]"
-          >
-            <ListboxOption
-              onClick={() => disconnect()}
-              value={"Logout"}
-              className="inline-flex truncate w-full cursor-pointer justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 z-[200]"
+        <div className="flex gap-2">
+          <ChainSelect />
+          <Listbox>
+            <ListboxButton className="inline-flex relative truncate w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 z-[200]">
+              <div className="flex items-center gap-1 w-full">
+                <div className="truncate block"> {smallAddress(address)}</div>
+              </div>
+            </ListboxButton>
+            <ListboxOptions
+              anchor="bottom"
+              className="w-24 absolute mt-1 max-h-60 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-[200]"
             >
-              {({ selected }) => (
-                <>
-                  <span
-                    className={`block truncate ${
-                      selected ? "font-medium" : "font-normal"
-                    }`}
-                  >
-                    Logout
-                  </span>
-                </>
-              )}
-            </ListboxOption>
-          </ListboxOptions>
-        </Listbox>
+              <ListboxOption
+                onClick={() => disconnect()}
+                value={"Logout"}
+                className="inline-flex truncate w-full cursor-pointer justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 z-[200]"
+              >
+                {({ selected }) => (
+                  <>
+                    <span
+                      className={`block truncate ${
+                        selected ? "font-medium" : "font-normal"
+                      }`}
+                    >
+                      Logout
+                    </span>
+                  </>
+                )}
+              </ListboxOption>
+            </ListboxOptions>
+          </Listbox>
+        </div>
       )}
       {/* {!drawer && isConnected && (
         <div className="flex items-center gap-4 w-fit">
