@@ -17,7 +17,8 @@ const metadata = {
 
 // Create wagmiConfig
 // const chains = [mainnet, bsc] as const
-const chains = [holesky, bscTestnet, blockfit] as const
+// const chains = [holesky, bscTestnet, blockfit] as const
+const chains = [mainnet, bsc, blockfit] as const
 
 export const config = defaultWagmiConfig({
   chains,

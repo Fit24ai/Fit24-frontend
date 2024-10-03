@@ -21,6 +21,7 @@ import { useWeb3Modal } from "@web3modal/wagmi/react"
 import { EmailDialog } from "../EmailDialog"
 import { useWallet } from "@/hooks/useWallet"
 import { IoIosArrowDown } from "react-icons/io"
+import { ChainSelectDrawer } from "./ChainSelectDrawer"
 // import { useWallet } from "@/hooks/useWallet";
 // import EmailDialog from "../EmailDialog";
 
@@ -80,9 +81,9 @@ const ConnectWallet = ({ drawer }: { drawer?: boolean }) => {
         //     {smallAddress(address)}
         //   </button>
         // </>
-        <div className="flex gap-2">
-          <ChainSelect />
-          <Listbox>
+        <div className={drawer ? "flex flex-col-reverse gap-2" : "flex gap-2"}>
+          {drawer ? <ChainSelectDrawer /> : <ChainSelect />}
+          <Listbox disabled={drawer}>
             <ListboxButton className="inline-flex relative truncate w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 z-[200]">
               <div className="flex items-center gap-1 w-full">
                 <div className="truncate block"> {smallAddress(address)}</div>

@@ -304,7 +304,7 @@ export default function StakingBox({ refetchTX, setRefetchTX }: any) {
                       className="text-center text-blue-400"
                       target="_blank"
                       rel="noreferrer noopener"
-                      href={`${process.env.NEXT_PUBLIC_BINANCE_TESTNET_SCAN_URL}/tx/${item.txHash}`}
+                      href={`${process.env.NEXT_PUBLIC_ICO_SCAN_URL}/tx/${item.txHash}`}
                     >
                       {smallAddress(item.txHash)}
                     </a>
@@ -346,7 +346,7 @@ export default function StakingBox({ refetchTX, setRefetchTX }: any) {
                       <a
                         target="_blank"
                         rel="noreferrer noopener"
-                        href={`${process.env.NEXT_PUBLIC_BINANCE_TESTNET_SCAN_URL}/tx/${item.txHash}`}
+                        href={`${process.env.NEXT_PUBLIC_ICO_SCAN_URL}/tx/${item.txHash}`}
                       >
                         <FiExternalLink />
                       </a>

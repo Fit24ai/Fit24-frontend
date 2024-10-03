@@ -129,3 +129,7 @@
     margin: 0;
   }
 }
+
+#headlessui-portal-root {
+  z-index: 100;
+}
