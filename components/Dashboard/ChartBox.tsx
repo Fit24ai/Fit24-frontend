@@ -204,29 +204,6 @@ export default function ChartBox({ token }: { token: number }) {
   const { isLoggedIn } = useWallet()
   const { chain, address, isConnected } = useAccount()
 
-  // const [token, setToken] = useState(0)
-  const [refIncome, serRefIncome] = useState(0)
-  // const getTokens = async () => {
-  //   return await getUserTokens()
-  // }
-  // useEffect(() => {
-  //   getTokens()
-  //     .then((data) => {
-  //       setToken(data.tokens)
-  //     })
-  //     .catch((err) => {
-  //       setToken(0)
-  //     })
-  //   getUserRefIncome()
-  //     .then((data) => {
-  //       serRefIncome(data.referralIncome)
-  //     })
-  //     .catch((err) => {
-  //       serRefIncome(0)
-  //     })
-  // }, [isLoggedIn])
-
-  // const { reload, setReload } = useReloadContext();
 
   const [totalNetworkMembers, setTotalNetworkMembers] = useState(0)
   const [totalNetworkStaked, setTotalNetworkStaked] = useState(0)
@@ -363,8 +340,8 @@ export default function ChartBox({ token }: { token: number }) {
         address: fit24ContractAddress,
         functionName: "userDailyRewardClaimed",
         chainId: vestingChainId,
-        args: [address, (Number(lastTimestamp) + 3600).toString()],
-        // args: [address, (Number(lastTimestamp) + 86400).toString()],
+        // args: [address, (Number(lastTimestamp) + 3600).toString()],
+        args: [address, (Number(lastTimestamp) + 86400).toString()],
       },
     ],
   })
@@ -385,43 +362,23 @@ export default function ChartBox({ token }: { token: number }) {
         return
       const res: any = await getAllStakesByUser(address)
       console.log("userDailyRewardClaimed", userDailyRewardClaimed[0].result)
-      // console.log("stakes", res)
-      // console.log("stakes times", res.stakes[res.stakes.length - 1].startTime)
-      // console.log("timestamp", Number(lastClaimedTimestamp[0].result!))
-      // console.log(
-      //   "new time",
-      //   Math.floor(Date.now() / 1000) - res.stakes[0].startTime
-      // )
-      // if (res.stakes[0].startTime > Number(lastClaimedTimestamp[0].result!)) {
-      //   console.log(true)
-
-      //   setClaimStakeCondition(true)
-      // } else {
-      //   console.log(false)
-      //   setClaimStakeCondition(false)
-      // }
-      // setClaimLoading(false)
-
-      // if(Number(lastClaimedTimestamp[0].result!)){
-
-      // }
       if (res.stakes.length === 0) {
         setClaimStakeCondition(true)
         setPendingAmount(0)
         console.log(true)
       } else if (res.stakes.length >= 1) {
-        if (
-          Math.floor(Date.now() / 1000) -
-            res.stakes[res.stakes.length - 1].startTime >
-            1 * 60 * 60 &&
-          userDailyRewardClaimed[0].result! === false
-        ) {
         // if (
         //   Math.floor(Date.now() / 1000) -
         //     res.stakes[res.stakes.length - 1].startTime >
-        //     24 * 60 * 60 &&
+        //     1 * 60 * 60 &&
         //   userDailyRewardClaimed[0].result! === false
         // ) {
+        if (
+          Math.floor(Date.now() / 1000) -
+            res.stakes[res.stakes.length - 1].startTime >
+            24 * 60 * 60 &&
+          userDailyRewardClaimed[0].result! === false
+        ) {
           console.log(false)
           setPendingAmount(
             getNumber(readPendingAmount[0].result! as bigint, 18)
@@ -475,10 +432,6 @@ export default function ChartBox({ token }: { token: number }) {
     refetchUserDailyRewardClaimed,
   ])
 
-  // useEffect(() => {
-  //   if (!readPendingAmount) return
-  //   setPendingAmount(getNumber(readPendingAmount[0].result! as bigint, 18))
-  // }, [readPendingAmount])
 
   const { data: rewardReceipt, error: rewardError } =
     useWaitForTransactionReceipt({
@@ -633,41 +586,6 @@ export default function ChartBox({ token }: { token: number }) {
             </div>
           </div>
           <div className="relative max-w-80 w-full">
-            {/* {claimStakeCondition ? (
-            pendingAmount ? (
-              pendingAmount > 0 && (
-                <div className="text-center">
-                  Availble to claim after 24 Hours
-                </div>
-              )
-            ) : (
-              <></>
-            )
-          ) : (
-            <button
-              onClick={claimReward}
-              onMouseOver={() => {
-                if (claimStakeCondition) {
-                  setShowPopup(true)
-                } else if (!!!pendingAmount) {
-                  setShowPopup(true)
-                } else {
-                  return
-                }
-              }}
-              onMouseLeave={() => setShowPopup(false)}
-              disabled={!pendingAmount || claimStakeCondition}
-              className="max-w-80 w-full disabled:opacity-50 disabled:cursor-not-allowed mb-10 bg-themeGreen text-white h-10 rounded-lg"
-            >
-              {isClaimLoading ? (
-                <div className="flex justify-center items-center">
-                  <CgSpinner className="text-2xl animate-spin !text-black flex items-center justify-end" />
-                </div>
-              ) : (
-                "Claim Reward"
-              )}
-            </button>
-          )} */}
             {claimStakeCondition ? (
               <div className="text-center">
                 Available to claim after 24 Hours

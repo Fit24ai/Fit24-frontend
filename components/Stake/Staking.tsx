@@ -254,56 +254,6 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     }
   }
 
-  // const handleContinue = async () => {
-  //   if (chain?.id !== vestingChainId)
-  //     return switchChain({
-  //       chainId: vestingChainId,
-  //     })
-  //   if (!isValid()) return
-  //   if (!isAllowance()) {
-  //     return approveAllowance()
-  //   }
-  //   try {
-  //     setLoading(true)
-  //     const { apr } = await getAPR(select)
-  //     console.log(
-  //       parseEther(String(amount)),
-  //       poolToContractPoolConverter(select),
-  //       apr * 10,
-  //       address,
-  //       getChain(chain).id,
-  //       "consolell"
-  //     )
-  //     const tx = await writeContractAsync({
-  //       abi: stakingAbi,
-  //       address: fit24ContractAddress,
-  //       functionName: "StakeTokens",
-  //       chainId: getChain(chain).id,
-  //       args: [
-  //         parseEther(String(amount)),
-  //         poolToContractPoolConverter(select),
-  //         apr * 10,
-  //         address,
-  //       ],
-  //     })
-  //     await createTransaction(tx, getChainEnum(getChain(chain).id))
-  //     await createStake(tx, poolToContractPoolConverter(select))
-  //     setStakeHash(tx)
-  //     setSelect("")
-  //     setAmount(0)
-  //     setUsdAmount(0)
-  //   } catch (error) {
-  //     console.log(error)
-  //     setLoading(false)
-  //     setDialogInfo({
-  //       type: "FAIL",
-  //       message: "Something went wrong",
-  //       title: "Error Buying Token",
-  //     })
-  //     setDialog(true)
-  //   }
-  // }
-
   const { data: txReceipt, error: txError } = useWaitForTransactionReceipt({
     hash: paymentHash,
     chainId: getChain(chain).id,
@@ -397,36 +347,6 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     if (!isLoggedIn) return
     getupline()
   }, [address, isLoggedIn])
-
-  // useEffect(() => {
-  //   if (!stakeHash) return
-  //   console.log(stakeReceipt)
-  //   console.log(stakeError)
-
-  //   if (stakeError) {
-  //     // setLoading(false)
-  //     setDialogInfo({
-  //       type: "FAIL",
-  //       message: "Something went wrong",
-  //       title: "Error Buying Token",
-  //     })
-  //     setDialog(true)
-  //     return
-  //   }
-  //   setDialogInfo({
-  //     type: "SUCCESS",
-  //     message: `Token staked successfully`,
-  //     title: "Success",
-  //   })
-  //   setDialog(true)
-  //   setLoading(false)
-  //   verifyStakingRecord(stakeHash)
-  //   // setLoading(false)
-  //   setTimeout(() => {
-  //     setReload((prev) => !prev)
-  //     console.log("hshshshshshhshshshs")
-  //   }, 2000)
-  // }, [stakeReceipt, stakeError])
 
   useEffect(() => {
     if (!approvalHash) return
