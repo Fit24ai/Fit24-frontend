@@ -25,25 +25,25 @@ export const config = defaultWagmiConfig({
   projectId,
   metadata,
   ssr: true,
-  // storage: createStorage({
-  //   storage: cookieStorage,
-  // }),
   storage: createStorage({
-    storage: {
-      ...cookieStorage,
-      getItem: (key: string): string | null => {
-        // Ensure key is strictly string
-        const item = cookieStorage.getItem(key)
-        return item ? JSON.parse(item) : null // Parse JSON if present
-      },
-      setItem: (key: string, value: any): void => {
-        // Ensure key is strictly string
-        cookieStorage.setItem(key, JSON.stringify(value)) // Stringify value before storing
-      },
-      removeItem: (key: string): void => {
-        // Remove item by string key
-        cookieStorage.removeItem(key)
-      },
-    },
+    storage: cookieStorage,
   }),
+  // storage: createStorage({
+  //   storage: {
+  //     ...cookieStorage,
+  //     getItem: (key: string): string | null => {
+  //       // Ensure key is strictly string
+  //       const item = cookieStorage.getItem(key)
+  //       return item ? JSON.parse(item) : null // Parse JSON if present
+  //     },
+  //     setItem: (key: string, value: any): void => {
+  //       // Ensure key is strictly string
+  //       cookieStorage.setItem(key, JSON.stringify(value)) // Stringify value before storing
+  //     },
+  //     removeItem: (key: string): void => {
+  //       // Remove item by string key
+  //       cookieStorage.removeItem(key)
+  //     },
+  //   },
+  // }),
 })
