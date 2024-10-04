@@ -49,119 +49,25 @@ export default function StakingBox({ refetchTX, setRefetchTX }: any) {
   const { writeContractAsync } = useWriteContract()
   const [stakes, setStakes] = useState([])
   const [isLoading, setLoading] = useState(true)
-  const [isClaimLoading, setClaimLoading] = useState(false)
-  const [showPopup, setShowPopup] = useState(false)
-  const [pendingAmount, setPendingAmount] = useState<number | undefined>()
-  const [claimStakeCondition, setClaimStakeCondition] = useState(false)
-  const [rewardHash, setRewardHash] = useState<AddressString | undefined>(
-    undefined
-  )
   const {isLoggedIn} = useWallet();
 
-  const { data: lastClaimedTimestamp, isLoading: lastClaimedTimestampLoading } =
-    useReadContracts({
-      allowFailure: true,
-      contracts: [
-        {
-          abi: stakingAbi,
-          address: fit24ContractAddress,
-          functionName: "lastClaimedTimestamp",
-          chainId: vestingChainId,
-        },
-      ],
-    })
   const getAllUserStakes = async () => {
     try {
       setLoading(true)
-      setClaimLoading(true)
-      if (!address || !lastClaimedTimestamp) return
+      if (!address) return
       const res: any = await getAllStakesByUser(address)
-
       setStakes(res.stakes)
       console.log("stakes", res.stakes)
-      if (
-        res.stakes[res.stakes.length - 1].startTime >
-        Number(lastClaimedTimestamp[0].result!)
-      ) {
-        setClaimStakeCondition(true)
-      } else {
-        setClaimStakeCondition(false)
-      }
       setLoading(false)
-      setClaimLoading(false)
       setRefetchTX(false)
     } catch (error) {
       console.log(error)
       setLoading(false)
-      setClaimLoading(false)
       setRefetchTX(false)
     }
   }
 
-  const {
-    data: readPendingAmount,
-    isLoading: pendingLoading,
-    refetch: refetchPendingAmount,
-  } = useReadContracts({
-    allowFailure: true,
-    contracts: [
-      {
-        abi: stakingAbi,
-        address: fit24ContractAddress,
-        functionName: "getPendingAmountForDay",
-        chainId: vestingChainId,
-        args: [address],
-      },
-    ],
-  })
 
-  const { data: readTotalStakeAmount, isLoading: totalStakeLoading } =
-    useReadContracts({
-      allowFailure: true,
-      contracts: [
-        {
-          abi: stakingAbi,
-          address: fit24ContractAddress,
-          functionName: "getUserTotalStakeReward",
-          chainId: vestingChainId,
-          args: [address],
-        },
-      ],
-    })
-
-  const claimReward = async () => {
-    if (chain?.id !== vestingChainId)
-      return switchChain({
-        chainId: vestingChainId,
-      })
-    try {
-      setClaimLoading(true)
-      const tx = await writeContractAsync({
-        abi: stakingAbi,
-        address: fit24ContractAddress,
-        functionName: "claimAllReward",
-        chainId: getChain(chain).id,
-      })
-      await createTransaction(tx, getChainEnum(getChain(chain).id))
-      console.log(tx)
-      setRewardHash(tx)
-    } catch (error) {
-      setDialogInfo({
-        type: "FAIL",
-        message: "Something went wrong",
-        title: "Error in claiming reward",
-      })
-      setDialog(true)
-      setClaimLoading(false)
-      console.error(error)
-    }
-  }
-
-  const { data: rewardReceipt, error: rewardError } =
-    useWaitForTransactionReceipt({
-      hash: rewardHash,
-      chainId: getChain(chain).id,
-    })
 
   const formattedDate = (unixTimestamp: number) => {
     const date = new Date(unixTimestamp * 1000)
@@ -223,42 +129,11 @@ export default function StakingBox({ refetchTX, setRefetchTX }: any) {
   }, [
     address,
     reload,
-    lastClaimedTimestamp,
-    lastClaimedTimestampLoading,
     refetchTX,
     isLoggedIn,
   ])
 
-  useEffect(() => {
-    if (!readPendingAmount) return
-    setPendingAmount(getNumber(readPendingAmount[0].result! as bigint, 18))
-  }, [readPendingAmount])
 
-  useEffect(() => {
-    if (!rewardHash) return
-    if (rewardError) {
-      setClaimLoading(false)
-      setDialogInfo({
-        type: "FAIL",
-        message: "Something went wrong",
-        title: "Error in claiming reward",
-      })
-      setDialog(true)
-      return
-    }
-    createClaimReward(rewardHash)
-    setClaimLoading(false)
-    setDialogInfo({
-      type: "SUCCESS",
-      message: `Reward Claimed Successfully`,
-      title: "Success",
-    })
-    setDialog(true)
-    refetchPendingAmount()
-    setTimeout(() => {
-      setReload((prev) => !prev)
-    }, 800)
-  }, [rewardReceipt, rewardError])
 
   let serialNumber = 0
 

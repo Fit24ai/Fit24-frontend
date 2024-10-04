@@ -192,7 +192,6 @@ export default function RewardsContainer() {
   // }, [address])
 
   const [token, setToken] = useState(0)
-  const [refIncome, serRefIncome] = useState(0)
   const getTokens = async () => {
     return await getAllStakeTokens()
   }
@@ -205,13 +204,6 @@ export default function RewardsContainer() {
       .catch((err) => {
         setToken(0)
       })
-    getUserRefIncome()
-      .then((data) => {
-        serRefIncome(data.referralIncome)
-      })
-      .catch((err) => {
-        serRefIncome(0)
-      })
   }, [isLoggedIn])
 
   useEffect(() => {
@@ -223,13 +215,6 @@ export default function RewardsContainer() {
         })
         .catch((err) => {
           setToken(0)
-        })
-      getUserRefIncome()
-        .then((data) => {
-          serRefIncome(data.referralIncome)
-        })
-        .catch((err) => {
-          serRefIncome(0)
         })
     }, 2000)
   }, [address])

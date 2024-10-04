@@ -13,7 +13,6 @@ export default function DashboardContainer() {
   const { address } = useAccount()
   const { isLoggedIn } = useWallet()
   const [token, setToken] = useState(0)
-  const [refIncome, serRefIncome] = useState(0)
   const getTokens = async () => {
     return await getAllStakeTokens()
   }
@@ -26,13 +25,6 @@ export default function DashboardContainer() {
       .catch((err) => {
         setToken(0)
       })
-    getUserRefIncome()
-      .then((data) => {
-        serRefIncome(data.referralIncome)
-      })
-      .catch((err) => {
-        serRefIncome(0)
-      })
   }, [isLoggedIn])
 
   useEffect(() => {
@@ -44,13 +36,6 @@ export default function DashboardContainer() {
         })
         .catch((err) => {
           setToken(0)
-        })
-      getUserRefIncome()
-        .then((data) => {
-          serRefIncome(data.referralIncome)
-        })
-        .catch((err) => {
-          serRefIncome(0)
         })
     }, 2000)
   }, [address])
