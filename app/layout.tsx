@@ -2,11 +2,9 @@ import type { Metadata } from "next"
 import { Readex_Pro } from "next/font/google"
 import "./globals.css"
 import Web3ModalProvider from "@/providers/Web3ModalProvider"
-import Navbar from "@/components/shared/Navbar/Navbar"
-import Sidebar from "@/components/shared/Sidebar/Sidebar"
 import { WalletProvider } from "@/hooks/useWallet"
-import Footer from "@/components/shared/Footer"
 import { ParamsProvider } from "@/context/useParams"
+import { headers } from "next/headers"
 
 // Importing the Readex Pro font
 const readexPro = Readex_Pro({ subsets: ["latin"] })
@@ -21,11 +19,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const cookies = headers().get("cookie")
   return (
     <ParamsProvider>
       <html lang="en">
         <body className={`${readexPro.className}   max-w-[1730px] mx-auto`}>
-          <Web3ModalProvider>
+          <Web3ModalProvider cookies={cookies}>
             <WalletProvider>
               <div className="image-bg">
                 {/* <Navbar /> */}

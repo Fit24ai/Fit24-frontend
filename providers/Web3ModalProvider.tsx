@@ -1,32 +1,60 @@
 "use client"
 
-import React, { ReactNode } from "react"
-import { createWeb3Modal } from "@web3modal/wagmi/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { State, WagmiProvider } from "wagmi"
-import { config, projectId } from "@/libs/wagmi"
+import { CaipNetwork, createAppKit } from "@reown/appkit/react"
+import { mainnet, binanceSmartChain } from "@reown/appkit/networks"
+import React, { type ReactNode } from "react"
+import { cookieToInitialState, WagmiProvider, type Config } from "wagmi"
+import { blockFit } from "@/libs/chains"
+import { wagmiAdapter, projectId } from "@/libs/wagmi"
 
+// Set up queryClient
 const queryClient = new QueryClient()
 
-if (!projectId) throw new Error("Project ID is not defined")
+if (!projectId) {
+  throw new Error("Project ID is not defined")
+}
 
-createWeb3Modal({
-  wagmiConfig: config,
+// Set up metadata
+const metadata = {
+  name: "appkit-example-scroll",
+  description: "AppKit Example - Scroll",
+  url: "https://scrollapp.com", // origin must match your domain & subdomain
+  icons: ["https://avatars.githubusercontent.com/u/179229932"],
+}
+
+// Create the modal
+const modal = createAppKit({
+  adapters: [wagmiAdapter],
   projectId,
-  enableAnalytics: true,
-  enableOnramp: true,
+  networks: [mainnet, binanceSmartChain, blockFit as CaipNetwork],
+  defaultNetwork: mainnet,
+  metadata: metadata,
+  features: {
+    analytics: true, // Optional - defaults to your Cloud configuration
+  },
 })
 
-export default function Web3ModalProvider({
+function ContextProvider({
   children,
-  initialState,
+  cookies,
 }: {
   children: ReactNode
-  initialState?: State
+  cookies: string | null
 }) {
+  const initialState = cookieToInitialState(
+    wagmiAdapter.wagmiConfig as Config,
+    cookies
+  )
+
   return (
-    <WagmiProvider config={config} initialState={initialState}>
+    <WagmiProvider
+      config={wagmiAdapter.wagmiConfig as Config}
+      initialState={initialState}
+    >
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </WagmiProvider>
   )
 }
+
+export default ContextProvider

@@ -7,7 +7,7 @@ import React, {
   ReactNode,
 } from "react"
 import { useAccount, useDisconnect } from "wagmi"
-import { useWeb3Modal } from "@web3modal/wagmi/react"
+import { useAppKit } from "@reown/appkit/react"
 import { loginUser } from "@/services/login"
 // import { useSearchParams } from "next/navigation"
 import { WalletContextProps } from "./types"
@@ -21,7 +21,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const { disconnect } = useDisconnect()
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
   const { address, isConnected } = useAccount()
-  const { open, close } = useWeb3Modal()
+  const { open, close } = useAppKit()
   const [isRegisterPopup, setIsRegisterPopup] = useState<boolean>(false)
   const [registerReferralPopup, setRegisterReferralPopup] =
     useState<boolean>(false)

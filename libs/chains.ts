@@ -259,14 +259,25 @@ export function getDecimal(address: string) {
   return token ? token.decimal : 6
 }
 
+// export const blockFit = defineChain({
+//   id: 2024,
+//   name: "BlockFit",
+//   network: "BlockFit",
+//   nativeCurrency: { name: "BlockFit", symbol: "BFIT", decimals: 18 },
+//   rpcUrls: {
+//     default: { http: ["https://rpc.blockfitscan.io"] },
+//   },
+//   blockExplorers: {
+//     default: { name: "BlockFitScan", url: "https://blockfitscan.io" },
+//   },
+// })
+
 export const blockFit = {
-  id: 2024,
+  id: "eip155:2024",
+  chainId: 2024,
   name: "BlockFit",
-  nativeCurrency: { name: "BlockFit", symbol: "BFIT", decimals: 18 },
-  rpcUrls: {
-    default: { http: ["https://rpc.blockfitscan.io"] },
-  },
-  blockExplorers: {
-    default: { name: "BlockFitScan", url: "https://blockfitscan.io" },
-  },
+  currency: "BFIT",
+  explorerUrl: "https://blockfitscan.io",
+  rpcUrl: "https://rpc.blockfitscan.io",
+  chainNamespace: "eip155",
 }

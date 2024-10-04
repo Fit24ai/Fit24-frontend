@@ -17,7 +17,7 @@ import { useAccount, useDisconnect } from "wagmi"
 // import StatusDialog from "../StatusDialog";
 import { ChainSelect } from "./ChainSelect"
 import { classNames, smallAddress } from "@/libs/utils"
-import { useWeb3Modal } from "@web3modal/wagmi/react"
+import { useAppKit } from '@reown/appkit/react'
 import { EmailDialog } from "../EmailDialog"
 import { useWallet } from "@/hooks/useWallet"
 import { IoIosArrowDown } from "react-icons/io"
@@ -34,7 +34,7 @@ const ConnectWallet = ({ drawer }: { drawer?: boolean }) => {
   const [message, setMessage] = useState<string | ReactNode>("")
   const { disconnect } = useDisconnect()
   const [loading, setLoading] = useState(false)
-  const { open } = useWeb3Modal()
+  const { open } = useAppKit()
   return (
     <>
       {/* <EmailDialog open={isEmailPopup} setIsEmailPopup={setIsEmailPopup} /> */}

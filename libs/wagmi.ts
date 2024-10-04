@@ -1,49 +1,26 @@
-import { defaultWagmiConfig } from "@web3modal/wagmi/react/config"
+import { cookieStorage, createStorage, http } from "@wagmi/core"
+import { WagmiAdapter } from "@reown/appkit-adapter-wagmi"
+import { mainnet, binanceSmartChain } from "@reown/appkit/networks"
+import { blockFit } from "./chains"
+import { CaipNetwork } from "@reown/appkit"
 
-import { cookieStorage, createStorage, custom, http } from "wagmi"
-import { bsc, bscTestnet, holesky, mainnet } from "wagmi/chains"
-import { blockfit } from "./chains"
-
+// Get projectId from https://cloud.reown.com
 export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
 
-if (!projectId) throw new Error("Project ID is not defined")
-
-const metadata = {
-  name: "Web3Modal",
-  description: "Web3Modal Example",
-  url: "https://web3modal.com",
-  icons: ["https://avatars.githubusercontent.com/u/37784886"],
+if (!projectId) {
+  throw new Error("Project ID is not defined")
 }
 
-// Create wagmiConfig
-// const chains = [mainnet, bsc] as const
-// const chains = [holesky, bscTestnet, blockfit] as const
-const chains = [mainnet, bsc, blockfit] as const
+export const networks = [mainnet, binanceSmartChain, blockFit as CaipNetwork]
 
-export const config = defaultWagmiConfig({
-  chains,
-  projectId,
-  metadata,
-  ssr: true,
+//Set up the Wagmi Adapter (Config)
+export const wagmiAdapter = new WagmiAdapter({
   storage: createStorage({
     storage: cookieStorage,
   }),
-  // storage: createStorage({
-  //   storage: {
-  //     ...cookieStorage,
-  //     getItem: (key: string): string | null => {
-  //       // Ensure key is strictly string
-  //       const item = cookieStorage.getItem(key)
-  //       return item ? JSON.parse(item) : null // Parse JSON if present
-  //     },
-  //     setItem: (key: string, value: any): void => {
-  //       // Ensure key is strictly string
-  //       cookieStorage.setItem(key, JSON.stringify(value)) // Stringify value before storing
-  //     },
-  //     removeItem: (key: string): void => {
-  //       // Remove item by string key
-  //       cookieStorage.removeItem(key)
-  //     },
-  //   },
-  // }),
+  ssr: true,
+  projectId,
+  networks,
 })
+
+export const config = wagmiAdapter.wagmiConfig
