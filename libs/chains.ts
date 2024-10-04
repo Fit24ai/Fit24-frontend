@@ -20,7 +20,7 @@ export const blockfit = defineChain({
   },
   rpcUrls: {
     default: {
-      http: ["https://rpc.blockfitscan.io"],
+      http: [process.env.NEXT_PUBLIC_ICO_RPC_URL!],
       // webSocket: ['wss://rpc.zora.energy'],
     },
   },
