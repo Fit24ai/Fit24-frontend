@@ -266,6 +266,10 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     //   return switchChain({
     //     chainId: vestingChainId,
     //   })
+    if (chain?.id === vestingChainId)
+      return switchChain({
+        chainId: 1,
+      })
     if (!isValid()) return
     if (!isAllowance()) {
       return approveAllowance()

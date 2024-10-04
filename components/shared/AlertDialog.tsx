@@ -74,6 +74,7 @@ export function AlertDialog({ stakeRef }: { stakeRef: string | undefined }) {
   // }, [params])
 
   useEffect(() => {
+    console.log(readRegister)
     if (!address) return
     if (registerLoading) return
     console.log(readRegister)

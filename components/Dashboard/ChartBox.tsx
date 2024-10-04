@@ -269,19 +269,6 @@ export default function ChartBox({ token }: { token: number }) {
     refetchUserDailyRewardClaimed()
   }, [address, lastClaimedTimestamp, lastClaimedTimestampLoading])
 
-  const { data: readTotalStakeAmount, isLoading: totalStakeLoading } =
-    useReadContracts({
-      allowFailure: true,
-      contracts: [
-        {
-          abi: stakingAbi,
-          address: fit24ContractAddress,
-          functionName: "getUserTotalStakeReward",
-          chainId: vestingChainId,
-          args: [address],
-        },
-      ],
-    })
 
   const claimReward = async () => {
     if (chain?.id !== vestingChainId)

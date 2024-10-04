@@ -20,7 +20,7 @@ export const blockfit = defineChain({
   },
   rpcUrls: {
     default: {
-      http: ["http://rpc.blockfitscan.io"],
+      http: ["https://rpc.blockfitscan.io"],
       // webSocket: ['wss://rpc.zora.energy'],
     },
   },
@@ -35,8 +35,8 @@ export const ethereumPaymentAddress: AddressString =
 export const binancePaymentAddress: AddressString =
   "0x72e56adb351Bc1DA1A37B2C5bB6cA40fBB373322"
 
-  // ! NOT USED
-  export const vestingAddress: AddressString =
+// ! NOT USED
+export const vestingAddress: AddressString =
   "0x9Ae55AEFb2Aa047627EF42B67aD49730517DAb52"
 
 export const fit24TokenAddress: AddressString =
@@ -201,7 +201,7 @@ export function getUsdtTokenAddress(chainId: number) {
     // case blockfit.id:
     //   return undefined
     default:
-      throw new Error("Invalid chainId")
+      return ethereumUsdtTokenAddress
   }
 }
 
@@ -231,7 +231,7 @@ export function getChainEnum(chainId: number) {
     case BINANCE.id:
       return ChainEnum.BINANCE
     case blockfit.id:
-      return ChainEnum.BLOCKFIT
+      return ChainEnum.ETHEREUM
     default:
       return ChainEnum.ETHEREUM
   }

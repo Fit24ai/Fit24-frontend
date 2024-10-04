@@ -15,7 +15,7 @@ import { useWallet } from "@/hooks/useWallet"
 // import { useSearchParams } from "next/navigation"
 import { Fragment, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { useAccount, useWaitForTransactionReceipt } from "wagmi"
+import { useAccount, useSwitchChain, useWaitForTransactionReceipt } from "wagmi"
 import { useReadContracts, useWriteContract } from "wagmi"
 import { referralAbi } from "@/libs/referralAbi"
 import {
@@ -44,6 +44,7 @@ export function ReferralDialog({ stakeRef }: { stakeRef: string | undefined }) {
     isEmailPopup,
   } = useWallet()
   const { address, chain } = useAccount()
+  const { switchChain, chains } = useSwitchChain()
   const [openBox, setOpenBox] = useState(false)
   // const search = useSearchParams()
   const [refId, setRefId] = useState("")
@@ -72,6 +73,10 @@ export function ReferralDialog({ stakeRef }: { stakeRef: string | undefined }) {
   })
 
   const handleRegisterReferral = async () => {
+    if (chain?.id !== vestingChainId)
+      return switchChain({
+        chainId: vestingChainId,
+      })
     setLoading(true)
     try {
       console.log("register")
