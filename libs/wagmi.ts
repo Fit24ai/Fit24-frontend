@@ -31,16 +31,18 @@ export const config = defaultWagmiConfig({
   storage: createStorage({
     storage: {
       ...cookieStorage,
-      getItem: (key: string) => {
-        const item = cookieStorage.getItem(key) // Ensure key is of type string
-        return item ? JSON.parse(item) : null // Parse if item exists
+      getItem: (key: string): string | null => {
+        // Ensure key is strictly string
+        const item = cookieStorage.getItem(key)
+        return item ? JSON.parse(item) : null // Parse JSON if present
       },
-      setItem: (key: string, value: any) => {
-        // Ensure key is of type string
+      setItem: (key: string, value: any): void => {
+        // Ensure key is strictly string
         cookieStorage.setItem(key, JSON.stringify(value)) // Stringify value before storing
       },
-      removeItem: (key: string) => {
-        cookieStorage.removeItem(key) // Ensure key is string
+      removeItem: (key: string): void => {
+        // Remove item by string key
+        cookieStorage.removeItem(key)
       },
     },
   }),
