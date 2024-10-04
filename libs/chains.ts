@@ -212,7 +212,7 @@ export function getChainLogo(chainId: number) {
     case BINANCE.id:
       return "/tokens/bnb.svg"
     case blockfit.id:
-      return "Fit24-icon.svg"
+      return "fitLogo.svg"
     default:
       throw "/tokens/eth.svg"
   }
