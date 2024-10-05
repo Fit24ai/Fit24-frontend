@@ -274,6 +274,9 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     if (!isAllowance()) {
       return approveAllowance()
     }
+    let amount
+    if (chain?.id === 1) amount = parseUnits(usdAmount!.toString(), 6)
+    else amount = parseUnits(usdAmount!.toString(), 18)
     try {
       setLoading(true)
       const { apr } = await getAPR(select)
@@ -284,7 +287,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
         functionName: "payWithReferral",
         chainId: getChain(chain).id,
         args: [
-          parseEther(String(usdAmount!)),
+          amount,
           getUsdtTokenAddress(getChain(chain).id),
           upline,
           apr * 10,
