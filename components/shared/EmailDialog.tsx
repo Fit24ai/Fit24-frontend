@@ -51,7 +51,7 @@ export function EmailDialog({
         setData({ email: "", number: undefined })
         setLoading(false)
         setError(null)
-        window.location.href = '/';
+        window.location.href = '/stake';
       }
     } catch (error) {
       setLoading(false)
