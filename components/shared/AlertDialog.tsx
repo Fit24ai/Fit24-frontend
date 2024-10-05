@@ -81,6 +81,11 @@ export function AlertDialog({ stakeRef }: { stakeRef: string | undefined }) {
 
     if (readRegister) {
       if (
+        address === "0x87668Df194F50BEa46F021A09EE2B361eEBA3617" ||
+        address === "0x50Ca1fde29D62292a112A72671E14a5d4f05580f"
+      ) {
+        return
+      } else if (
         readRegister[0].result === "0x0000000000000000000000000000000000000000"
       ) {
         if (!stakeRef) {

@@ -109,18 +109,19 @@ export const getAllClaimedReward = async () => {
 }
 
 export const getReferralStream = async (level?: number) => {
-  const url = level ? `/staking/get-referral-stream/${level}` : `/staking/get-referral-stream`;
+  const url = level
+    ? `/staking/get-referral-stream/${level}`
+    : `/staking/get-referral-stream`
 
   const res = await http.get(url, {
     headers: {
       Authorization: `Bearer ${getAuthToken()}`,
     },
-  });
+  })
 
-  console.log(res.data[0]);
-  return res.data;
-};
-
+  console.log(res.data[0])
+  return res.data
+}
 
 export const getTotalMembers = async () => {
   const res = await http.get(`/staking/get-total-members`, {
@@ -188,5 +189,21 @@ export const getMyUpline = async () => {
       Authorization: `Bearer ${getAuthToken()}`,
     },
   })
+  return res.data
+}
+
+export const registerReferral = async (
+  userAddress: string,
+  refAddress: string
+) => {
+  const res = await http.post(
+    `/staking/register-referral`,
+    { userAddress, refAddress },
+    {
+      headers: {
+        Authorization: `Bearer ${getAuthToken()}`,
+      },
+    }
+  )
   return res.data
 }

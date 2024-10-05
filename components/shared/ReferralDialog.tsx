@@ -30,6 +30,7 @@ import { BiLoader, BiLoaderCircle } from "react-icons/bi"
 import { FaRegCircleCheck } from "react-icons/fa6"
 import { VscError } from "react-icons/vsc"
 import { CgSpinner } from "react-icons/cg"
+import { registerReferral } from "@/services/stakingService"
 
 export function ReferralDialog({ stakeRef }: { stakeRef: string | undefined }) {
   const {
@@ -73,51 +74,68 @@ export function ReferralDialog({ stakeRef }: { stakeRef: string | undefined }) {
   })
 
   const handleRegisterReferral = async () => {
-    if (chain?.id !== vestingChainId)
-      return switchChain({
-        chainId: vestingChainId,
-      })
+    // if (chain?.id !== vestingChainId)
+    //   return switchChain({
+    //     chainId: vestingChainId,
+    //   })
+    // setLoading(true)
+    // try {
+    //   console.log("register")
+    //   const tx = await writeContractAsync({
+    //     abi: referralAbi,
+    //     address: fit24ReferralContractAddress,
+    //     functionName: "register",
+    //     chainId: vestingChainId,
+    //     args: [refId],
+    //   })
+    //   // await createTransaction(tx,vestingChainId)
+    //   setStakeHash(tx)
+    // } catch (error) {
+    //   console.log(error)
+    //   setError(true)
+    //   setLoading(false)
+    // }
     setLoading(true)
     try {
-      console.log("register")
-      const tx = await writeContractAsync({
-        abi: referralAbi,
-        address: fit24ReferralContractAddress,
-        functionName: "register",
-        chainId: vestingChainId,
-        args: [refId],
-      })
-      // await createTransaction(tx,vestingChainId)
-      setStakeHash(tx)
+      const res = await registerReferral(address!, refId!)
+      if (res.success === true) {
+        setLoading(false)
+        setSuccess(true)
+        setIsAlert(false)
+        window.location.href = "/"
+      } else if (res.success === false) {
+        setLoading(false)
+        setError(true)
+      }
     } catch (error) {
       console.log(error)
-      setError(true)
       setLoading(false)
+      setError(true)
     }
   }
 
-  const { data: stakeReceipt, error: stakeError } =
-    useWaitForTransactionReceipt({
-      hash: stakeHash,
-      chainId: getChain(chain).id,
-    })
+  // const { data: stakeReceipt, error: stakeError } =
+  //   useWaitForTransactionReceipt({
+  //     hash: stakeHash,
+  //     chainId: getChain(chain).id,
+  //   })
 
-  useEffect(() => {
-    if (!stakeHash) return
-    console.log(stakeReceipt)
-    console.log(stakeError)
+  // useEffect(() => {
+  //   if (!stakeHash) return
+  //   console.log(stakeReceipt)
+  //   console.log(stakeError)
 
-    if (stakeError) {
-      setLoading(false)
-      setError(true)
-      return
-    }
-    setLoading(false)
-    setSuccess(true)
-    setIsAlert(false)
-    // setIsEmailPopup(true)
-    window.location.href = "/"
-  }, [stakeReceipt, stakeError])
+  //   if (stakeError) {
+  //     setLoading(false)
+  //     setError(true)
+  //     return
+  //   }
+  //   setLoading(false)
+  //   setSuccess(true)
+  //   setIsAlert(false)
+  //   // setIsEmailPopup(true)
+  //   window.location.href = "/"
+  // }, [stakeReceipt, stakeError])
 
   useEffect(() => {
     console.log("stakeRef", stakeRef)
@@ -130,7 +148,13 @@ export function ReferralDialog({ stakeRef }: { stakeRef: string | undefined }) {
     if (refId) {
       console.log(refId)
       if (refId === address) return router.push(`/dashboard`)
-      if (isValidAddress(readRegister![0].result! as AddressString)) {
+      if (
+        isValidAddress(
+          (readRegister![0].result! as AddressString) ||
+            address === "0x87668Df194F50BEa46F021A09EE2B361eEBA3617" ||
+            address === "0x50Ca1fde29D62292a112A72671E14a5d4f05580f"
+        )
+      ) {
         setRegistered(true)
       }
       setRefId(refId)

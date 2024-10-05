@@ -45,7 +45,7 @@ export const fit24ContractAddress: AddressString =
   "0x6a9f5Dae49b4414DFd32Cfd2aEea6f809E9CDE81"
 
 export const fit24ReferralContractAddress: AddressString =
-  "0x9Ebb1aeA67d601b6292B19Bafa94f2424ee5a662"
+  "0x09e08b90c68a85515c66E8804855b56e24F55d1F"
 // * DEV
 // export const ethereumPaymentAddress: AddressString =
 //   "0xA47010B505f8C5696eC6C95a7Bfe9E28C977EC6E"
