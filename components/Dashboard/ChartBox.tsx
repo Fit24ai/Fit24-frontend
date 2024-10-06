@@ -290,6 +290,7 @@ export default function ChartBox({ token }: { token: number }) {
         await createClaimReward(tx)
         setClaimLoading(false)
         setClaimStakeCondition(true)
+        setPendingAmount(0)
         setDialogInfo({
           type: "SUCCESS",
           message: `Reward Claimed Successfully`,
