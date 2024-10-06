@@ -285,6 +285,7 @@ export default function ChartBox({ token }: { token: number }) {
       })
       await createTransaction(tx, getChainEnum(getChain(chain).id))
       const res = await getPaymentSuccess(tx, ChainEnum.BLOCKFIT)
+      console.log(res)
       if (res.success === true) {
         await createClaimReward(tx)
         setClaimLoading(false)
