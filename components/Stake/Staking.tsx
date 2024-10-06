@@ -42,6 +42,7 @@ import {
 import {
   createStake,
   getMyUpline,
+  getPaymentSuccess,
   verifyStakingRecord,
 } from "@/services/stakingService"
 import { useReloadContext } from "@/context/Reload"
@@ -191,6 +192,18 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
           parseEther("100000000"),
         ],
       })
+      const res = await getPaymentSuccess(tx, getChainEnum(getChain(chain).id))
+      if (res.success === true) {
+        window.location.reload
+      } else {
+        setLoading(false)
+        setDialogInfo({
+          type: "FAIL",
+          message: "Something went wrong",
+          title: "Error Approving Token",
+        })
+        setDialog(true)
+      }
       setApprovalHash(tx)
       return
     } catch (error) {
@@ -296,7 +309,42 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
         value: BigInt(0),
       })
       console.log(tx)
+      setPaymentHash(tx)
       await createStakingTransaction(tx, getChainEnum(getChain(chain).id))
+      console.log("success create")
+      const res = await getPaymentSuccess(tx, getChainEnum(getChain(chain).id))
+      console.log("success payment")
+      if (res.success === true) {
+        setDepositOpen(true)
+        await paymentReceived(
+          {
+            amount: parseEther(String(usdAmount!)).toString(),
+            token: getUsdtTokenAddress(getChain(chain).id),
+            user: address!,
+            transaction_hash: tx!,
+          },
+          getChainEnum(getChain(chain).id)
+        )
+      } else {
+        setLoading(false)
+        setDialogInfo({
+          type: "FAIL",
+          message: "Something went wrong",
+          title: "Error Buying Token",
+        })
+        setDialog(true)
+      }
+      // paymentReceived(
+      //   {
+      //     amount: parseEther(String(usdAmount!)).toString(),
+      //     token: getUsdtTokenAddress(getChain(chain).id),
+      //     user: address!,
+      //     transaction_hash: paymentHash,
+      //   },
+      //   getChainEnum(getChain(chain).id)
+      // )
+      // setDepositOpen(true)
+      setLoading(false)
       setPaymentHash(tx)
       // setAmount(0)
       // setUsdAmount(0)
@@ -312,33 +360,33 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     }
   }
 
-  useEffect(() => {
-    if (!amount) return
-    if (!paymentHash) return
-    if (txError) {
-      setLoading(false)
-      setDialogInfo({
-        type: "FAIL",
-        message: "Something went wrong",
-        title: "Error Buying Token",
-      })
-      setDialog(true)
-      return
-    }
-    if (!txReceipt) return
-    paymentReceived(
-      {
-        amount: parseEther(String(usdAmount!)).toString(),
-        token: getUsdtTokenAddress(getChain(chain).id),
-        user: address!,
-        transaction_hash: paymentHash,
-      },
-      getChainEnum(getChain(chain).id)
-    )
-    setLoading(false)
-    setDepositOpen(true)
-    // callWebhook()
-  }, [txReceipt, txError])
+  // useEffect(() => {
+  //   // if (!usdAmount) return
+  //   if (!paymentHash) return
+  //   if (txError) {
+  //     setLoading(false)
+  //     setDialogInfo({
+  //       type: "FAIL",
+  //       message: "Something went wrong",
+  //       title: "Error Buying Token",
+  //     })
+  //     setDialog(true)
+  //     return
+  //   }
+  //   if (!txReceipt) return
+  //   paymentReceived(
+  //     {
+  //       amount: parseEther(String(usdAmount!)).toString(),
+  //       token: getUsdtTokenAddress(getChain(chain).id),
+  //       user: address!,
+  //       transaction_hash: paymentHash,
+  //     },
+  //     getChainEnum(getChain(chain).id)
+  //   )
+  //   setLoading(false)
+  //   setDepositOpen(true)
+  //   // callWebhook()
+  // }, [txReceipt, txError])
 
   const getupline = async () => {
     try {
@@ -355,28 +403,28 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     getupline()
   }, [address, isLoggedIn])
 
-  useEffect(() => {
-    if (!approvalHash) return
-    if (!readResponse) return
-    if (approvalError) {
-      setLoading(false)
-      setDialogInfo({
-        type: "FAIL",
-        message: "Something went wrong",
-        title: "Error Approving Token",
-      })
-      setDialog(true)
-      return
-    }
-    if (!approvalData) return
-    if (getNumber(readResponse[1].result! as bigint, 18) === 0) {
-      refetch()
-      return
-    }
-    setTimeout(() => {
-      buyToken()
-    }, 800)
-  }, [approvalHash, approvalData, approvalError, refetch, readResponse])
+  // useEffect(() => {
+  //   if (!approvalHash) return
+  //   if (!readResponse) return
+  //   if (approvalError) {
+  //     setLoading(false)
+  //     setDialogInfo({
+  //       type: "FAIL",
+  //       message: "Something went wrong",
+  //       title: "Error Approving Token",
+  //     })
+  //     setDialog(true)
+  //     return
+  //   }
+  //   if (!approvalData) return
+  //   if (getNumber(readResponse[1].result! as bigint, 18) === 0) {
+  //     refetch()
+  //     return
+  //   }
+  //   setTimeout(() => {
+  //     buyToken()
+  //   }, 800)
+  // }, [approvalHash, approvalData, approvalError, refetch, readResponse])
 
   useEffect(() => {
     if (select === "A" && Number(amount) < 2500) {

@@ -35,8 +35,11 @@ export default function TransactionPollingService({
     useState<DistributionStatusEnum>(DistributionStatusEnum.PENDING)
 
   const getTransaction = async () => {
+    console.log("get")
     if (!hash) return
+    console.log("hash found")
     if (distributionStatus === DistributionStatusEnum.DISTRIBUTED) return
+    console.log("distributuion")
     const res = await getTransactions(hash)
     console.log({ res })
     if (res.transactionStatus !== status) {
@@ -49,6 +52,7 @@ export default function TransactionPollingService({
   }
 
   useEffect(() => {
+    console.log("get transaction")
     getTransaction()
     const intervalId = setInterval(getTransaction, 2000)
     return () => clearInterval(intervalId)

@@ -1,8 +1,12 @@
 import { cookieStorage, createStorage, http } from "@wagmi/core"
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi"
-import { mainnet, binanceSmartChain } from "@reown/appkit/networks"
-import { blockFit } from "./chains"
+import {
+  mainnet,
+  binanceSmartChain,
+} from "@reown/appkit/networks"
+import { blockFit, bsctestnet } from "./chains"
 import { CaipNetwork } from "@reown/appkit"
+// import { bscTestnet, holesky } from "viem/chains"
 
 // Get projectId from https://cloud.reown.com
 export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
@@ -12,6 +16,7 @@ if (!projectId) {
 }
 
 export const networks = [mainnet, binanceSmartChain, blockFit as CaipNetwork]
+// export const networks = [bsctestnet as CaipNetwork, blockFit as CaipNetwork]
 
 //Set up the Wagmi Adapter (Config)
 export const wagmiAdapter = new WagmiAdapter({

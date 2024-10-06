@@ -1,4 +1,4 @@
-import { AddressString } from "@/libs/chains"
+import { AddressString, ChainEnum } from "@/libs/chains"
 import { TransactionStatusEnum } from "@/libs/transaction"
 import { getAuthToken } from "@/libs/utils"
 import axios from "axios"
@@ -205,5 +205,12 @@ export const registerReferral = async (
       },
     }
   )
+  return res.data
+}
+
+export const getPaymentSuccess = async (txHash: string, chain: ChainEnum) => {
+  const res = await http.post(`/staking/verify-payment-transaction/${txHash}`, {
+    chain,
+  })
   return res.data
 }

@@ -19,6 +19,7 @@ export function ChainSelectDrawer() {
 
   useEffect(() => {
     if (!selected) return
+    console.log(selected.id)
     switchChain({ chainId: selected.id })
   }, [selected])
 

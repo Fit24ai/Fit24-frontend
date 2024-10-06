@@ -3,7 +3,7 @@
 import { Fragment, useEffect, useState } from "react"
 import { useAccount, useSwitchChain } from "wagmi"
 import Image from "next/image"
-import { getChain, getChainLogo } from "@/libs/chains"
+// import { getChain, getChainLogo } from "@/libs/chains"
 import { IoIosArrowDown } from "react-icons/io"
 
 import {
@@ -13,6 +13,7 @@ import {
   ListboxOptions,
   Transition,
 } from "@headlessui/react"
+import { getChain } from "@/libs/chains"
 
 export function ChainSelect() {
   const { chain } = useAccount()
@@ -21,6 +22,7 @@ export function ChainSelect() {
 
   useEffect(() => {
     if (!selected) return
+    console.log(selected.id)
     switchChain({ chainId: selected.id })
   }, [selected])
 
@@ -43,14 +45,14 @@ export function ChainSelect() {
         }
       >
         <div className="flex items-center gap-1 w-full">
-          <div className="relative h-4 w-4">
+          {/* <div className="relative h-4 w-4">
             <Image
               src={getChainLogo(selected!.id)}
               alt=""
               fill
               className="w-full h-full object-contain"
             />
-          </div>
+          </div> */}
           <div className="truncate block">{selected?.name}</div>
           {/* <div>
             <IoIosArrowDown />

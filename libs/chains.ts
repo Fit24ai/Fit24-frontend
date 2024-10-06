@@ -1,5 +1,5 @@
 import { defineChain, getAddress } from "viem"
-import { Chain, bsc, bscTestnet, holesky, mainnet } from "viem/chains"
+import { Chain, bsc,  holesky, mainnet, bscTestnet } from "viem/chains"
 
 export enum ChainEnum {
   ETHEREUM = "ETHEREUM",
@@ -30,14 +30,14 @@ export const blockfit = defineChain({
 })
 
 // * PROD
-export const ethereumPaymentAddress: AddressString =
-  "0x8B7547c84D435e96812b54B7d2AaEA48D4c49EDB"
-export const binancePaymentAddress: AddressString =
-  "0x72e56adb351Bc1DA1A37B2C5bB6cA40fBB373322"
+// export const ethereumPaymentAddress: AddressString =
+//   "0x8B7547c84D435e96812b54B7d2AaEA48D4c49EDB"
+// export const binancePaymentAddress: AddressString =
+//   "0x72e56adb351Bc1DA1A37B2C5bB6cA40fBB373322"
 
 // ! NOT USED
-export const vestingAddress: AddressString =
-  "0x9Ae55AEFb2Aa047627EF42B67aD49730517DAb52"
+// export const vestingAddress: AddressString =
+//   "0x9Ae55AEFb2Aa047627EF42B67aD49730517DAb52"
 
 export const fit24TokenAddress: AddressString =
   "0xe30ce7C1daF26c9748B19B6b16D7B41d6254089B"
@@ -74,16 +74,41 @@ export const ethereumUsdtTokenAddress: AddressString =
 // export const ethereumUsdtTokenAddress: AddressString =
 //   "0x776D9c4Cab12287414093832C3AA3ED214E44719"
 
+
+
+
+  export const bsctestnet = {
+    id: "eip155:97",
+    chainId: 97,
+    name: "Binance Smart Chain Testnet",
+    currency: "tBNB",
+    explorerUrl: "https://testnet.bscscan.com",
+    rpcUrl: "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
+    chainNamespace: "eip155",
+  }
+
+  export const blockFit = {
+    id: "eip155:2024",
+    chainId: 2024,
+    name: "BlockFit",
+    currency: "BFIT",
+    explorerUrl: "https://blockfitscan.io",
+    rpcUrl: "https://rpc.blockfitscan.io",
+    chainNamespace: "eip155",
+  }
+
 // * PROD
-// export const ethereumPaymentAddress: AddressString =
-//   "0x8B7547c84D435e96812b54B7d2AaEA48D4c49EDB"
-// export const binancePaymentAddress: AddressString =
-//   "0x72e56adb351Bc1DA1A37B2C5bB6cA40fBB373322"
-// export const vestingAddress: AddressString =
-//   "0xFb97CAC3B41078bc026CB05BD9f15F8204aa7bc2"
+export const ethereumPaymentAddress: AddressString =
+  "0x8B7547c84D435e96812b54B7d2AaEA48D4c49EDB"
+export const binancePaymentAddress: AddressString =
+  "0x72e56adb351Bc1DA1A37B2C5bB6cA40fBB373322"
+export const vestingAddress: AddressString =
+  "0xFb97CAC3B41078bc026CB05BD9f15F8204aa7bc2"
+
+
 
 // * DEV
-// export const vestingChainId = bsc.id
+// export const vestingChainId = bscTestnet.id
 
 // export const ETHEREUM = holesky
 // export const BINANCE = bscTestnet
@@ -138,47 +163,47 @@ export const BINANCE = bsc
 //   ]
 
 // * DEV
-export const tokens: {
-  symbol: string
-  logo: string
-  address: AddressString
-  decimal: number
-  chain: Chain
-  enum: ChainEnum
-}[] = [
-  {
-    symbol: "USDT",
-    logo: "/tokens/usdt.svg",
-    address: "0x1d75713e9E1CB9e2F6827Cda8F9FdEcD4649a4D4",
-    decimal: 18,
-    chain: ETHEREUM,
-    enum: ChainEnum.ETHEREUM,
-  },
-  {
-    symbol: "USDC",
-    logo: "/tokens/usdC.svg",
-    address: "0xFE72640B24ee6a35Eed91977944aC632C77b4480",
-    decimal: 18,
-    chain: ETHEREUM,
-    enum: ChainEnum.ETHEREUM,
-  },
-  {
-    symbol: "USDTb",
-    logo: "/tokens/usdt.svg",
-    address: "0x847FDB7e448cAE219789075e3cd0749bf0d7D64a",
-    decimal: 18,
-    chain: BINANCE,
-    enum: ChainEnum.BINANCE,
-  },
-  {
-    symbol: "USDCb",
-    logo: "/tokens/usdc.svg",
-    address: "0x97c44ccbdE4b2bC39a1EBEfDA26bA5BAea66eFA1",
-    decimal: 18,
-    chain: BINANCE,
-    enum: ChainEnum.BINANCE,
-  },
-]
+// export const tokens: {
+//   symbol: string
+//   logo: string
+//   address: AddressString
+//   decimal: number
+//   chain: Chain
+//   enum: ChainEnum
+// }[] = [
+//   {
+//     symbol: "USDT",
+//     logo: "/tokens/usdt.svg",
+//     address: "0x1d75713e9E1CB9e2F6827Cda8F9FdEcD4649a4D4",
+//     decimal: 18,
+//     chain: ETHEREUM,
+//     enum: ChainEnum.ETHEREUM,
+//   },
+//   {
+//     symbol: "USDC",
+//     logo: "/tokens/usdC.svg",
+//     address: "0xFE72640B24ee6a35Eed91977944aC632C77b4480",
+//     decimal: 18,
+//     chain: ETHEREUM,
+//     enum: ChainEnum.ETHEREUM,
+//   },
+//   {
+//     symbol: "USDTb",
+//     logo: "/tokens/usdt.svg",
+//     address: "0x847FDB7e448cAE219789075e3cd0749bf0d7D64a",
+//     decimal: 18,
+//     chain: BINANCE,
+//     enum: ChainEnum.BINANCE,
+//   },
+//   {
+//     symbol: "USDCb",
+//     logo: "/tokens/usdc.svg",
+//     address: "0x97c44ccbdE4b2bC39a1EBEfDA26bA5BAea66eFA1",
+//     decimal: 18,
+//     chain: BINANCE,
+//     enum: ChainEnum.BINANCE,
+//   },
+// ]
 
 export function getPaymentContractAddress(chainId: number) {
   switch (chainId) {
@@ -205,18 +230,18 @@ export function getUsdtTokenAddress(chainId: number) {
   }
 }
 
-export function getChainLogo(chainId: number) {
-  switch (chainId) {
-    case ETHEREUM.id:
-      return "/tokens/eth.svg"
-    case BINANCE.id:
-      return "/tokens/bnb.svg"
-    case blockfit.id:
-      return "fitLogo.svg"
-    default:
-      throw "/tokens/eth.svg"
-  }
-}
+// export function getChainLogo(chainId: number) {
+//   switch (chainId) {
+//     case ETHEREUM.id:
+//       return "/tokens/eth.svg"
+//     case BINANCE.id:
+//       return "/tokens/bnb.svg"
+//     case blockfit.id:
+//       return "fitLogo.svg"
+//     default:
+//       throw "/tokens/eth.svg"
+//   }
+// }
 
 export function getChain(chain: Chain | undefined) {
   if (!chain) return ETHEREUM
@@ -251,13 +276,13 @@ export function getScanURL(chain: ChainEnum) {
   }
 }
 
-export function getDecimal(address: string) {
-  if (!address) return
-  const token = tokens.find(
-    (token) => token.address.toLowerCase() === address.toLowerCase()
-  )
-  return token ? token.decimal : 6
-}
+// export function getDecimal(address: string) {
+//   if (!address) return
+//   const token = tokens.find(
+//     (token) => token.address.toLowerCase() === address.toLowerCase()
+//   )
+//   return token ? token.decimal : 6
+// }
 
 // export const blockFit = defineChain({
 //   id: 2024,
@@ -272,12 +297,6 @@ export function getDecimal(address: string) {
 //   },
 // })
 
-export const blockFit = {
-  id: "eip155:2024",
-  chainId: 2024,
-  name: "BlockFit",
-  currency: "BFIT",
-  explorerUrl: "https://blockfitscan.io",
-  rpcUrl: "https://rpc.blockfitscan.io",
-  chainNamespace: "eip155",
-}
+
+
+
