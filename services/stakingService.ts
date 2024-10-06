@@ -59,6 +59,16 @@ export const createStake = async (
   return res.data
 }
 
+export async function getTransactions(tx: AddressString) {
+  return (
+    await http.get("/staking-transaction", {
+      params: {
+        tx,
+      },
+    })
+  ).data
+}
+
 export const verifyStakingRecord = async (txHash: string) => {
   const res = await http.post(
     `/staking/verify/${txHash}`,

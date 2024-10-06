@@ -5,7 +5,8 @@ import {
   DistributionStatusEnum,
   TransactionStatusEnum,
 } from "@/libs/transaction"
-import { getTransactions } from "@/services/stakingTransaction"
+import { getTransactions } from "@/services/stakingService"
+// import { getTransactions } from "@/services/stakingTransaction"
 import { useEffect, useState } from "react"
 import { BsExclamationDiamond } from "react-icons/bs"
 import { CgSpinner } from "react-icons/cg"
