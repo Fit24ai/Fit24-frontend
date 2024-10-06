@@ -120,47 +120,47 @@ export const ETHEREUM = mainnet
 export const BINANCE = bsc
 
 // * PROD
-// export const tokens: {
-//   symbol: string;
-//   logo: string;
-//   address: AddressString;
-//   decimal: number;
-//   chain: Chain;
-//   enum: ChainEnum;
-// }[] = [
-//     {
-//       symbol: "USDT",
-//       logo: "/tokens/usdt.svg",
-//       address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
-//       decimal: 6,
-//       chain: ETHEREUM,
-//       enum: ChainEnum.ETHEREUM,
-//     },
-//     {
-//       symbol: "USDC",
-//       logo: "/tokens/usdc.svg",
-//       address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-//       decimal: 6,
-//       chain: ETHEREUM,
-//       enum: ChainEnum.ETHEREUM,
-//     },
-//     {
-//       symbol: "USDT",
-//       logo: "/tokens/usdt.svg",
-//       address: "0x55d398326f99059fF775485246999027B3197955",
-//       decimal: 18,
-//       chain: BINANCE,
-//       enum: ChainEnum.BINANCE,
-//     },
-//     {
-//       symbol: "USDC",
-//       logo: "/tokens/usdc.svg",
-//       address: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
-//       decimal: 18,
-//       chain: BINANCE,
-//       enum: ChainEnum.BINANCE,
-//     },
-//   ]
+export const tokens: {
+  symbol: string;
+  logo: string;
+  address: AddressString;
+  decimal: number;
+  chain: Chain;
+  enum: ChainEnum;
+}[] = [
+    {
+      symbol: "USDT",
+      logo: "/tokens/usdt.svg",
+      address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+      decimal: 6,
+      chain: ETHEREUM,
+      enum: ChainEnum.ETHEREUM,
+    },
+    {
+      symbol: "USDC",
+      logo: "/tokens/usdc.svg",
+      address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      decimal: 6,
+      chain: ETHEREUM,
+      enum: ChainEnum.ETHEREUM,
+    },
+    {
+      symbol: "USDT",
+      logo: "/tokens/usdt.svg",
+      address: "0x55d398326f99059fF775485246999027B3197955",
+      decimal: 18,
+      chain: BINANCE,
+      enum: ChainEnum.BINANCE,
+    },
+    {
+      symbol: "USDC",
+      logo: "/tokens/usdc.svg",
+      address: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+      decimal: 18,
+      chain: BINANCE,
+      enum: ChainEnum.BINANCE,
+    },
+  ]
 
 // * DEV
 // export const tokens: {
@@ -276,13 +276,13 @@ export function getScanURL(chain: ChainEnum) {
   }
 }
 
-// export function getDecimal(address: string) {
-//   if (!address) return
-//   const token = tokens.find(
-//     (token) => token.address.toLowerCase() === address.toLowerCase()
-//   )
-//   return token ? token.decimal : 6
-// }
+export function getDecimal(address: string) {
+  if (!address) return
+  const token = tokens.find(
+    (token) => token.address.toLowerCase() === address.toLowerCase()
+  )
+  return token ? token.decimal : 6
+}
 
 // export const blockFit = defineChain({
 //   id: 2024,
