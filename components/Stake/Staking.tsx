@@ -41,6 +41,7 @@ import {
 } from "wagmi"
 import {
   createStake,
+  createStakingTransaction,
   getMyUpline,
   getPaymentSuccess,
   verifyStakingRecord,
@@ -57,7 +58,6 @@ import { solidityPackedKeccak256 } from "ethers"
 import { signMessage } from "@wagmi/core"
 import { v4 } from "uuid"
 import { config } from "@/libs/wagmi"
-import { createStakingTransaction } from "@/services/stakingTransaction"
 import TransferDialog from "../shared/TransferDialog"
 import { paymentReceived } from "@/services/webhook"
 // import { useSignMessage } from "wagmi"

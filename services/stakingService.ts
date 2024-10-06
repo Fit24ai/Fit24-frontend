@@ -84,6 +84,26 @@ export const getAllStakesByUser = async (walletAddress: AddressString) => {
   return res.data
 }
 
+export async function createStakingTransaction(
+  transactionHash: AddressString,
+  chain: ChainEnum
+) {
+  return (
+    await http.post(
+      "/staking-transaction/create",
+      {
+        transactionHash,
+        chain,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      }
+    )
+  ).data
+}
+
 export const createClaimReward = async (txHash: string) => {
   const res = await http.post(
     `/staking/create-claimed-reward-for-stake/${txHash}`,
