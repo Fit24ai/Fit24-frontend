@@ -25,6 +25,7 @@ import {
 import { stakingAbi } from "@/libs/stakingAbi"
 import {
   AddressString,
+  ChainEnum,
   fit24ContractAddress,
   fit24ReferralContractAddress,
   getChain,
@@ -38,6 +39,7 @@ import {
   createClaimReward,
   getAllStakesByUser,
   getMyUpline,
+  getPaymentSuccess,
   getTotalMembers,
   getTotalNetworkMembers,
   getTotalNetworkStaked,
@@ -204,7 +206,6 @@ export default function ChartBox({ token }: { token: number }) {
   const { isLoggedIn } = useWallet()
   const { chain, address, isConnected } = useAccount()
 
-
   const [totalNetworkMembers, setTotalNetworkMembers] = useState(0)
   const [totalNetworkStaked, setTotalNetworkStaked] = useState(0)
   const [totalNetworkWithdrawal, setTotalNetworkWithdrawal] = useState(0)
@@ -269,7 +270,6 @@ export default function ChartBox({ token }: { token: number }) {
     refetchUserDailyRewardClaimed()
   }, [address, lastClaimedTimestamp, lastClaimedTimestampLoading])
 
-
   const claimReward = async () => {
     if (chain?.id !== vestingChainId)
       return switchChain({
@@ -284,6 +284,26 @@ export default function ChartBox({ token }: { token: number }) {
         chainId: getChain(chain).id,
       })
       await createTransaction(tx, getChainEnum(getChain(chain).id))
+      const res = await getPaymentSuccess(tx, ChainEnum.BLOCKFIT)
+      if (res.success === true) {
+        await createClaimReward(tx)
+        setClaimLoading(false)
+        setClaimStakeCondition(true)
+        setDialogInfo({
+          type: "SUCCESS",
+          message: `Reward Claimed Successfully`,
+          title: "Success",
+        })
+        setDialog(true)
+      } else {
+        setDialogInfo({
+          type: "FAIL",
+          message: "Something went wrong",
+          title: "Error in claiming reward",
+        })
+        setDialog(true)
+        setClaimLoading(false)
+      }
       // console.log(tx)
       setRewardHash(tx)
     } catch (error) {
@@ -419,36 +439,35 @@ export default function ChartBox({ token }: { token: number }) {
     refetchUserDailyRewardClaimed,
   ])
 
-
   const { data: rewardReceipt, error: rewardError } =
     useWaitForTransactionReceipt({
       hash: rewardHash,
       chainId: getChain(chain).id,
     })
 
-  useEffect(() => {
-    if (!rewardHash) return
-    if (rewardError) {
-      setClaimLoading(false)
-      setDialogInfo({
-        type: "FAIL",
-        message: "Something went wrong",
-        title: "Error in claiming reward",
-      })
-      setDialog(true)
-      return
-    }
-    createClaimReward(rewardHash)
-    setClaimLoading(false)
-    setClaimStakeCondition(true)
-    setDialogInfo({
-      type: "SUCCESS",
-      message: `Reward Claimed Successfully`,
-      title: "Success",
-    })
-    setDialog(true)
-    refetchPendingAmount()
-  }, [rewardReceipt, rewardError])
+  // useEffect(() => {
+  //   if (!rewardHash) return
+  //   if (rewardError) {
+  //     setClaimLoading(false)
+  //     setDialogInfo({
+  //       type: "FAIL",
+  //       message: "Something went wrong",
+  //       title: "Error in claiming reward",
+  //     })
+  //     setDialog(true)
+  //     return
+  //   }
+  //   createClaimReward(rewardHash)
+  //   setClaimLoading(false)
+  //   setClaimStakeCondition(true)
+  //   setDialogInfo({
+  //     type: "SUCCESS",
+  //     message: `Reward Claimed Successfully`,
+  //     title: "Success",
+  //   })
+  //   setDialog(true)
+  //   refetchPendingAmount()
+  // }, [rewardReceipt, rewardError])
 
   const [memberLoading, setMemberLoading] = useState(false)
   const [directMemberLoading, setDirectMemberLoading] = useState(false)
