@@ -457,14 +457,14 @@ export default function RewardsContainer() {
                 value={selectedFromLevel}
                 onChange={setSelectedFromLevel}
               >
-                <ListboxButton className="bg-white bg-opacity-20 p-2 relative rounded-lg  text-sm">
+                <ListboxButton className="bg-white bg-opacity-20 p-2 relative rounded-lg  text-sm z-[200]">
                   {selectedFromLevel !== null
                     ? `Level ${selectedFromLevel}`
                     : "Select From Level"}
                 </ListboxButton>
                 <ListboxOptions
                   anchor="bottom"
-                  className=" absolute mt-1 max-h-40 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
+                  className=" absolute mt-1 max-h-40 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-[200]"
                 >
                   <ListboxOption value={null}>All Levels</ListboxOption>
                   {levels.map((level) => (
@@ -473,7 +473,7 @@ export default function RewardsContainer() {
                       value={level}
                       className={({ active }) =>
                         `cursor-pointer select-none p-2 ${
-                          active ? "bg-blue-500 text-white" : "text-gray-900"
+                          active ? "bg-blue-500 text-white" : "text-gray-900 z-[200]"
                         }`
                       }
                     >

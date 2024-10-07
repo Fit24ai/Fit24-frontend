@@ -17,10 +17,13 @@ export default function Footer() {
             />
           </Link>
         </div>
-        <div className="text-gray-400 text-xl">
-          Fit24 web3 and Al-based fitness app allows global users to track their
-          fitness progress n earn rewards for achieving milestones through a
-          Fit24 token
+        <div className="text-gray-400 text-lg">
+          The FIT24 Token is a physical activity-based, mintable token built on
+          the BlockFit network, designed to motivate you to stay active and
+          healthy. It transforms every step, rep, and workout into a rewarding
+          experience, blending fitness with financial growth. With FIT24, you
+          will achieve a healthier lifestyle and gain financial empowerment,
+          driving personal and global well-being.
         </div>
         <input
           type="email"
@@ -33,16 +36,19 @@ export default function Footer() {
       </div>
       <div className="flex flex-col gap-6 md:w-[350px] ">
         <div className="text-3xl text-themeGreen">
-          News and information about the Pre-Sale
+          FIT24 staking News and information
         </div>
         <div className="text-gray-400 text-xl">
-          Get all the details about the FIT24 Pre-Sale in our official Telegram
-          channel and newsletter
+          Get the latest updates and all the key details on FIT24 Staking
+          through our official Telegram channel and Newsletter.
         </div>
         <div className="w-full flex flex-col items-center gap-4">
           <div className="text-lg">Follow Us</div>
           <div className="flex gap-4 items-center">
-            <div className="w-14">
+            <Link
+              href="https://www.instagram.com/fit24global/"
+              className="w-14"
+            >
               <Image
                 src="/social/instagram.png"
                 alt="Logo"
@@ -50,8 +56,8 @@ export default function Footer() {
                 height={300}
                 className="h-full w-full"
               />
-            </div>
-            <div className="w-14">
+            </Link>
+            <Link href="https://x.com/Fit24global" className="w-14">
               <Image
                 src="/social/twitter.png"
                 alt="Logo"
@@ -59,8 +65,8 @@ export default function Footer() {
                 height={300}
                 className="h-full w-full"
               />
-            </div>
-            <div className="w-14">
+            </Link>
+            <Link href="https://t.me/fit24global" className="w-14">
               <Image
                 src="/social/telegram.png"
                 alt="Logo"
@@ -68,7 +74,19 @@ export default function Footer() {
                 height={300}
                 className="h-full w-full"
               />
-            </div>
+            </Link>
+            <Link
+              href="https://www.youtube.com/channel/UCTrjJNX8N9pQRFYl9G00ZWQ"
+              className="w-14"
+            >
+              <Image
+                src="/social/youtube.png"
+                alt="Logo"
+                width={300}
+                height={300}
+                className="h-full w-full"
+              />
+            </Link>
           </div>
         </div>
       </div>

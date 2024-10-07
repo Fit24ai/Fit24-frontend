@@ -1,5 +1,5 @@
 import { defineChain, getAddress } from "viem"
-import { Chain, bsc,  holesky, mainnet, bscTestnet } from "viem/chains"
+import { Chain, bsc, holesky, mainnet, bscTestnet } from "viem/chains"
 
 export enum ChainEnum {
   ETHEREUM = "ETHEREUM",
@@ -11,7 +11,7 @@ export enum ChainEnum {
 export type AddressString = `0x${string}`
 
 export const blockfit = defineChain({
-  id: 2024,
+  id: 202424,
   name: "BlockFit",
   nativeCurrency: {
     decimals: 18,
@@ -30,14 +30,14 @@ export const blockfit = defineChain({
 })
 
 // * PROD
-// export const ethereumPaymentAddress: AddressString =
-//   "0x8B7547c84D435e96812b54B7d2AaEA48D4c49EDB"
-// export const binancePaymentAddress: AddressString =
-//   "0x72e56adb351Bc1DA1A37B2C5bB6cA40fBB373322"
+export const ethereumPaymentAddress: AddressString =
+  "0x8B7547c84D435e96812b54B7d2AaEA48D4c49EDB"
+export const binancePaymentAddress: AddressString =
+  "0x72e56adb351Bc1DA1A37B2C5bB6cA40fBB373322"
 
 // ! NOT USED
-// export const vestingAddress: AddressString =
-//   "0x9Ae55AEFb2Aa047627EF42B67aD49730517DAb52"
+export const vestingAddress: AddressString =
+  "0x9Ae55AEFb2Aa047627EF42B67aD49730517DAb52"
 
 export const fit24TokenAddress: AddressString =
   "0xe30ce7C1daF26c9748B19B6b16D7B41d6254089B"
@@ -74,38 +74,33 @@ export const ethereumUsdtTokenAddress: AddressString =
 // export const ethereumUsdtTokenAddress: AddressString =
 //   "0x776D9c4Cab12287414093832C3AA3ED214E44719"
 
+export const bsctestnet = {
+  id: "eip155:97",
+  chainId: 97,
+  name: "Binance Smart Chain Testnet",
+  currency: "tBNB",
+  explorerUrl: "https://testnet.bscscan.com",
+  rpcUrl: "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
+  chainNamespace: "eip155",
+}
 
-
-
-  export const bsctestnet = {
-    id: "eip155:97",
-    chainId: 97,
-    name: "Binance Smart Chain Testnet",
-    currency: "tBNB",
-    explorerUrl: "https://testnet.bscscan.com",
-    rpcUrl: "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
-    chainNamespace: "eip155",
-  }
-
-  export const blockFit = {
-    id: "eip155:2024",
-    chainId: 2024,
-    name: "BlockFit",
-    currency: "BFIT",
-    explorerUrl: "https://blockfitscan.io",
-    rpcUrl: "https://rpc.blockfitscan.io",
-    chainNamespace: "eip155",
-  }
+export const blockFit = {
+  id: "eip155:202424",
+  chainId: 202424,
+  name: "BlockFit",
+  currency: "BFIT",
+  explorerUrl: "https://blockfitscan.io",
+  rpcUrl: "https://rpc.blockfitscan.io",
+  chainNamespace: "eip155",
+}
 
 // * PROD
-export const ethereumPaymentAddress: AddressString =
-  "0x8B7547c84D435e96812b54B7d2AaEA48D4c49EDB"
-export const binancePaymentAddress: AddressString =
-  "0x72e56adb351Bc1DA1A37B2C5bB6cA40fBB373322"
-export const vestingAddress: AddressString =
-  "0xFb97CAC3B41078bc026CB05BD9f15F8204aa7bc2"
-
-
+// export const ethereumPaymentAddress: AddressString =
+//   "0x8B7547c84D435e96812b54B7d2AaEA48D4c49EDB"
+// export const binancePaymentAddress: AddressString =
+//   "0x72e56adb351Bc1DA1A37B2C5bB6cA40fBB373322"
+// export const vestingAddress: AddressString =
+//   "0xFb97CAC3B41078bc026CB05BD9f15F8204aa7bc2"
 
 // * DEV
 // export const vestingChainId = bscTestnet.id
@@ -121,46 +116,46 @@ export const BINANCE = bsc
 
 // * PROD
 export const tokens: {
-  symbol: string;
-  logo: string;
-  address: AddressString;
-  decimal: number;
-  chain: Chain;
-  enum: ChainEnum;
+  symbol: string
+  logo: string
+  address: AddressString
+  decimal: number
+  chain: Chain
+  enum: ChainEnum
 }[] = [
-    {
-      symbol: "USDT",
-      logo: "/tokens/usdt.svg",
-      address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
-      decimal: 6,
-      chain: ETHEREUM,
-      enum: ChainEnum.ETHEREUM,
-    },
-    {
-      symbol: "USDC",
-      logo: "/tokens/usdc.svg",
-      address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-      decimal: 6,
-      chain: ETHEREUM,
-      enum: ChainEnum.ETHEREUM,
-    },
-    {
-      symbol: "USDT",
-      logo: "/tokens/usdt.svg",
-      address: "0x55d398326f99059fF775485246999027B3197955",
-      decimal: 18,
-      chain: BINANCE,
-      enum: ChainEnum.BINANCE,
-    },
-    {
-      symbol: "USDC",
-      logo: "/tokens/usdc.svg",
-      address: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
-      decimal: 18,
-      chain: BINANCE,
-      enum: ChainEnum.BINANCE,
-    },
-  ]
+  {
+    symbol: "USDT",
+    logo: "/tokens/usdt.svg",
+    address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+    decimal: 6,
+    chain: ETHEREUM,
+    enum: ChainEnum.ETHEREUM,
+  },
+  {
+    symbol: "USDC",
+    logo: "/tokens/usdc.svg",
+    address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    decimal: 6,
+    chain: ETHEREUM,
+    enum: ChainEnum.ETHEREUM,
+  },
+  {
+    symbol: "USDT",
+    logo: "/tokens/usdt.svg",
+    address: "0x55d398326f99059fF775485246999027B3197955",
+    decimal: 18,
+    chain: BINANCE,
+    enum: ChainEnum.BINANCE,
+  },
+  {
+    symbol: "USDC",
+    logo: "/tokens/usdc.svg",
+    address: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+    decimal: 18,
+    chain: BINANCE,
+    enum: ChainEnum.BINANCE,
+  },
+]
 
 // * DEV
 // export const tokens: {
@@ -296,7 +291,3 @@ export function getDecimal(address: string) {
 //     default: { name: "BlockFitScan", url: "https://blockfitscan.io" },
 //   },
 // })
-
-
-
-

@@ -120,7 +120,7 @@ export default function Sidebar() {
     }, 2000)
   }, [address])
   return (
-    <div className="hidden h-full max-w-64 w-full px-4 xl:flex flex-col gap-2 pt-10 border-r border-gray-700 text-white">
+    <div className="hidden h-auto max-w-64 w-full px-4 xl:flex flex-col gap-2 pt-10 border-r border-gray-700 text-white">
       <div className="w-full bg-[#020c2b] flex flex-col gap-2 rounded-lg py-2 px-4">
         <div className="w-full flex items-center justify-between">
           <div className="w-full flex items-center gap-2">
@@ -134,30 +134,15 @@ export default function Sidebar() {
           </div> */}
           {/* <ChainSelect /> */}
         </div>
-        {/* {token > 0 && ( */}
-        {/* <div className="w-full flex items-center gap-4 text-sm "> */}
-        {/* <div>My Referral ID</div> */}
-        {/* <div> {address && smallAddress(address!)}</div> */}
-        {/* <button
-              onClick={handleButtonClick}
-              disabled={isAlertVisible}
-              className="text-gray-400 flex items-center justify-center"
-            > */}
-        {/* {isAlertVisible ? (
-                <FaCheck size={20} />
-              ) : (
-                <div className="flex items-center gap-2">
-                  <LuCopy /> <span className="text-themeGreen">Copy</span>
-                </div>
-              )} */}
-        {/* <CopyReferralPopup /> */}
-        {/* </button> */}
-        {/* </div> */}
-        {/* )} */}
         {token > 0 && (
           <div className="w-full flex items-center gap-4 text-sm ">
             <div>My Referral ID</div>
-            {/* <div> {address && smallAddress(address!)}</div> */}
+            <CopyReferralPopup />
+          </div>
+        )}
+        {/* {token > 0 && ( 
+          <div className="w-full flex items-center gap-4 text-sm ">
+            <div>My Referral ID</div>
             <button
               onClick={handleButtonClick}
               disabled={isAlertVisible}
@@ -172,7 +157,7 @@ export default function Sidebar() {
               )}
             </button>
           </div>
-        )}
+        )}  */}
       </div>
       {upline && (
         <div className="mx-auto">

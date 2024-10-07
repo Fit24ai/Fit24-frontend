@@ -30,6 +30,7 @@ import copy from "copy-to-clipboard"
 import { FaCheck } from "react-icons/fa"
 import { useWallet } from "@/hooks/useWallet"
 import { getAllStakeTokens, getMyUpline } from "@/services/stakingService"
+import { CopyReferralPopup } from "../CopyReferralPopup"
 
 export function NavbarDrawer() {
   // const searchParams = useSearchParams()
@@ -183,10 +184,9 @@ export function NavbarDrawer() {
           </div> */}
               {/* <ChainSelect /> */}
             </div>
-            {token > 0 && (
+            {/* {token > 0 && (
               <div className="w-full flex items-center gap-4 text-sm ">
                 <div>My Referral ID</div>
-                {/* <div> {address && smallAddress(address!)}</div> */}
                 <button
                   onClick={handleButtonClick}
                   disabled={isAlertVisible}
@@ -200,6 +200,12 @@ export function NavbarDrawer() {
                     </div>
                   )}
                 </button>
+              </div>
+            )} */}
+            {token > 0 && (
+              <div className="w-full flex items-center gap-4 text-sm ">
+                <div>My Referral ID</div>
+                <CopyReferralPopup />
               </div>
             )}
           </div>

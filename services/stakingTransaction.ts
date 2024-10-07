@@ -2,6 +2,7 @@ import { AddressString, ChainEnum } from "@/libs/chains"
 import { getAuthToken } from "@/libs/utils"
 import axios from "axios"
 
+// !NOT USED
 const http = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}/staking-transaction`,
   headers: {

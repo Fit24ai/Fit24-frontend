@@ -34,15 +34,25 @@ export default function TransactionPollingService({
   >()
   const [distributionStatus, setDistributionStatus] =
     useState<DistributionStatusEnum>(DistributionStatusEnum.PENDING)
+  const [fail, setFailed] = useState(false)
 
   const getTransaction = async () => {
     console.log("get")
     if (!hash) return
     console.log("hash found")
+    console.log(distributionStatus)
+    console.log(DistributionStatusEnum.DISTRIBUTED)
     if (distributionStatus === DistributionStatusEnum.DISTRIBUTED) return
+    if (distributionStatus === DistributionStatusEnum.FAILED) return
     console.log("distributuion")
     const res = await getTransactions(hash)
     console.log({ res })
+    if (res.distributionStatus === DistributionStatusEnum.FAILED) {
+      setDistributionStatus(DistributionStatusEnum.FAILED)
+      console.log("failed")
+      setFailed(true)
+      return
+    }
     if (res.transactionStatus !== status) {
       setStatus(res.transactionStatus)
     }
@@ -53,11 +63,12 @@ export default function TransactionPollingService({
   }
 
   useEffect(() => {
+    if (fail) return
     console.log("get transaction")
     getTransaction()
     const intervalId = setInterval(getTransaction, 2000)
     return () => clearInterval(intervalId)
-  }, [])
+  }, [fail])
 
   if (
     distributionStatus === DistributionStatusEnum.PENDING ||
@@ -79,11 +90,19 @@ export default function TransactionPollingService({
     )
   if (distributionStatus === DistributionStatusEnum.FAILED)
     return (
-      <div className="flex flex-col items-center justify-center text-center gap-8">
-        <div className="text-3xl font-bold">Deposit Failed</div>
-        <BsExclamationDiamond className="text-6xl text-red-500" />
+      <div className="flex flex-col max-w-[500px] items-center justify-center text-center gap-8">
+        <div className="text-3xl font-bold">
+          Payment Successful !! Your Funds Are Safe!
+        </div>
+        <div className=" font-medium">
+          The transaction is being processed. Please check your balance again in
+          5 minutes to see if the tokens have been deposited.
+        </div>
+        {/* <BsExclamationDiamond className="text-6xl text-themeGreen" /> */}
         <div className="font-medium">
-          Failed to deposit the tokens please contact support
+          If you do not see the tokens after 5 mins, please send your wallet
+          address to <span className="text-blue-800 font-bold">SUPPORT</span>,
+          and we will restore your transaction
         </div>
       </div>
     )

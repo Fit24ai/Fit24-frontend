@@ -150,7 +150,12 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     console.log(readResponse)
     if (!readResponse) return false
     if (readResponse[0].error) return false
-    if (getNumber(readResponse[0].result! as bigint, 18) < usdAmount) {
+    if (
+      getNumber(
+        readResponse[0].result! as bigint,
+        getChain(chain).id === 1 ? 6 : 18
+      ) < usdAmount
+    ) {
       setDialogInfo({
         type: "FAIL",
         message: `Not Enough USD balance`,
@@ -166,7 +171,12 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     if (!usdAmount) return false
     if (!readResponse) return false
     if (readResponse[1].error) return false
-    if (getNumber(readResponse[1].result! as bigint, 18) < usdAmount) {
+    if (
+      getNumber(
+        readResponse[0].result! as bigint,
+        getChain(chain).id === 1 ? 6 : 18
+      ) < usdAmount
+    ) {
       // setDialogInfo({
       //   type: "FAIL",
       //   message: `Not Enough FIT24 balance`,
@@ -194,7 +204,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       })
       const res = await getPaymentSuccess(tx, getChainEnum(getChain(chain).id))
       if (res.success === true) {
-        window.location.reload
+        window.location.reload()
       } else {
         setLoading(false)
         setDialogInfo({
@@ -219,6 +229,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
 
   const handleFirstInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value)
+    console.log("fit24", value)
 
     if (select === "A" && value < 2500) {
       setFormError("Minimum stake amount is 2,500")
@@ -239,6 +250,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
 
   const handleSecondInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value)
+    console.log("usdt", value)
     if (value > 1000000) return
     setUsdAmount(value ? value : undefined)
 
@@ -318,7 +330,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
         setDepositOpen(true)
         await paymentReceived(
           {
-            amount: parseEther(String(usdAmount!)).toString(),
+            amount: amount.toString(),
             token: getUsdtTokenAddress(getChain(chain).id),
             user: address!,
             transaction_hash: tx!,
@@ -356,6 +368,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
         message: "Something went wrong",
         title: "Error Buying Token",
       })
+      setDialog(true)
       console.log(error)
     }
   }
@@ -645,13 +658,13 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
               onClick={() => setSelect("C")}
               className={`${
                 select === "C"
-                  ? "bg-red-600"
+                  ? "bg-themeGreen"
                   : "bg-gradient-to-r from-themeGreen to-themeLightBlue"
               }  text-white p-0.5 rounded-xl relative transform hover:scale-105 transition-transform duration-300  md:w-64 sm:w-40 w-[120px]`}
             >
               <div
                 className={`${
-                  select === "C" ? "bg-red-600" : "bg-[#04042e] inner-shadow"
+                  select === "C" ? "bg-themeGreen" : "bg-[#04042e] inner-shadow"
                 } md:p-6 p-2  rounded-xl`}
               >
                 <div className="flex justify-between items-center mb-2">

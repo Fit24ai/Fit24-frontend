@@ -206,24 +206,37 @@ export default function ChartBox({ token }: { token: number }) {
   const { isLoggedIn } = useWallet()
   const { chain, address, isConnected } = useAccount()
 
-  const [totalNetworkMembers, setTotalNetworkMembers] = useState(0)
-  const [totalNetworkStaked, setTotalNetworkStaked] = useState(0)
-  const [totalNetworkWithdrawal, setTotalNetworkWithdrawal] = useState(0)
+  const [totalNetworkMembers, setTotalNetworkMembers] = useState<number>(0)
+  const [totalNetworkStaked, setTotalNetworkStaked] = useState<number>(0)
+  const [totalNetworkWithdrawal, setTotalNetworkWithdrawal] =
+    useState<number>(0)
 
   const getTotalNetworkMembersCount = async () => {
-    const res = await getTotalNetworkMembers()
-    // console.log(res)
-    setTotalNetworkMembers(res.totalStakedMembers)
+    try {
+      const res = await getTotalNetworkMembers()
+      // console.log(res)
+      setTotalNetworkMembers(res.totalStakedMembers)
+    } catch (error) {
+      console.log(error)
+    }
   }
   const getTotalNetworkMembersStaked = async () => {
-    const res = await getTotalNetworkStaked()
-    // console.log(res)
-    setTotalNetworkStaked(res)
+    try {
+      const res = await getTotalNetworkStaked()
+      // console.log(res)
+      setTotalNetworkStaked(res)
+    } catch (error) {
+      console.log(error)
+    }
   }
   const getTotalNetworkMembersWithdrawal = async () => {
-    const res = await getTotalNetworkWithdrawal()
-    // console.log(res)
-    setTotalNetworkWithdrawal(res)
+    try {
+      const res = await getTotalNetworkWithdrawal()
+      // console.log(res)
+      setTotalNetworkWithdrawal(res)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   useEffect(() => {
@@ -535,7 +548,9 @@ export default function ChartBox({ token }: { token: number }) {
             <div className="flex gap-4 w-full  items-center overflow-x-auto hide-scrollbar">
               <div className="flex flex-col items-center flex-1 min-w-36 rounded-lg gap-2  network-image-1  p-3 ">
                 <IoMdPerson size={24} />
-                <div className="text-xl">{totalNetworkMembers}</div>
+                <div className="text-xl">
+                  {totalNetworkMembers ? totalNetworkMembers : 0}
+                </div>
                 <div className="text-gray-300 text-xs">All Members</div>
               </div>
               <div className="flex flex-col items-center flex-1 rounded-lg  network-image-2 gap-2  p-3 min-w-36">
@@ -548,7 +563,7 @@ export default function ChartBox({ token }: { token: number }) {
               <div className="flex flex-col items-center flex-1 rounded-lg  network-image-3 gap-2  p-3 min-w-36">
                 <FaHandHoldingUsd size={24} />
                 <div className="text-xl">
-                  {totalNetworkWithdrawal.toFixed(2)}
+                  {Number(totalNetworkWithdrawal).toFixed(2)}
                 </div>
                 <div className="text-gray-300 text-xs">Total Withdrawals</div>
               </div>

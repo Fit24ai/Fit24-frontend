@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <>
       <Navbar />
-      <div className={`h-screen flex overflow-hidden`}>
+      <div className={`min-h-screen h-full flex overflow-hidden`}>
         {open && (
           <div className="w-[100vw] h-[100vh] bg-black fixed top-0 z-50"></div>
         )}
