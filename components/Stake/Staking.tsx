@@ -209,9 +209,12 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
           parseEther("100000000"),
         ],
       })
+      console.log(tx)
       const res = await getPaymentSuccess(tx, getChainEnum(getChain(chain).id))
+      console.log(res)
       if (res.success === true) {
-        window.location.reload()
+        buyToken(true)
+        console.log("reload")
       } else {
         setLoading(false)
         setDialogInfo({
@@ -293,17 +296,18 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
 
   const [upline, setUpline] = useState<string | undefined>()
 
-  const buyToken = async () => {
+  const buyToken = async (isApproved?: boolean) => {
     // if (chain?.id !== vestingChainId)
     //   return switchChain({
     //     chainId: vestingChainId,
     //   })
+
     if (chain?.id === vestingChainId)
       return switchChain({
         chainId: 56,
       })
     if (!isValid()) return
-    if (!isAllowance()) {
+    if (!isApproved && !isAllowance()) {
       return approveAllowance()
     }
     let amount
@@ -334,15 +338,26 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       console.log("success payment")
       if (res.success === true) {
         setDepositOpen(true)
-        await paymentReceived(
-          {
-            amount: amount.toString(),
-            token: getUsdtTokenAddress(getChain(chain).id),
-            user: address!,
-            transaction_hash: tx!,
-          },
-          getChainEnum(getChain(chain).id)
-        )
+        try {
+          await paymentReceived(
+            {
+              amount: amount.toString(),
+              token: getUsdtTokenAddress(getChain(chain).id),
+              user: address!,
+              transaction_hash: tx!,
+            },
+            getChainEnum(getChain(chain).id)
+          )
+        } catch (error) {
+          setLoading(false)
+          setDialogInfo({
+            type: "FAIL",
+            message:
+              "If you do not see the tokens after 5 mins, please send your wallet address to SUPPORT and we will restore your transaction",
+            title: "Your Funds Are Safe!",
+          })
+          setDialog(true)
+        }
       } else {
         setLoading(false)
         setDialogInfo({
@@ -810,7 +825,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
             )}
 
             <button
-              onClick={buyToken}
+              onClick={() => buyToken()}
               disabled={!!formError}
               className={`w-[200px] mt-5 mx-auto bg-themeGreen text-white h-10 rounded-lg flex justify-center items-center ${
                 formError ? "opacity-50 cursor-not-allowed" : ""
