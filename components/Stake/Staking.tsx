@@ -302,7 +302,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       return switchChain({
         chainId: 56,
       })
-    // if (!isValid()) return
+    if (!isValid()) return
     if (!isAllowance()) {
       return approveAllowance()
     }
