@@ -139,6 +139,12 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     ],
   })
 
+  useEffect(() => {
+    refetch()
+    if (!readResponse) return
+    console.log("readResponse", readResponse)
+  }, [chain])
+
   const { data: stakeReceipt, error: stakeError } =
     useWaitForTransactionReceipt({
       hash: stakeHash,
