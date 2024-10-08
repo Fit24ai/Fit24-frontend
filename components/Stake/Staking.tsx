@@ -176,10 +176,11 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
   const isAllowance = () => {
     if (!usdAmount) return false
     if (!readResponse) return false
+    // if (!readResponse[0]) return false
     if (readResponse[1].error) return false
     if (
       getNumber(
-        readResponse[0].result! as bigint,
+        readResponse[1].result! as bigint,
         getChain(chain).id === 1 ? 6 : 18
       ) < usdAmount
     ) {
@@ -301,7 +302,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       return switchChain({
         chainId: 56,
       })
-    if (!isValid()) return
+    // if (!isValid()) return
     if (!isAllowance()) {
       return approveAllowance()
     }
@@ -313,8 +314,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
       const { apr } = await getAPR(select)
       const tx = await writeContractAsync({
         abi: paymentAbi,
-        //@ts-ignore
-        address: getPaymentContractAddress(getChain(chain).id),
+        address: getPaymentContractAddress(getChain(chain).id)!,
         functionName: "payWithReferral",
         chainId: getChain(chain).id,
         args: [
