@@ -40,6 +40,7 @@ import {
   getAllStakesByUser,
   getMyUpline,
   getPaymentSuccess,
+  getReferralIncome,
   getTotalMembers,
   getTotalNetworkMembers,
   getTotalNetworkStaked,
@@ -262,26 +263,26 @@ export default function ChartBox({ token }: { token: number }) {
   const [showPopup, setShowPopup] = useState(false)
   const [pendingAmount, setPendingAmount] = useState<number | undefined>()
   // const { reload, setReload } = useReloadContext();
-  const { data: lastClaimedTimestamp, isLoading: lastClaimedTimestampLoading } =
-    useReadContracts({
-      allowFailure: true,
-      contracts: [
-        {
-          abi: stakingAbi,
-          address: fit24ContractAddress,
-          functionName: "lastClaimedTimestamp",
-          chainId: vestingChainId,
-        },
-      ],
-    })
+  // const { data: lastClaimedTimestamp, isLoading: lastClaimedTimestampLoading } =
+  //   useReadContracts({
+  //     allowFailure: true,
+  //     contracts: [
+  //       {
+  //         abi: stakingAbi,
+  //         address: fit24ContractAddress,
+  //         functionName: "lastClaimedTimestamp",
+  //         chainId: vestingChainId,
+  //       },
+  //     ],
+  //   })
 
-  const [lastTimestamp, setTimestamp] = useState<number | undefined>()
+  // const [lastTimestamp, setTimestamp] = useState<number | undefined>()
 
-  useEffect(() => {
-    if (!lastClaimedTimestamp) return
-    setTimestamp(Number(lastClaimedTimestamp[0].result!))
-    refetchUserDailyRewardClaimed()
-  }, [address, lastClaimedTimestamp, lastClaimedTimestampLoading])
+  // useEffect(() => {
+  //   if (!lastClaimedTimestamp) return
+  //   setTimestamp(Number(lastClaimedTimestamp[0].result!))
+  //   refetchUserDailyRewardClaimed()
+  // }, [address, lastClaimedTimestamp, lastClaimedTimestampLoading])
 
   const claimReward = async () => {
     if (chain?.id !== vestingChainId)
@@ -343,87 +344,96 @@ export default function ChartBox({ token }: { token: number }) {
       {
         abi: stakingAbi,
         address: fit24ContractAddress,
-        functionName: "getPendingAmountForDay",
+        functionName: "getUserTotalPendingReward",
         chainId: vestingChainId,
         args: [address],
       },
     ],
   })
 
-  const {
-    data: userDailyRewardClaimed,
-    isLoading: userDailyRewardClaimedLoading,
-    refetch: refetchUserDailyRewardClaimed,
-  } = useReadContracts({
-    allowFailure: true,
-    contracts: [
-      {
-        abi: stakingAbi,
-        address: fit24ContractAddress,
-        functionName: "userDailyRewardClaimed",
-        chainId: vestingChainId,
-        // args: [address, (Number(lastTimestamp) + 3600).toString()],
-        args: [address, (Number(lastTimestamp) + 86400).toString()],
-      },
-    ],
-  })
+  // const {
+  //   data: userDailyRewardClaimed,
+  //   isLoading: userDailyRewardClaimedLoading,
+  //   refetch: refetchUserDailyRewardClaimed,
+  // } = useReadContracts({
+  //   allowFailure: true,
+  //   contracts: [
+  //     {
+  //       abi: stakingAbi,
+  //       address: fit24ContractAddress,
+  //       functionName: "userDailyRewardClaimed",
+  //       chainId: vestingChainId,
+  //       // args: [address, (Number(lastTimestamp) + 3600).toString()],
+  //       args: [address, (Number(lastTimestamp) + 86400).toString()],
+  //     },
+  //   ],
+  // })
 
   const getAllUserStakes = async () => {
     try {
       setClaimLoading(true)
       console.log("address", address)
-      console.log("lastClaimedTimestamp", lastClaimedTimestamp)
-      console.log("userDailyRewardClaimed", userDailyRewardClaimed)
+      // console.log("lastClaimedTimestamp", lastClaimedTimestamp)
+      // console.log("userDailyRewardClaimed", userDailyRewardClaimed)
       console.log("readPendingAmount", readPendingAmount)
       if (
         !address ||
-        !lastClaimedTimestamp ||
-        !userDailyRewardClaimed ||
+        // !lastClaimedTimestamp ||
+        // !userDailyRewardClaimed ||
         !readPendingAmount
       )
         return
       const res: any = await getAllStakesByUser(address)
-      console.log("userDailyRewardClaimed", userDailyRewardClaimed[0].result)
-      if (res.stakes.length === 0) {
-        setClaimStakeCondition(true)
-        setPendingAmount(0)
-        console.log(true)
-      } else if (res.stakes.length >= 1) {
-        // if (
-        //   Math.floor(Date.now() / 1000) -
-        //     res.stakes[res.stakes.length - 1].startTime >
-        //     1 * 60 * 60 &&
-        //   userDailyRewardClaimed[0].result! === false
-        // ) {
-        if (
-          Math.floor(Date.now() / 1000) -
-            res.stakes[res.stakes.length - 1].startTime >
-            24 * 60 * 60 &&
-          userDailyRewardClaimed[0].result! === false
-        ) {
-          console.log(false)
-          setPendingAmount(
-            getNumber(readPendingAmount[0].result! as bigint, 18)
-          )
-          setClaimStakeCondition(false)
-        } else {
-          setClaimStakeCondition(true)
-          console.log(true)
-          setPendingAmount(0)
-        }
-      } else if (
-        Math.floor(Date.now() / 1000) -
-          res.stakes[res.stakes.length - 1].startTime >
-          24 * 60 * 60 &&
-        userDailyRewardClaimed[0].result! === false
-      ) {
-        // console.log(false)
+      // console.log("userDailyRewardClaimed", userDailyRewardClaimed[0].result)
+
+      console.log("Pending Reward", readPendingAmount[0].result)
+      if (getNumber(readPendingAmount[0].result! as bigint, 18) > 0) {
         setPendingAmount(getNumber(readPendingAmount[0].result! as bigint, 18))
         setClaimStakeCondition(false)
       } else {
-        // console.log(true)
         setClaimStakeCondition(true)
+        setPendingAmount(0)
       }
+      // if (res.stakes.length === 0) {
+      //   setClaimStakeCondition(true)
+      //   setPendingAmount(0)
+      //   console.log(true)
+      // } else if (res.stakes.length >= 1) {
+      //   // if (
+      //   //   Math.floor(Date.now() / 1000) -
+      //   //     res.stakes[res.stakes.length - 1].startTime >
+      //   //     1 * 60 * 60 &&
+      //   //   userDailyRewardClaimed[0].result! === false
+      //   // ) {
+      //   if (
+      //     Math.floor(Date.now() / 1000) -
+      //       res.stakes[res.stakes.length - 1].startTime >
+      //       24 * 60 * 60 &&
+      //     userDailyRewardClaimed[0].result! === false
+      //   ) {
+      //     console.log(false)
+      //     setPendingAmount(
+      //       getNumber(readPendingAmount[0].result! as bigint, 18)
+      //     )
+      //     setClaimStakeCondition(false)
+      //   } else {
+      //     setClaimStakeCondition(true)
+      //     console.log(true)
+      //     setPendingAmount(0)
+      //   }
+      // } else if (
+      //   Math.floor(Date.now() / 1000) -
+      //     res.stakes[res.stakes.length - 1].startTime >
+      //     24 * 60 * 60 &&
+      //   userDailyRewardClaimed[0].result! === false
+      // ) {
+      //   // console.log(false)
+      //   setPendingAmount(getNumber(readPendingAmount[0].result! as bigint, 18))
+      //   setClaimStakeCondition(false)
+      // } else {
+      //   // console.log(true)
+      //   setClaimStakeCondition(true)
+      // }
 
       setClaimLoading(false)
     } catch (error) {
@@ -436,8 +446,8 @@ export default function ChartBox({ token }: { token: number }) {
     if (
       !address ||
       !isLoggedIn ||
-      !lastClaimedTimestamp ||
-      !userDailyRewardClaimed ||
+      // !lastClaimedTimestamp ||
+      // !userDailyRewardClaimed ||
       !readPendingAmount
     )
       return
@@ -445,13 +455,13 @@ export default function ChartBox({ token }: { token: number }) {
   }, [
     isLoggedIn,
     address,
-    lastClaimedTimestamp,
-    lastClaimedTimestampLoading,
-    userDailyRewardClaimed,
-    userDailyRewardClaimedLoading,
+    // lastClaimedTimestamp,
+    // lastClaimedTimestampLoading,
+    // userDailyRewardClaimed,
+    // userDailyRewardClaimedLoading,
     readPendingAmount,
     pendingLoading,
-    refetchUserDailyRewardClaimed,
+    // refetchUserDailyRewardClaimed,
   ])
 
   const { data: rewardReceipt, error: rewardError } =
@@ -508,6 +518,23 @@ export default function ChartBox({ token }: { token: number }) {
   useEffect(() => {
     if (!isLoggedIn) return
     getTotalMembersCount()
+  }, [address, isLoggedIn])
+
+  const [totalRefIncome, setTotalRefIncome] = useState(0)
+
+  const totalReferralIncome = async () => {
+    try {
+      const res = await getReferralIncome(address!)
+      console.log("totalRefIncome", res)
+      setTotalRefIncome(res.totalReferralIncome)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (!isLoggedIn) return
+    totalReferralIncome()
   }, [address, isLoggedIn])
 
   const getLevel = async () => {
@@ -591,6 +618,7 @@ export default function ChartBox({ token }: { token: number }) {
               </div>
             </div>
           </div>
+
           <div className="bg-white network-image-3 bg-opacity-10 max-w-80 w-full p-4 px-10 flex flex-col items-center gap-2  rounded-lg">
             <FaHandHoldingUsd size={24} />
             <div className="text-gray-400 text-sm">Todays Rewards</div>
@@ -612,6 +640,7 @@ export default function ChartBox({ token }: { token: number }) {
               </span>
             </div>
           </div>
+
           <div className="relative max-w-80 w-full">
             {claimStakeCondition ? (
               <div className="text-center">
@@ -662,6 +691,12 @@ export default function ChartBox({ token }: { token: number }) {
             <div className="h-[50%]">
               <Bar data={barData} options={barOptions} />
             </div>
+          </div>
+          <div className="bg-black bg-opacity-35 p-4 flex flex-col items-center gap-1 flex-1 rounded-lg">
+            <div className="text-gray-400 text-sm">
+              Total Instant USDT Cashback - 5%
+            </div>
+            <div className="text-2xl">{totalRefIncome}</div>
           </div>
           <div className="flex items-center gap-4">
             <div className="bg-black bg-opacity-35 w-28 p-4 flex flex-col items-center gap-1 flex-1 rounded-lg">

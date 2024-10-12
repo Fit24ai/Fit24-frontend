@@ -244,3 +244,7 @@ export const getPaymentSuccess = async (txHash: string, chain: ChainEnum) => {
   })
   return res.data
 }
+export const getReferralIncome = async (address: AddressString) => {
+  const res = await http.get(`/staking/get-referral-income/${address}`)
+  return res.data
+}
