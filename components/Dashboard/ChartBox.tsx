@@ -54,6 +54,7 @@ import { BsSafeFill } from "react-icons/bs"
 import { FaHandHoldingUsd } from "react-icons/fa"
 import { Address } from "viem"
 import { StatusDialog } from "../shared/StatusDialog"
+import LineChart from "./LineChart"
 // import { useReloadContext } from "@/context/Reload"
 
 ChartJS.register(
@@ -596,7 +597,7 @@ export default function ChartBox({ token }: { token: number }) {
               </div>
             </div>
           </div>
-          <div className="h-60 w-full  bg-black flex justify-center items-center py-4 !px-6 bg-opacity-35 rounded-xl">
+          {/* <div className="h-60 w-full  bg-black flex justify-center items-center py-4 !px-6 bg-opacity-35 rounded-xl">
             <div className="flex flex-col gap-2 max-w-[650px] text-white w-full h-full">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
@@ -617,7 +618,8 @@ export default function ChartBox({ token }: { token: number }) {
                 <Line data={data} options={options} />
               </div>
             </div>
-          </div>
+          </div> */}
+          <LineChart />
 
           <div className="bg-white network-image-3 bg-opacity-10 max-w-80 w-full p-4 px-10 flex flex-col items-center gap-2  rounded-lg">
             <FaHandHoldingUsd size={24} />
