@@ -473,7 +473,9 @@ export default function RewardsContainer() {
                       value={level}
                       className={({ active }) =>
                         `cursor-pointer select-none p-2 ${
-                          active ? "bg-blue-500 text-white" : "text-gray-900 z-[200]"
+                          active
+                            ? "bg-blue-500 text-white"
+                            : "text-gray-900 z-[200]"
                         }`
                       }
                     >
@@ -568,8 +570,8 @@ export default function RewardsContainer() {
                     <div className="flex items-center justify-center ">
                       {" "}
                       {formattedStakeDuration(
-                        item.referralDetails.startTime,
-                        item.referralDetails.stakeDuration
+                        item.referreDetails.startTime,
+                        item.referreDetails.stakeDuration
                       )}
                       {/* {getDays(item.referralDetails.stakeDuration)} */}
                     </div>
