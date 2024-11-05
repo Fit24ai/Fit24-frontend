@@ -574,13 +574,13 @@ export default function ChartBox({ token }: { token: number }) {
           <div className="flex flex-col gap-2 w-full  2md:order-none order-1">
             <div>Network Statistics</div>
             <div className="flex gap-4 w-full  items-center overflow-x-auto hide-scrollbar">
-              <div className="flex flex-col items-center flex-1 min-w-36 rounded-lg gap-2  network-image-1  p-3 ">
+              {/* <div className="flex flex-col items-center flex-1 min-w-36 rounded-lg gap-2  network-image-1  p-3 ">
                 <IoMdPerson size={24} />
                 <div className="text-xl">
                   {totalNetworkMembers ? totalNetworkMembers : 0}
                 </div>
                 <div className="text-gray-300 text-xs">All Members</div>
-              </div>
+              </div> */}
               <div className="flex flex-col items-center flex-1 rounded-lg  network-image-2 gap-2  p-3 min-w-36">
                 <BsSafeFill size={24} />
                 <div className="text-xl">
