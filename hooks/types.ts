@@ -15,4 +15,6 @@ export interface WalletContextProps {
   setRegisterReferralPopup: React.Dispatch<React.SetStateAction<boolean>>
   isAlert: boolean
   setIsAlert: React.Dispatch<React.SetStateAction<boolean>>
+  blocked: boolean
+  setBlocked: React.Dispatch<React.SetStateAction<boolean>>
 }

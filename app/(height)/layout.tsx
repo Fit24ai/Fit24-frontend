@@ -1,11 +1,13 @@
 "use client"
 import { AlertDialog } from "@/components/shared/AlertDialog"
+import { BlockedDialog } from "@/components/shared/BlockedDialog"
 import { EmailDialog } from "@/components/shared/EmailDialog"
 import Footer from "@/components/shared/Footer"
 import { LoginDialog } from "@/components/shared/LoginDialog"
 import Navbar from "@/components/shared/Navbar/Navbar"
 import { ReferralDialog } from "@/components/shared/ReferralDialog"
 import Sidebar from "@/components/shared/Sidebar/Sidebar"
+import { useWallet } from "@/hooks/useWallet"
 // import { useParams } from "@/context/useParams"
 // import { useWallet } from "@/hooks/useWallet"
 import { useEffect, useState } from "react"
@@ -24,6 +26,8 @@ export default function RootLayout({
   // const { params } = useParams()
   // const { openWallet, disconnectWallet, isEmailPopup, setIsEmailPopup } =
   //   useWallet()
+  const [blockedOpen, setBlockedOpen] = useState<boolean>(false)
+  const { blocked, setBlocked } = useWallet()
   const [open, setOpen] = useState<boolean>(false)
   const { isConnected } = useAccount()
   useEffect(() => {
@@ -34,6 +38,7 @@ export default function RootLayout({
 
   return (
     <>
+      <BlockedDialog open={blocked} setOpen={setBlocked} />
       <Navbar />
       <div className={`min-h-screen h-full flex overflow-hidden`}>
         {open && (

@@ -1,25 +1,31 @@
-import { getAuthToken } from "@/libs/utils";
-import axios from "axios";
+import { getAuthToken } from "@/libs/utils"
+import axios from "axios"
 const http = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL,
-    headers: {
-        "Content-Type": "application/json",
-        
-    },
-    
-});
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+})
 
-export const loginUser = async (walletAddress: string, email?: string, number?: string) => {
-    const payload: any = { walletAddress };
+export const loginUser = async (
+  walletAddress: string,
+  email?: string,
+  number?: string
+) => {
+  const payload: any = { walletAddress }
 
-    if (email) {
-        payload.email = email;
-    }
+  if (email) {
+    payload.email = email
+  }
 
-    if (number) {
-        payload.number = Number(number);
-    }
+  if (number) {
+    payload.number = Number(number)
+  }
 
-    return (await http.post("/users/login", payload)).data;
-};
+  return (await http.post("/users/login", payload)).data
+}
 
+export const getUserBlockStatus = async (address: string) => {
+  const res = await http.get(`/users/block-status/${address}`)
+  return res.data
+}

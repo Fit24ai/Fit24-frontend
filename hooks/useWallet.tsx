@@ -8,7 +8,8 @@ import React, {
 } from "react"
 import { useAccount, useDisconnect } from "wagmi"
 import { useAppKit } from "@reown/appkit/react"
-import { loginUser } from "@/services/login"
+import { getUserBlockStatus, loginUser } from "@/services/login"
+
 // import { useSearchParams } from "next/navigation"
 import { WalletContextProps } from "./types"
 
@@ -16,6 +17,7 @@ const WalletContext = createContext<WalletContextProps | undefined>(undefined)
 
 export const WalletProvider = ({ children }: { children: ReactNode }) => {
   // const search = useSearchParams()
+  const [blocked, setBlocked] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
   const [isEmailPopup, setIsEmailPopup] = useState<boolean>(false)
   const { disconnect } = useDisconnect()
@@ -30,6 +32,12 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email?: string, number?: string) => {
     if (!address) return
     try {
+      const blockStatus = await getUserBlockStatus(address)
+      if (blockStatus === true) {
+        setBlocked(true)
+        return
+      }
+      setBlocked(false)
       const response = await loginUser(address, email, number)
       if (response) {
         if (response.email === false) {
@@ -100,6 +108,8 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
         setRegisterReferralPopup,
         isAlert,
         setIsAlert,
+        blocked,
+        setBlocked
       }}
     >
       {children}
