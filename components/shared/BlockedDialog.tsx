@@ -30,7 +30,7 @@ export function BlockedDialog({ open, setOpen }: any) {
       <DialogContent className="sm:max-w-md  outline-none border-none text-white bg-gray-800 shadow-lg">
         <div className="w-full flex flex-col items-center gap-6 p-6 rounded-lg  ">
           <div className="text-xl font-bold text-center text-white">
-            Unable to login! Please contact support team
+            Unable to Connect! Please contact support team
           </div>
           <button
             onClick={() => {
