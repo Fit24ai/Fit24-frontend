@@ -8,6 +8,11 @@ import { NavbarDrawer } from "./NavbarDrawer"
 
 const Navbar = () => {
   const pathname = usePathname()
+  console.log({
+    pathhh:
+      pathname.split("/")[1].charAt(0).toUpperCase() +
+      pathname.split("/")[1].slice(1),
+  })
   return (
     <nav className=" top-0 z-50 flex items-center justify-between  md:px-16 px-4 text-grey-700 h-20 2md:border-b border-gray-700 ">
       <div className="flex  items-end gap-32">
@@ -24,7 +29,11 @@ const Navbar = () => {
         </div>
         <div className="text-white font-semibold text-3xl xl:block hidden">
           {pathname.split("/")[1].charAt(0).toUpperCase() +
-            pathname.split("/")[1].slice(1)}
+            pathname.split("/")[1].slice(1) ===
+          "Rank-rewards"
+            ? "Rank & Rewards"
+            : pathname.split("/")[1].charAt(0).toUpperCase() +
+              pathname.split("/")[1].slice(1)}
         </div>
       </div>
 
