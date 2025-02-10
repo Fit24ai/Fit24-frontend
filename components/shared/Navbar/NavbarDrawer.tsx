@@ -51,7 +51,7 @@ export function NavbarDrawer() {
   }
 
   useEffect(() => {
-    console.log(pathname)
+    // console.log(pathname)
     setOpen(false)
   }, [pathname])
 
@@ -91,6 +91,11 @@ export function NavbarDrawer() {
       path: "/resources",
       icon: <IoDocumentText />,
     },
+    {
+      name: "Rank & Rewards",
+      path: "/rank-rewards",
+      icon: <AiFillGift />,
+    },
   ]
 
   const { disconnect } = useDisconnect()
@@ -111,7 +116,7 @@ export function NavbarDrawer() {
   }
 
   useEffect(() => {
-    console.log(address)
+    // console.log(address)
     setTimeout(() => {
       getTokens()
     }, 2000)
@@ -125,7 +130,7 @@ export function NavbarDrawer() {
   const getupline = async () => {
     try {
       const res = await getMyUpline()
-      console.log("upline", res)
+      // console.log("upline", res)
       if (typeof res === "string") setUpline(res)
     } catch (error) {
       console.log(error)

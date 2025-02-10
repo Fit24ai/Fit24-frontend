@@ -14,7 +14,8 @@
 }
 
 ::-webkit-scrollbar-track {
-  background-color: rgba(255, 255, 255, 0.1);
+  /* background-color: rgba(255, 255, 255, 0.1); */
+  background-color: #00120a;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -133,3 +134,45 @@
 #headlessui-portal-root {
   z-index: 100;
 }
+
+.barGradient {
+  background: linear-gradient(
+    to right,
+    #005fc6 0%,
+    /* Blue at 0% */ #00e1ff 25%,
+    /* Light blue at 25% */ #75ff82 64%,
+    /* Light green at 64% */ #00b211 99% /* Dark green at 99% */
+  );
+}
+
+.scale {
+  /* --tw-scale-x: 1.05; */
+  --tw-scale-y: 1.05;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.rankCardBg {
+  background: linear-gradient(
+    to top right,
+    rgba(0, 178, 17, 0.4) 20%,
+    rgba(117, 255, 130, 0.4),
+    rgba(0, 225, 255, 0.4),
+    rgba(0, 95, 198, 0.4) 
+  );
+}
+
+/* .rankCardBg {
+  background: linear-gradient(
+    to top right,
+    rgba(0, 178, 17, 0.5) 0%,
+    rgba(0, 178, 17, 0.5) 30%,
+    rgba(117, 255, 130, 0.5) 30%,
+    rgba(117, 255, 130, 0.5) 50%,
+    rgba(0, 225, 255, 0.5) 50%,
+    rgba(0, 225, 255, 0.5) 70%,
+    rgba(0, 95, 198, 0.5) 70%,
+    rgba(0, 95, 198, 0.5) 100%
+  );
+} */

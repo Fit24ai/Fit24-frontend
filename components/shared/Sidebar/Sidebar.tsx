@@ -34,7 +34,7 @@ export default function Sidebar() {
       icon: <HiSwitchVertical />,
     },
     {
-      name: "Rewards",
+      name: "Staking Rewards",
       path: "/rewards",
       icon: <AiFillGift />,
     },
@@ -58,6 +58,11 @@ export default function Sidebar() {
       path: "/resources",
       icon: <IoDocumentText />,
     },
+    {
+      name: "Rank & Rewards",
+      path: "/rank-rewards",
+      icon: <AiFillGift />,
+    },
   ]
 
   const [isAlertVisible, setIsAlertVisible] = useState(false)
@@ -73,7 +78,7 @@ export default function Sidebar() {
   const { isLoggedIn } = useWallet()
 
   const pathname = usePathname()
-  console.log(pathname)
+  // console.log(pathname)
   const { address } = useAccount()
   const { logout } = useWallet()
   const getTokens = async () => {
@@ -167,7 +172,7 @@ export default function Sidebar() {
           {smallAddress(upline)}
         </div>
       )}
-      <div className="flex flex-col gap-6 px-5 mt-6">
+      <div className="flex flex-col gap-6 px-3 mt-6">
         {items.map((item, index) => (
           <Link
             href={item.path}
