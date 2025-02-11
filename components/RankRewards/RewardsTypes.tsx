@@ -16,8 +16,15 @@ SwiperCore.use([Navigation])
 export default function RewardsTypes() {
   const rewardTypes = [
     {
+      title: "Rank Calculator",
+      bgImage: "/rankrewards/rankBg2.png",
+      image: "/rankrewards/rank.png",
+      color: "#FFAD00",
+      path: "/rank-rewards/rank",
+    },
+    {
       title: "General Rewards",
-      bgImage: "/rankrewards/generalBg.png",
+      bgImage: "/rankrewards/generalbg.png",
       image: "/rankrewards/general.png",
       color: "#FFC200",
       path: "/rank-rewards/general",
@@ -28,13 +35,6 @@ export default function RewardsTypes() {
       image: "/rankrewards/mystery.png",
       color: "#00FF55",
       path: "/rank-rewards/mystery",
-    },
-    {
-      title: "Rank Rewards",
-      bgImage: "/rankrewards/rankBg2.png",
-      image: "/rankrewards/rank.png",
-      color: "#FFAD00",
-      path: "/rank-rewards/rank",
     },
   ]
 

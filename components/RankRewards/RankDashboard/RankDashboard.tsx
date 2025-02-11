@@ -118,7 +118,7 @@ export default function RankDashboard() {
                   ).toLocaleString()}
                 </span>
               </div>
-              {/* <div>
+              <div>
                 Your Total Qualified Volume :{" "}
                 <span className="md:text-xl text-base text-white">
                   $
@@ -126,23 +126,19 @@ export default function RankDashboard() {
                     rankData.currentRank.qualifierBusinessUsd
                   ).toLocaleString()}
                 </span>
-              </div> */}
-              <div>
-                Your Total Qualified Volume:{" "}
+              </div>
+              {rankData.currentRank.qualifierBusinessUsd > 0 && (
                 <a
                   href="#"
                   onClick={(e) => {
                     e.preventDefault()
                     setShowPopup(true)
                   }}
-                  className="md:text-xl text-base text-blue-400 underline cursor-pointer"
+                  className=" text-blue-400 underline cursor-pointer"
                 >
-                  $
-                  {Number(
-                    rankData.currentRank.qualifierBusinessUsd
-                  ).toLocaleString()}
+                  Show Breakdown
                 </a>
-              </div>
+              )}
             </div>
           </div>
 
