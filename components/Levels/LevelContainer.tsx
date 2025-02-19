@@ -226,6 +226,7 @@ export default function LevelContainer() {
 
   useEffect(() => {
     console.log("continue")
+    console.log({ selectedLevel })
     if (!isLoggedIn) return
     getDirectMembersCount()
   }, [address, isLoggedIn, level, selectedLevel])
@@ -299,10 +300,13 @@ export default function LevelContainer() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <div className="flex flex-col gap-2 w-full">
-            <div className="w-full px-6 flex justify-between text-gray-400">
-              <div>Address</div>
-              <div>Stake Amount</div>
+          <div className="flex flex-col gap-2 w-full sm:text-base text-sm">
+            <div className="w-full px-4 flex justify-between text-gray-400">
+              <div className="flex-1 flex justify-start">Address</div>
+              <div className={`flex-1 flex ${selectedLevel === 1 ? "justify-center" : "justify-end"}`}>Stake Amount</div>
+              {selectedLevel === 1 && (
+                <div className="flex-1 flex justify-end">Team Business</div>
+              )}
             </div>
             <div className="w-full max-h-[500px] overflow-y-scroll flex flex-col gap-2">
               {filteredStakedData.map((item: any, index: any) => {
@@ -311,8 +315,17 @@ export default function LevelContainer() {
                     className="bg-gray-600 bg-opacity-30 flex justify-between px-4 py-2"
                     key={index}
                   >
-                    <div>{smallAddress(item.address)}</div>
-                    <div>{item.tokens} Fit24</div>
+                    <div className="flex-1 flex justify-start">
+                      {smallAddress(item.address)}
+                    </div>
+                    <div className={`flex-1 flex ${selectedLevel === 1 ? "justify-center" : "justify-end"} whitespace-nowrap`}>
+                      {item.tokens} Fit24
+                    </div>
+                    {selectedLevel === 1 && (
+                      <div className="flex-1 flex justify-end whitespace-nowrap">
+                        {item.business} Fit24
+                      </div>
+                    )}
                   </div>
                 )
               })}
