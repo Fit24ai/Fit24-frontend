@@ -239,6 +239,7 @@ export const registerReferral = async (
 }
 
 export const getPaymentSuccess = async (txHash: string, chain: ChainEnum) => {
+  console.log({ chain, txHash })
   const res = await http.post(`/staking/verify-payment-transaction/${txHash}`, {
     chain,
   })

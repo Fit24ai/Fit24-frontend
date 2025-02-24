@@ -120,6 +120,11 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
     ],
   })
 
+  useEffect(() => {
+    if (!readResponse) return
+    console.log(readResponse)
+  }, [readResponse])
+
   const { data: approvalData, error: approvalError } =
     useWaitForTransactionReceipt({
       hash: approvalHash,
@@ -153,7 +158,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
 
   const isValid = () => {
     if (!usdAmount) return false
-    console.log(readResponse)
+    // console.log(readResponse)
     if (!readResponse) return false
     if (readResponse[0].error) return false
     if (
@@ -239,7 +244,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
 
   const handleFirstInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value)
-    console.log("fit24", value)
+    // console.log("fit24", value)
 
     if (select === "A" && value < 2500) {
       setFormError("Minimum stake amount is 2,500")
@@ -260,7 +265,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
 
   const handleSecondInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value)
-    console.log("usdt", value)
+    // console.log("usdt", value)
     if (value > 1000000) return
     setUsdAmount(value ? value : undefined)
 
@@ -297,15 +302,10 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
   const [upline, setUpline] = useState<string | undefined>()
 
   const buyToken = async (isApproved?: boolean) => {
-    // if (chain?.id !== vestingChainId)
+    // if (chain?.id === vestingChainId)
     //   return switchChain({
-    //     chainId: vestingChainId,
+    //     chainId: 56,
     //   })
-
-    if (chain?.id === vestingChainId)
-      return switchChain({
-        chainId: 56,
-      })
     if (!isValid()) return
     if (!isApproved && !isAllowance()) {
       return approveAllowance()
@@ -548,7 +548,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
                     >
                       100
                     </span>
-                    <span className="sm:text-sm text-xxs">USDT</span>
+                    <span className="sm:text-sm text-xxs">{chain?.id ? chain.id === vestingChainId ? "BUSD" : "USDT" : "USDT"}</span>
                   </div>
                   <div className="sm:text-sm text-xxs flex items-center gap-1">
                     worth of
@@ -640,7 +640,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
                     >
                       200
                     </span>
-                    <span className="sm:text-sm text-xxs">USDT</span>
+                    <span className="sm:text-sm text-xxs">{chain?.id ? chain.id === vestingChainId ? "BUSD" : "USDT" : "USDT"}</span>
                   </div>
                   <div
                     className={`${
@@ -732,7 +732,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
                     >
                       400
                     </span>
-                    <span className="sm:text-sm text-xxs">USDT</span>
+                    <span className="sm:text-sm text-xxs">{chain?.id ? chain.id === vestingChainId ? "BUSD" : "USDT" : "USDT"}</span>
                   </div>
                   <div className="sm:text-sm text-xxs flex items-center gap-1">
                     worth of
@@ -769,7 +769,7 @@ export default function Staking({ refetchTX, setRefetchTX, getTokens }: any) {
             <div>Stake Amount</div>
             <div className="flex sm:gap-4 gap-2 items-center">
               <div className="font-semibold w-12 sm:text-base text-sm">
-                USDT
+                {chain?.id ? chain.id === vestingChainId ? "BUSD" : "USDT" : "USDT"}
               </div>
 
               <input

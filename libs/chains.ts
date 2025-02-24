@@ -34,6 +34,8 @@ export const ethereumPaymentAddress: AddressString =
   "0x8B7547c84D435e96812b54B7d2AaEA48D4c49EDB"
 export const binancePaymentAddress: AddressString =
   "0x72e56adb351Bc1DA1A37B2C5bB6cA40fBB373322"
+export const blokfitPaymentContractAddress =
+  "0xf914FAdDe64E2e965f62b0Abb44708D2e9234548"
 
 // ! NOT USED
 export const vestingAddress: AddressString =
@@ -67,6 +69,8 @@ export const binanceUsdtTokenAddress: AddressString =
   "0x55d398326f99059fF775485246999027B3197955"
 export const ethereumUsdtTokenAddress: AddressString =
   "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+export const blokfitBusdTokenAddress: AddressString =
+  "0x8C2760d7843EB6ebF5537b9dC95dFeeA8616550f"
 
 // * DEV
 // export const binanceUsdtTokenAddress: AddressString =
@@ -207,7 +211,7 @@ export function getPaymentContractAddress(chainId: number) {
     case BINANCE.id:
       return binancePaymentAddress
     case blockfit.id:
-      return undefined
+      return blokfitPaymentContractAddress
     default:
       throw new Error("Invalid chainId")
   }
@@ -220,6 +224,8 @@ export function getUsdtTokenAddress(chainId: number) {
       return binanceUsdtTokenAddress
     // case blockfit.id:
     //   return undefined
+    case blockfit.id:
+      return blokfitBusdTokenAddress
     default:
       return ethereumUsdtTokenAddress
   }
@@ -251,7 +257,7 @@ export function getChainEnum(chainId: number) {
     case BINANCE.id:
       return ChainEnum.BINANCE
     case blockfit.id:
-      return ChainEnum.ETHEREUM
+      return ChainEnum.BLOCKFIT
     default:
       return ChainEnum.ETHEREUM
   }
