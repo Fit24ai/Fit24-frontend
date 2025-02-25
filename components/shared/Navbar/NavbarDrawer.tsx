@@ -91,11 +91,11 @@ export function NavbarDrawer() {
       path: "/resources",
       icon: <IoDocumentText />,
     },
-    {
-      name: "Rank & Rewards",
-      path: "/rank-rewards",
-      icon: <AiFillGift />,
-    },
+    // {
+    //   name: "Rank & Rewards",
+    //   path: "/rank-rewards",
+    //   icon: <AiFillGift />,
+    // },
   ]
 
   const { disconnect } = useDisconnect()

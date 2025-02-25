@@ -4,7 +4,8 @@ import PageWrapper from "@/components/shared/PageWrapper"
 export default function Page() {
   return (
     <PageWrapper>
-      <RankRewardsPage />
+      {/* <RankRewardsPage /> */}
+      <div></div>
     </PageWrapper>
   )
 }
