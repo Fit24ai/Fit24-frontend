@@ -7,8 +7,8 @@ export default function Page() {
   return (
     <PageWrapper>
       {/* <RankPage /> */}
-      {/* <RankDashboard /> */}
-      <div></div>
+      <RankDashboard />
+      {/* <div></div> */}
     </PageWrapper>
   )
 }

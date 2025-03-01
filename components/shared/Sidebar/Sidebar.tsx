@@ -58,11 +58,11 @@ export default function Sidebar() {
       path: "/resources",
       icon: <IoDocumentText />,
     },
-    // {
-    //   name: "Rank & Rewards",
-    //   path: "/rank-rewards",
-    //   icon: <AiFillGift />,
-    // },
+    {
+      name: "Rank & Rewards",
+      path: "/rank-rewards",
+      icon: <AiFillGift />,
+    },
   ]
 
   const [isAlertVisible, setIsAlertVisible] = useState(false)

@@ -250,3 +250,8 @@ export const getReferralIncome = async (address: AddressString) => {
   const res = await http.get(`/staking/get-referral-income/${address}`)
   return res.data
 }
+
+export const getFit24Price = async () => {
+  const res = await http.get(`/staking/fit24-token-price`)
+  return res.data
+}

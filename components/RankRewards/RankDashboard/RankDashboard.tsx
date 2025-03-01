@@ -4,6 +4,8 @@ import { useState, useEffect } from "react"
 import RankCard2 from "./RankCard2"
 import { CgSpinner } from "react-icons/cg"
 import { BreakdwonPopup } from "@/components/shared/BreakdownPopup"
+import { useWallet } from "@/hooks/useWallet"
+import { useAccount } from "wagmi"
 
 interface Rank {
   rank: {
@@ -28,16 +30,26 @@ export default function RankDashboard() {
 
   const [showPopup, setShowPopup] = useState(false)
   const [breakdown, setBreakdown] = useState<any>()
+  const { isLoggedIn } = useWallet()
+  const { address } = useAccount()
 
+  async function fetchRanks() {
+    setRankData(null)
+    const response = await getAllRanksAndUserEligibilities()
+    console.log({ response })
+    setRankData(response)
+    setBreakdown(response.breakdown)
+  }
+  // useEffect(() => {
+  //   if (!isLoggedIn) return
+  //   fetchRanks()
+  // }, [address, isLoggedIn])
   useEffect(() => {
-    async function fetchRanks() {
-      const response = await getAllRanksAndUserEligibilities()
-      console.log({ response })
-      setRankData(response)
-      setBreakdown(response.breakdown)
-    }
-    fetchRanks()
-  }, [])
+    setTimeout(() => {
+      if (!isLoggedIn) return
+      fetchRanks()
+    }, 2000)
+  }, [address])
 
   return (
     <div className="h-full md:max-h-[90vh] max-h-[87vh] overflow-auto hide-scrollbar text-white md:p-6 p-3">
@@ -139,6 +151,11 @@ export default function RankDashboard() {
                   Show Breakdown
                 </a>
               )}
+              <div className="md:text-right text-left text-xs md:text-sm">
+                (If you find any discrepancy in numbers, please check back after
+                30 minutes as blockchain updates might take some processing
+                time)
+              </div>
             </div>
           </div>
 

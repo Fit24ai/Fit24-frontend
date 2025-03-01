@@ -303,7 +303,13 @@ export default function LevelContainer() {
           <div className="flex flex-col gap-2 w-full sm:text-base text-sm">
             <div className="w-full px-4 flex justify-between text-gray-400">
               <div className="flex-1 flex justify-start">Address</div>
-              <div className={`flex-1 flex ${selectedLevel === 1 ? "justify-center" : "justify-end"}`}>Stake Amount</div>
+              <div
+                className={`flex-1 flex ${
+                  selectedLevel === 1 ? "justify-center" : "justify-end"
+                }`}
+              >
+                Stake Amount
+              </div>
               {selectedLevel === 1 && (
                 <div className="flex-1 flex justify-end">Team Business</div>
               )}
@@ -318,7 +324,11 @@ export default function LevelContainer() {
                     <div className="flex-1 flex justify-start">
                       {smallAddress(item.address)}
                     </div>
-                    <div className={`flex-1 flex ${selectedLevel === 1 ? "justify-center" : "justify-end"} whitespace-nowrap`}>
+                    <div
+                      className={`flex-1 flex ${
+                        selectedLevel === 1 ? "justify-center" : "justify-end"
+                      } whitespace-nowrap`}
+                    >
                       {item.tokens} Fit24
                     </div>
                     {selectedLevel === 1 && (

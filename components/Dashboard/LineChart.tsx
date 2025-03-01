@@ -1,5 +1,6 @@
 "use client"
 
+import { getFit24Price } from "@/services/stakingService"
 import {
   Chart as ChartJS,
   LineElement,
@@ -32,49 +33,92 @@ export default function LineChart() {
   >(null)
 
   // Fetch data from Coinstore API
+  // const fetchPriceData = async () => {
+  //   try {
+  //     // const response = await fetch(
+  //     //   "https://api.coinstore.com/api/v1/ticker/price"
+  //     // )
+  //     const response = await getFit24Price()
+  //     console.log({ response })
+
+  //     const result = response
+
+  //     // Access the 'data' array from the response
+  //     const fit24Data = result.data.find(
+  //       (item: any) => item.symbol === "FIT24USDT"
+  //     )
+  //     console.log(fit24Data)
+
+  //     if (fit24Data) {
+  //       const price = parseFloat(fit24Data.price)
+  //       const INITIAL_PRICE = 0.04
+
+  //       setPriceData((prevPrices) => {
+  //         const newPrices = [...prevPrices, price].slice(-5)
+
+  //         if (price && INITIAL_PRICE) {
+  //           const changePercentage =
+  //             ((price - INITIAL_PRICE) / INITIAL_PRICE) * 100
+  //           setPriceChangePercentage(changePercentage)
+  //         }
+
+  //         return newPrices
+  //       })
+
+  //       // setPriceData((prevPrices) => {
+  //       //   const newPrices = [...prevPrices, price].slice(-5)
+  //       //   if (newPrices.length > 1) {
+  //       //     const lastPrice = newPrices[newPrices.length - 2]
+  //       //     const changePercentage = ((price - lastPrice) / lastPrice) * 100
+  //       //     setPriceChangePercentage(changePercentage)
+  //       //   }
+  //       //   return newPrices
+  //       // })
+
+  //       setLatestPrice(price)
+  //     } else {
+  //       console.log("FIT24USDT not found")
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching price data:", error)
+  //   }
+  // }
   const fetchPriceData = async () => {
     try {
-      const response = await fetch(
-        "https://api.coinstore.com/api/v1/ticker/price"
-      )
-      const result = await response.json()
+      // const response = await fetch(
+      //   "https://api.coinstore.com/api/v1/ticker/price"
+      // )
+      const response = await getFit24Price()
+      console.log({ response })
 
       // Access the 'data' array from the response
-      const fit24Data = result.data.find(
-        (item: any) => item.symbol === "FIT24USDT"
-      )
-      console.log(fit24Data)
 
-      if (fit24Data) {
-        const price = parseFloat(fit24Data.price)
-        const INITIAL_PRICE = 0.04
+      const price = parseFloat(response.p)
+      const INITIAL_PRICE = 0.04
 
-        setPriceData((prevPrices) => {
-          const newPrices = [...prevPrices, price].slice(-5)
+      setPriceData((prevPrices) => {
+        const newPrices = [...prevPrices, price].slice(-5)
 
-          if (price && INITIAL_PRICE) {
-            const changePercentage =
-              ((price - INITIAL_PRICE) / INITIAL_PRICE) * 100
-            setPriceChangePercentage(changePercentage)
-          }
+        if (price && INITIAL_PRICE) {
+          const changePercentage =
+            ((price - INITIAL_PRICE) / INITIAL_PRICE) * 100
+          setPriceChangePercentage(changePercentage)
+        }
 
-          return newPrices
-        })
+        return newPrices
+      })
 
-        // setPriceData((prevPrices) => {
-        //   const newPrices = [...prevPrices, price].slice(-5)
-        //   if (newPrices.length > 1) {
-        //     const lastPrice = newPrices[newPrices.length - 2]
-        //     const changePercentage = ((price - lastPrice) / lastPrice) * 100
-        //     setPriceChangePercentage(changePercentage)
-        //   }
-        //   return newPrices
-        // })
+      // setPriceData((prevPrices) => {
+      //   const newPrices = [...prevPrices, price].slice(-5)
+      //   if (newPrices.length > 1) {
+      //     const lastPrice = newPrices[newPrices.length - 2]
+      //     const changePercentage = ((price - lastPrice) / lastPrice) * 100
+      //     setPriceChangePercentage(changePercentage)
+      //   }
+      //   return newPrices
+      // })
 
-        setLatestPrice(price)
-      } else {
-        console.log("FIT24USDT not found")
-      }
+      setLatestPrice(price)
     } catch (error) {
       console.error("Error fetching price data:", error)
     }

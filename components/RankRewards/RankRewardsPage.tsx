@@ -5,8 +5,8 @@ import RewardsTypes from "./RewardsTypes"
 export default function RankRewardsPage() {
   return (
     <div className="text-white w-full h-full 2md:py-8 py-4 2md:px-10 px-3  flex flex-col gap-6 items-center">
-      <div className="flex flex-col items-center gap-6 ">
-        <div className="flex md:flex-row flex-col gap-[10%] justify-between  rounded-xl md:px-10 px-4 pb-10 md:pb-0 relative items-center">
+      <div className="flex flex-col items-center gap-6 w-full">
+        <div className="flex md:flex-row flex-col gap-[10%] justify-between  rounded-xl md:px-10 px-4 pb-10 md:pb-0 relative items-center w-full">
           <div className="absolute top-0 left-0 w-full h-full">
             <Image
               src={"/rankrewards/contentBg.png"}
@@ -24,12 +24,10 @@ export default function RankRewardsPage() {
             />
           </div>
           <div className="md:w-[60%] flex flex-col gap-2  z-10  md:my-10 order-1">
-            <div className="font-medium md:text-xl text-sm">Heading Title</div>
+            <div className="font-medium md:text-xl text-sm">Main content :</div>
             <div className="text-gray-400 md:text-base text-xs">
-              Lorem ipsum dolor sit amet consectetur. Id amet mauris lectus
-              ullamcorper dapibus eget vulputate faucibus. Amet quis quis amet
-              lorem metus tincidunt quam. Id feugiat diam sit nibh cursus
-              suscipit cras faucibus. Amet dolor egestas condimentum id.
+              This section covers details of User&apos;s Rank & Rewards, Ongoing
+              General Rewards and Mystery Box
             </div>
           </div>
           <div className="md:h-[110%] w-[70%] md:w-auto  z-10 flex justify-end md:mt-[-4%] md:absolute md:right-10 md:bottom-0">
