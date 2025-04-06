@@ -554,7 +554,7 @@ export default function ChartBox({ token }: { token: number }) {
     if (!isLoggedIn) return
     getLevel()
   }, [address, isLoggedIn])
-  const [syncOpen, setSyncOpen] = useState(true)
+  const [syncOpen, setSyncOpen] = useState(false)
   const syncPopup = async () => {
     setSyncOpen(true)
   }
