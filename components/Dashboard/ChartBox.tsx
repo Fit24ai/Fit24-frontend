@@ -55,6 +55,7 @@ import { FaHandHoldingUsd } from "react-icons/fa"
 import { Address } from "viem"
 import { StatusDialog } from "../shared/StatusDialog"
 import LineChart from "./LineChart"
+import { SyncPopup } from "../shared/syncPopup"
 // import { useReloadContext } from "@/context/Reload"
 
 ChartJS.register(
@@ -553,6 +554,10 @@ export default function ChartBox({ token }: { token: number }) {
     if (!isLoggedIn) return
     getLevel()
   }, [address, isLoggedIn])
+  const [syncOpen, setSyncOpen] = useState(true)
+  const syncPopup = async () => {
+    setSyncOpen(true)
+  }
 
   return (
     <>
@@ -563,6 +568,7 @@ export default function ChartBox({ token }: { token: number }) {
         message={dialogInfo.message}
         title={dialogInfo.title}
       />
+      <SyncPopup open={syncOpen} setOpen={setSyncOpen} />
       <div className="w-full flex 2md:flex-row flex-col items-center 2md:items-start gap-6 2md:gap-0 justify-between">
         <div className="2md:max-w-[57%] max-w-[650px] w-full flex flex-col gap-6 items-center">
           {/* <div className="flex flex-col items-center gap-2 ">
@@ -650,7 +656,8 @@ export default function ChartBox({ token }: { token: number }) {
               </div>
             ) : (
               <button
-                onClick={claimReward}
+                // onClick={claimReward}
+                onClick={syncPopup}
                 onMouseOver={() => {
                   if (claimStakeCondition) {
                     setShowPopup(true)
