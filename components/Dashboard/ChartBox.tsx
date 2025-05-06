@@ -556,13 +556,14 @@ export default function ChartBox({ token }: { token: number }) {
   }, [address, isLoggedIn])
   const [syncOpen, setSyncOpen] = useState(false)
   const syncPopup = async () => {
-    if (
-      address === "0x0633931dD8A9c97327d0A4DA6f5c8fFd7Dd6c45F" ||
-      address === "0x62997A47AF6A87bEaB3199F1705110Fa3f377840" ||
-      address === "0xC35468b7427102c94e387d0798Dda9f295A3b868"
-    )
-      return claimReward()
-    else setSyncOpen(true)
+    // if (
+    //   address === "0x0633931dD8A9c97327d0A4DA6f5c8fFd7Dd6c45F" ||
+    //   address === "0x62997A47AF6A87bEaB3199F1705110Fa3f377840" ||
+    //   address === "0xC35468b7427102c94e387d0798Dda9f295A3b868"
+    // )
+    //   return claimReward()
+    // else setSyncOpen(true)
+    setSyncOpen(true)
   }
 
   return (
