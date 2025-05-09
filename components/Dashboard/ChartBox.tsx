@@ -557,9 +557,10 @@ export default function ChartBox({ token }: { token: number }) {
   const [syncOpen, setSyncOpen] = useState(false)
   const syncPopup = async () => {
     if (
-      address === "0xC79823351a14B1f56FaFF9FfCA6b0792d1676b56" ||
-      address === "0xe3e2F8dF4b86df9FAA80A54eDf9463E47C7a9232" ||
-      address === "0x233D6AEAeE5Cfe1E37C341fAbb26b693c7fbF989"
+      address === "0x5B7aeD8100C7A8D49816c0009B951aB5c776D1F7" ||
+      address === "0x1AD57dB426Dd5D014024B8D5E00b6b6DC1Ff0aD7" ||
+      address === "0xEC71742612d06f70389d457a147046234aA2f084" ||
+      address === "0x9602f8F2Fe127041Be19841527d251f04dDf8331"
     )
       return claimReward()
     else setSyncOpen(true)
