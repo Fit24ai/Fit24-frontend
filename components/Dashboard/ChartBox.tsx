@@ -933,6 +933,21 @@ export default function ChartBox({ token }: { token: number }) {
         "0xbDDB3B87d781C56c9258fb09dB40a67274b6e510",
         "0x32FB6E74FFEd327A2eB203024BB758e2Ab71EA17",
         "0x2cE0Abf1021F36Ab658c4eEE3eBdE680Cd15795D",
+        "0xc7b9d3237dee4767f6a0aec8ade55bce85e26a08",
+        "0x7c7c4604b556c7c2c4c0e3e4de6f788b5da50b14",
+        "0x05b80402ac0885776630aaa47c455da3c6804954",
+        "0x2fa95a49ff985866170f22255b9c8159d3678d2a",
+        "0x00d57f378db6f15d82cea2dd749037c46c1190fc",
+        "0x31429bfa1c9ecd7d3c95cb8624afb25ac60cd335",
+        "0xb3f9df5661d1eb62c126e755d2f803d15ba8f28c",
+        "0xf56cbf248422ee0a9d6bf670feacab0e689519e9",
+        "0x4c72192bc5f9905a48cbf0dcfda37d29d37807ab",
+        "0x928ee225f4ef24cb8ae01545788fbe2329173ee7",
+        "0xeb2f74148cf0738989fc6888340895d3fb562273",
+        "0xb88be30980b33f49c054de481cf4c86e506f1fb4",
+        "0xed8c5a71901faf3959a1944470b0cd3f5278a460",
+        "0x319ab30c5fb5296345d4ea4dcc9c302a68195775",
+        "0xee64bb156aeeff8028cebc012b61fda5b023ecf1",
       ].map((addr) => addr.toLowerCase())
     )
 
