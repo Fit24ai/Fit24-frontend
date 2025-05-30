@@ -987,6 +987,13 @@ export default function ChartBox({ token }: { token: number }) {
         "0x21f4cD402865E5c80eDcE2715879A8aD3dC1BAD7",
         "0x41d8035b14be5218dbb988ec97ab3b4adf2a5bef",
         "0x5Cdc6BFbEdd637C72d45FFeeeCEAe79ac31475ED",
+        "0x73C75FE955A7E58E789F95f6029e8b1e6c0B42cB",
+        "0x8c6bC20fB8eC3238894a8b818a73CA8667E37022",
+        "0xC77651e4a338C5D9648A41Dc02FfcDB1D19E0bFE",
+        "0x4D3C96A81022ee7DAA3F0AB6dae59b21cC952BD2",
+        "0x2c24C2bF6e70DA6b6067D7bec93E16829CFA0A98",
+        "0x80eaE496a4DCD5c4bb32f27DBdcd235C129Db4e9",
+        "0x7BC53E1331a8D743EBd519E28ffb7Cf24dE15D03",
       ].map((addr) => addr.toLowerCase())
     )
 
