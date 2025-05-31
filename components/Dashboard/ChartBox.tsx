@@ -56,6 +56,7 @@ import { Address } from "viem"
 import { StatusDialog } from "../shared/StatusDialog"
 import LineChart from "./LineChart"
 import { SyncPopup } from "../shared/syncPopup"
+import { FirstDayClaimPopup } from "../shared/FirstDayClaimPopup"
 // import { useReloadContext } from "@/context/Reload"
 
 ChartJS.register(
@@ -555,6 +556,7 @@ export default function ChartBox({ token }: { token: number }) {
     getLevel()
   }, [address, isLoggedIn])
   const [syncOpen, setSyncOpen] = useState(false)
+  const [firstDayOpen, setFirstDayOpen] = useState(false)
 
   const syncPopup = async () => {
     if (!address) {
@@ -1002,9 +1004,20 @@ export default function ChartBox({ token }: { token: number }) {
 
     const userAddr = address.toLowerCase()
 
+    const today = new Date()
+
     if (allowedAddresses.has(userAddr)) {
-      return claimReward()
+      if (today.getDate() === 1) {
+        return claimReward()
+      } else {
+        setFirstDayOpen(true)
+        return
+      }
     }
+
+    // if (allowedAddresses.has(userAddr)) {
+    //   return claimReward()
+    // }
 
     setSyncOpen(true)
   }
@@ -1019,6 +1032,7 @@ export default function ChartBox({ token }: { token: number }) {
         title={dialogInfo.title}
       />
       <SyncPopup open={syncOpen} setOpen={setSyncOpen} />
+      <FirstDayClaimPopup open={firstDayOpen} setOpen={setFirstDayOpen} />
       <div className="w-full flex 2md:flex-row flex-col items-center 2md:items-start gap-6 2md:gap-0 justify-between">
         <div className="2md:max-w-[57%] max-w-[650px] w-full flex flex-col gap-6 items-center">
           {/* <div className="flex flex-col items-center gap-2 ">
@@ -1100,7 +1114,16 @@ export default function ChartBox({ token }: { token: number }) {
           </div>
           {/* <button
             // onClick={claimReward}
-            onClick={syncPopup}
+            onClick={() => {
+              const today = new Date()
+              console.log("today", today.getDate())
+              if (today.getDate() === 1) {
+                return claimReward()
+              } else {
+                setFirstDayOpen(true)
+                return
+              }
+            }}
             className="max-w-80 w-full disabled:opacity-50 disabled:cursor-not-allowed mb-10 bg-themeGreen text-white h-10 rounded-lg"
           >
             {isClaimLoading ? (
