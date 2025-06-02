@@ -1022,6 +1022,12 @@ export default function ChartBox({ token }: { token: number }) {
     setSyncOpen(true)
   }
 
+  const today = new Date()
+  const nextMonthDate = new Date(today.getFullYear(), today.getMonth() + 1, 1)
+  const nextMonthName = nextMonthDate.toLocaleString("default", {
+    month: "long",
+  })
+
   return (
     <>
       <StatusDialog
@@ -1138,7 +1144,8 @@ export default function ChartBox({ token }: { token: number }) {
           <div className="relative max-w-80 w-full">
             {claimStakeCondition ? (
               <div className="text-center">
-                Available to claim after 24 Hours
+                {/* Available to claim after 24 Hours */}
+                Available to claim on 1st {nextMonthName}
               </div>
             ) : (
               <button
