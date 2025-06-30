@@ -39,11 +39,11 @@ export function FirstDayClaimPopup({
           />
           <div className="relative z-20 flex flex-col items-start justify-start text-left md:gap-2">
             <span className="font-semibold md:text-lg">
-              Claim Available on 1st {nextMonthName}
+              Claim Available on 2nd {nextMonthName}
             </span>
             <div className="text-gray-400 font-medium md:text-base text-sm leading-tight">
               Your rewards accumulate daily. You can claim your monthly reward
-              on 1st {nextMonthName}. Thank you!
+              on 2nd {nextMonthName}. Thank you!
             </div>
           </div>
         </div>
