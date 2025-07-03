@@ -1012,7 +1012,7 @@ export default function ChartBox({ token }: { token: number }) {
     const today = new Date()
 
     if (allowedAddresses.has(userAddr)) {
-      if (today.getDate() === 2) {
+      if (today.getDate() === 4) {
         return claimReward()
       } else {
         setFirstDayOpen(true)
@@ -1028,8 +1028,16 @@ export default function ChartBox({ token }: { token: number }) {
   }
 
   const today = new Date()
-  const nextMonthDate = new Date(today.getFullYear(), today.getMonth() + 1, 1)
-  const nextMonthName = nextMonthDate.toLocaleString("default", {
+  const isBeforeFourth = today.getDate() < 4
+
+  // Set claim date to 4th of current month if before 4th, otherwise 4th of next month
+  const claimDate = new Date(
+    today.getFullYear(),
+    today.getMonth() + (isBeforeFourth ? 0 : 1),
+    4
+  )
+
+  const nextMonthName = claimDate.toLocaleString("default", {
     month: "long",
   })
 
@@ -1150,7 +1158,7 @@ export default function ChartBox({ token }: { token: number }) {
             {claimStakeCondition ? (
               <div className="text-center">
                 {/* Available to claim after 24 Hours */}
-                Available to claim on 2nd {nextMonthName}
+                Available to claim on 4th {nextMonthName}
               </div>
             ) : (
               <button
