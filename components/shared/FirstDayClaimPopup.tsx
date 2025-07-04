@@ -22,13 +22,13 @@ export function FirstDayClaimPopup({
   setOpen: Dispatch<boolean>
 }) {
   const today = new Date()
-  const isBeforeFourth = today.getDate() < 4
+  const isBeforeFourth = today.getDate() < 5
 
   // Set claim date to 4th of current month if before 4th, otherwise 4th of next month
   const claimDate = new Date(
     today.getFullYear(),
     today.getMonth() + (isBeforeFourth ? 0 : 1),
-    4
+    5
   )
 
   const nextMonthName = claimDate.toLocaleString("default", {
@@ -51,7 +51,7 @@ export function FirstDayClaimPopup({
             </span>
             <div className="text-gray-400 font-medium md:text-base text-sm leading-tight">
               Your rewards accumulate daily. You can claim your monthly reward
-              on 4th {nextMonthName}. Thank you!
+              on 5th {nextMonthName}. Thank you!
             </div>
           </div>
         </div>

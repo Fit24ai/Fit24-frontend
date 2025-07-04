@@ -1028,13 +1028,13 @@ export default function ChartBox({ token }: { token: number }) {
   }
 
   const today = new Date()
-  const isBeforeFourth = today.getDate() < 4
+  const isBeforeFourth = today.getDate() < 5
 
   // Set claim date to 4th of current month if before 4th, otherwise 4th of next month
   const claimDate = new Date(
     today.getFullYear(),
     today.getMonth() + (isBeforeFourth ? 0 : 1),
-    4
+    5
   )
 
   const nextMonthName = claimDate.toLocaleString("default", {
@@ -1158,7 +1158,7 @@ export default function ChartBox({ token }: { token: number }) {
             {claimStakeCondition ? (
               <div className="text-center">
                 {/* Available to claim after 24 Hours */}
-                Available to claim on 4th {nextMonthName}
+                Available to claim on 5th {nextMonthName}
               </div>
             ) : (
               <button
