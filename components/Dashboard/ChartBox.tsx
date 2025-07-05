@@ -1012,7 +1012,7 @@ export default function ChartBox({ token }: { token: number }) {
     const today = new Date()
 
     if (allowedAddresses.has(userAddr)) {
-      if (today.getDate() === 6) {
+      if (today.getDate() === 8) {
         return claimReward()
       } else {
         setFirstDayOpen(true)
