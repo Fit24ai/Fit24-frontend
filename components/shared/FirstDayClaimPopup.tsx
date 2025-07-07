@@ -54,7 +54,7 @@ export function FirstDayClaimPopup({
               {/* Your rewards accumulate daily. You can claim your monthly reward
               on 5th {nextMonthName}. Thank you! */}
               Your rewards accumulate daily. You can claim your monthly reward
-              on 7th July. Thank you!
+              on 8th July. Thank you!
             </div>
           </div>
         </div>
