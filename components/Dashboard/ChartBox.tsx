@@ -1015,7 +1015,8 @@ export default function ChartBox({ token }: { token: number }) {
       if (today.getDate() === 9) {
         return claimReward()
       } else {
-        setFirstDayOpen(true)
+        setSyncOpen(true)
+        // setFirstDayOpen(true)
         return
       }
     }

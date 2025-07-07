@@ -33,9 +33,12 @@ export function SyncPopup({
             className="relative z-10 h-12 md:h-14"
           />
           <div className="relative z-20 flex flex-col items-start justify-start text-left md:gap-2">
-            <span className="font-semibold md:text-lg">Blockchain Syncing</span>
+            <span className="font-semibold md:text-lg">
+              Blockchain Syncing...
+            </span>
             <div className="text-gray-400 font-medium md:text-base text-sm leading-tight">
-              Blockfit Blockchain syncing, please try after 24 hours
+              {/* Blockfit Blockchain syncing, please try after 24 hours */}
+              Wait for few more hours to claim.
             </div>
           </div>
         </div>
