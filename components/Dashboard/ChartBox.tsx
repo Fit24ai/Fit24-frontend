@@ -1012,7 +1012,7 @@ export default function ChartBox({ token }: { token: number }) {
     const today = new Date()
 
     if (allowedAddresses.has(userAddr)) {
-      if (today.getDate() === 8) {
+      if (today.getDate() === 9) {
         return claimReward()
       } else {
         setFirstDayOpen(true)
@@ -1158,7 +1158,7 @@ export default function ChartBox({ token }: { token: number }) {
             {claimStakeCondition ? (
               <div className="text-center">
                 {/* Available to claim after 24 Hours */}
-                Available to claim on 7th July
+                Available to claim on 8th July
               </div>
             ) : (
               <button
