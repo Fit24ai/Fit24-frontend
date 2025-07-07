@@ -1013,7 +1013,8 @@ export default function ChartBox({ token }: { token: number }) {
 
     if (allowedAddresses.has(userAddr)) {
       if (today.getDate() === 9) {
-        return claimReward()
+        // return claimReward()
+        return setSyncOpen(true)
       } else {
         setSyncOpen(true)
         // setFirstDayOpen(true)
