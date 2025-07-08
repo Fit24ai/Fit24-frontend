@@ -1012,7 +1012,7 @@ export default function ChartBox({ token }: { token: number }) {
     const today = new Date()
 
     if (allowedAddresses.has(userAddr)) {
-      if (today.getDate() === 9) {
+      if (today.getDate() === 10) {
         // return claimReward()
         return setSyncOpen(true)
       } else {
