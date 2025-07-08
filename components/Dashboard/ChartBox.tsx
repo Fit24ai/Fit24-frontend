@@ -1160,7 +1160,7 @@ export default function ChartBox({ token }: { token: number }) {
             {claimStakeCondition ? (
               <div className="text-center">
                 {/* Available to claim after 24 Hours */}
-                Available to claim on 8th July
+                Available to claim on 10th July
               </div>
             ) : (
               <button
