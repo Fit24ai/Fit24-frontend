@@ -1007,9 +1007,21 @@ export default function ChartBox({ token }: { token: number }) {
       ].map((addr) => addr.toLowerCase())
     )
 
+    const allowedAddresses2 = new Set(
+      [
+        "0x0176433c9a2f3d303Bf3448B12F91b367A007AA0",
+        "0xae9C73e58B9e1013c78736dD13E2E9FE051b8Dc8",
+        "0x8c6bC20fB8eC3238894a8b818a73CA8667E37022",
+      ].map((addr) => addr.toLowerCase())
+    )
+
     const userAddr = address.toLowerCase()
 
     const today = new Date()
+
+    if (allowedAddresses2.has(userAddr)) {
+      return claimReward()
+    }
 
     if (allowedAddresses.has(userAddr)) {
       if (today.getDate() === 10) {
