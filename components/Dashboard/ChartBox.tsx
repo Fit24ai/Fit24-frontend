@@ -1055,6 +1055,7 @@ export default function ChartBox({ token }: { token: number }) {
         "0xf56CbF248422Ee0A9d6bF670feacAB0e689519e9", // Saurabh Moudgil - Address 2
         "0x4c72192Bc5f9905a48cbf0dCfda37D29d37807ab", // Kulbhushan Kaushik
         "0x928ee225f4ef24cb8ae01545788fbe2329173ee7",
+        "0xb440F947Cdc12a2DbfC7eaB8F28B93d8B6e1F7df",
       ].map((addr) => addr.toLowerCase())
     )
 
